@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopSphere - Premium E-commerce Store</title>
+    <title>BHARAT SGPstore - Premium E-commerce Store</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -297,7 +297,7 @@
     <!-- Header -->
     <header class="header">
         <nav class="nav">
-            <div class="logo">🛒 ShopSphere</div>
+            <div class="logo">🛒 BHARAT SGPstore</div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#products">Products</a></li>
@@ -403,11 +403,11 @@
             const productsGrid = document.getElementById('productsGrid');
             productsGrid.innerHTML = products.map(product => `
                 <div class="product-card">
-                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <img src="${product.image}" alt="₹{product.name}" class="product-image">
                     <div class="product-info">
-                        <h3 class="product-title">${product.name}</h3>
-                        <div class="product-price">$${product.price.toFixed(2)}</div>
-                        <button class="add-to-cart" onclick="addToCart(${product.id})">
+                        <h3 class="product-title">₹{product.name}</h3>
+                        <div class="product-price">₹₹{product.price.toFixed(2)}</div>
+                        <button class="add-to-cart" onclick="addToCart(₹{product.id})">
                             <i class="fas fa-cart-plus"></i> Add to Cart
                         </button>
                     </div>
@@ -462,20 +462,20 @@
                 cartItems.innerHTML = cart.map(item => `
                     <div class="cart-item">
                         <div class="cart-item-info">
-                            <h4>${item.name}</h4>
-                            <p>$${item.price.toFixed(2)}</p>
+                            <h4>₹{item.name}</h4>
+                            <p>₹₹{item.price.toFixed(2)}</p>
                         </div>
                         <div class="quantity-controls">
-                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                            <span>${item.quantity}</span>
-                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                            <button class="quantity-btn" onclick="updateQuantity(₹{item.id}, -1)">-</button>
+                            <span>₹{item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(₹{item.id}, 1)">+</button>
                         </div>
-                        <div style="font-weight: bold;">$${(item.price * item.quantity).toFixed(2)}</div>
+                        <div style="font-weight: bold;">₹₹{(item.price * item.quantity).toFixed(2)}</div>
                     </div>
                 `).join('');
             }
 
-            document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('cartTotal').textContent = `₹₹{total.toFixed(2)}`;
         }
 
         // Update Quantity
@@ -495,7 +495,7 @@
         function checkout() {
             if (cart.length === 0) return;
             
-            alert(`Thank you for your purchase! Total: $${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}\n\nOrder placed successfully! 🚀`);
+            alert(`Thank you for your purchase! Total: ₹₹{cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}\n\nOrder placed successfully! 🚀`);
             cart = [];
             toggleCart();
             updateCartCount();

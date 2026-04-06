@@ -8,22 +8,27 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; padding-top: 70px; }
-        .header { background: #1e3c72; color: white; padding: 1rem; position: fixed; width: 100%; top: 0; z-index: 1000; text-align: center; font-weight: bold; font-size: 1.4rem; }
+        .header { background: #1e3c72; color: white; padding: 1rem; position: fixed; width: 100%; top: 0; z-index: 1000; text-align: center; font-weight: bold; font-size: 1.4rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .cart-icon { position: fixed; top: 15px; right: 20px; color: white; cursor: pointer; z-index: 1001; }
         .cart-count { background: #ff4757; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; position: absolute; top: -10px; right: -10px; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; padding: 15px; }
-        .product-card { background: white; border-radius: 10px; padding: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
-        .product-image { width: 100%; height: 120px; object-fit: cover; border-radius: 5px; }
-        .product-title { font-size: 1rem; margin-top: 5px; height: 40px; overflow: hidden; }
-        .product-price { color: #1e3c72; font-weight: bold; margin: 5px 0; }
-        .add-btn { background: #1e3c72; color: white; border: none; padding: 8px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; padding: 15px; max-width: 1200px; margin: 0 auto; }
+        .product-card { background: white; border-radius: 12px; padding: 12px; box-shadow: 0 3px 8px rgba(0,0,0,0.05); text-align: center; transition: 0.3s; }
+        .product-card:hover { transform: translateY(-3px); }
+        .product-image { width: 100%; height: 130px; object-fit: cover; border-radius: 8px; background: #eee; }
+        .product-title { font-size: 0.95rem; margin-top: 8px; height: 40px; overflow: hidden; color: #333; }
+        .product-price { color: #1e3c72; font-weight: bold; margin: 8px 0; font-size: 1.1rem; }
+        .add-btn { background: #1e3c72; color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .add-btn:active { background: #2a5298; transform: scale(0.95); }
         
         /* Modal and Form Styles */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; overflow-y: auto; }
-        .modal-content { background: white; margin: 5% auto; width: 90%; max-width: 400px; padding: 20px; border-radius: 15px; }
-        input, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
-        .order-btn { background: #28a745; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 10px; }
-        .cart-item-list { max-height: 150px; overflow-y: auto; margin-bottom: 10px; border-bottom: 1px solid #eee; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; overflow-y: auto; }
+        .modal-content { background: white; margin: 5% auto; width: 92%; max-width: 420px; padding: 25px; border-radius: 20px; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; outline: none; }
+        input:focus { border-color: #1e3c72; }
+        .order-btn { background: #28a745; color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 15px; box-shadow: 0 4px 10px rgba(40,167,69,0.3); }
+        .cart-item-list { max-height: 200px; overflow-y: auto; margin-bottom: 15px; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; }
+        .wa-link { display: block; text-align: center; margin-top: 20px; color: #25D366; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -38,27 +43,37 @@
 
     <div class="modal" id="orderModal">
         <div class="modal-content">
-            <h3 style="color: #1e3c72;">🛒 Aapka Order List</h3>
+            <h3 style="color: #1e3c72; margin-bottom: 15px;">🛒 Aapka Order List</h3>
             <div id="cartList" class="cart-item-list"></div>
-            <p style="font-weight: bold; font-size: 1.3rem; margin-bottom: 15px;">Total Bill: ₹<span id="totalPrice">0</span></p>
+            <p style="font-weight: bold; font-size: 1.4rem; margin-bottom: 15px; color: #333;">Total Bill: ₹<span id="totalPrice">0</span></p>
             
-            <h4 style="border-top: 1px solid #eee; padding-top: 10px;">Delivery Details:</h4>
+            <h4 style="border-top: 1px solid #eee; padding-top: 15px; margin-bottom: 5px;">Delivery Details:</h4>
             <input type="text" id="name" placeholder="Apna Poora Naam" required>
             <input type="tel" id="phone" placeholder="Mobile Number" required>
-            <textarea id="address" placeholder="Address (Gali No, Mohalla, City)" rows="3" required></textarea>
+            <textarea id="address" placeholder="Address (Gali No, Mohalla, Dudahi Gola Bazar)" rows="3" required></textarea>
             
             <button class="order-btn" id="submitBtn" onclick="sendOrder()">Confirm Order Karein</button>
-            <button onclick="toggleModal()" style="width:100%; background:none; border:none; color:#666; margin-top:10px; cursor:pointer;">Wapas Jayein</button>
+            <button onclick="toggleModal()" style="width:100%; background:none; border:none; color:#999; margin-top:15px; cursor:pointer; font-weight: 500;">Wapas Jayein</button>
+            
+            <a href="https://wa.me/c/917348698707" target="_blank" class="wa-link">
+                <i class="fab fa-whatsapp"></i> Full Catalogue WhatsApp par Dekhein
+            </a>
         </div>
     </div>
 
     <script>
-        // Aap yahan apne 50+ products ki list add kar sakte hain
+        // Maine aapke catalogue ke hisaab se common products add kar diye hain
         const products = [
-            { id: 1, name: "Plastic Bucket (Badi)", price: 150, img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400" },
-            { id: 2, name: "Plastic Mug", price: 30, img: "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=400" },
-            { id: 3, name: "Cleaning Brush", price: 60, img: "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=400" },
-            { id: 4, name: "Storage Box", price: 250, img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400" }
+            { id: 1, name: "Plastic Bucket (Badi)", price: 150, img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300" },
+            { id: 2, name: "Plastic Mug", price: 30, img: "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=300" },
+            { id: 3, name: "Cleaning Brush", price: 60, img: "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=300" },
+            { id: 4, name: "Storage Box (Large)", price: 280, img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=300" },
+            { id: 5, name: "Kitchen Container Set", price: 350, img: "https://images.unsplash.com/photo-1601054704854-1a2e79dea4d3?w=300" },
+            { id: 6, name: "Plastic Chair (Premium)", price: 550, img: "https://images.unsplash.com/photo-1562113530-57ba4676e0c3?w=300" },
+            { id: 7, name: "Dustpan & Broom Set", price: 120, img: "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=300" },
+            { id: 8, name: "Water Jug (2 Litre)", price: 90, img: "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=300" },
+            { id: 9, name: "Laundry Basket", price: 220, img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=300" },
+            { id: 10, name: "Plastic Stool", price: 180, img: "https://images.unsplash.com/photo-1503602642458-232111445657?w=300" }
         ];
 
         let cart = [];
@@ -77,6 +92,10 @@
             const p = products.find(x => x.id === id);
             cart.push(p);
             update();
+            // User ko pata chale ki add ho gaya
+            const countBtn = document.getElementById('count');
+            countBtn.style.transform = "scale(1.3)";
+            setTimeout(() => countBtn.style.transform = "scale(1)", 200);
         }
 
         function update() {
@@ -84,9 +103,9 @@
             const total = cart.reduce((s, i) => s + i.price, 0);
             document.getElementById('totalPrice').innerText = total;
             document.getElementById('cartList').innerHTML = cart.map(i => `
-                <div style="display:flex; justify-content:space-between; padding:5px 0;">
-                    <span>${i.name}</span>
-                    <span>₹${i.price}</span>
+                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom: 1px solid #f9f9f9;">
+                    <span style="font-size:0.9rem;">${i.name}</span>
+                    <span style="font-weight:bold;">₹${i.price}</span>
                 </div>`).join('');
         }
 
@@ -108,7 +127,7 @@
             btn.innerText = "Order Bhej Rahe Hain...";
             btn.disabled = true;
 
-            const formID = "xaqllvvp"; // Aapki Formspree ID
+            const formID = "xaqllvvp"; // Aapki ID set kar di hai
 
             try {
                 const response = await fetch(`https://formspree.io/f/${formID}`, {
@@ -120,7 +139,8 @@
                         Phone: p,
                         Address: a,
                         OrderItems: cart.map(i => i.name).join(", "),
-                        TotalAmount: "₹" + t
+                        TotalAmount: "₹" + t,
+                        CatalogLink: "https://wa.me/c/917348698707"
                     })
                 });
 

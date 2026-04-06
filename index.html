@@ -33,7 +33,7 @@
 </head>
 <body>
 
-    <div class="header">🛍️ BHARAT SGPstore</div>
+    <div class="header">🛍️ BHARAT Mart</div>
     <div class="cart-icon" onclick="toggleModal()">
         <i class="fas fa-shopping-cart fa-lg"></i>
         <span class="cart-count" id="count">0</span>
@@ -64,7 +64,7 @@
         <img id="viewImg" src="" style="width: 100%; height: 250px; object-fit: contain; border-radius: 10px;">
         <h2 id="viewTitle" style="margin-top: 15px; color: #1e3c72;"></h2>
         <p id="viewPrice" style="font-size: 1.5rem; font-weight: bold; color: #333; margin: 10px 0;"></p>
-        <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">Dudahi Mart - Quality Products</p>
+        <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">BHARAT Mart - Quality Products</p>
         
         <button class="add-btn" id="viewAddBtn" style="padding: 15px; font-size: 1.1rem; width:100%;">Add to Cart & Order</button>
         <button onclick="closeProductView()" style="width:100%; background:none; border:none; color:#999; margin-top:15px; cursor:pointer;">Piche Jayein</button>
@@ -132,7 +132,7 @@
             const a = document.getElementById('address').value;
             const t = document.getElementById('totalPrice').innerText;
 
-            if(!n || !p || !a) return alert("Kripya Naam, Number aur Address bharein!");
+            if(!n || !p || !a) return alert("Your Name, Number aur Address !");
             if(cart.length === 0) return alert("Aapka cart khali hai!");
             
             const btn = document.getElementById('submitBtn');
@@ -146,7 +146,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        Shop: "BHARAT SGPstore",
+                        Shop: "BHARAT Mart",
                         Customer: n,
                         Phone: p,
                         Address: a,

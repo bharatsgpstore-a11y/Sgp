@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BHARAT SGPstore - Online Order</title>
+    <title>BHARAT Mart - Online Order</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -90,14 +90,15 @@
         let cart = [];
 
         function displayProducts() {
-            document.getElementById('grid').innerHTML = products.map(p => `
-                <div class="product-card">
-                    <img src="${p.img}" class="product-image">
-                    <h4 class="product-title">${p.name}</h4>
-                    <p class="product-price">₹${p.price}</p>
-                    <button class="add-btn" onclick="add(${p.id})">Add to Cart</button>
-                </div>`).join('');
-        }
+    document.getElementById('grid').innerHTML = products.map(p => `
+        <div class="product-card" onclick="openProductView(${p.id})">
+            <img src="₹{p.img}" class="product-image">
+            <h4 class="product-title">₹₹{p.name}</h4>
+            <p class="product-price">₹{p.price}</p>
+            <button class="add-btn" onclick="event.stopPropagation(); add(${p.id})">Quick Add</button>
+        </div>`).join('');
+}
+
 
         function add(id) {
             const p = products.find(x => x.id === id);

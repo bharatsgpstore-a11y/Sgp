@@ -3,170 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mart - Sri Ganpati Plastic Store</title>
-    
+    <title>Bharat Mart - SGP Store</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
     <style>
-        :root { --primary: #2874f0; --secondary: #fb641b; --text: #212121; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #f1f3f6; overflow-x: hidden; padding-bottom: 60px; }
+        body { background-color: #f8f9fa; }
 
-        /* Welcome Screen */
+        /* Aesthetic Welcome Screen */
         #welcome-screen {
-            position: fixed; top: 0; left: 0; width: 99%; height: 100%;
-            background: linear-gradient(135deg, #2874f0 0%, #0049af 100%);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #2874f0, #0049af);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 9999; color: white; transition: 1.6s;
+            z-index: 5000; color: white; transition: 0.8s ease-in-out;
         }
-        .welcome-logo { width: 100px; height: 100px; border-radius: 50%; background: white; padding: 5px; margin-bottom: 20px; }
-        .welcome-btn { margin-top: 25px; padding: 12px 40px; border-radius: 30px; border: none; background: #ffe500; color: #2874f0; font-weight: 600; cursor: pointer; }
+        .welcome-logo { width: 100px; animation: pulse 2s infinite; margin-bottom: 20px; border-radius: 50%; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        /* Language Selector Styling */
+        #google_translate_element { padding: 10px; background: white; text-align: center; border-bottom: 1px solid #ddd; }
 
         /* Header */
-        #google_translate_element { background: #fff; text-align: center; border-bottom: 1px solid #ddd; }
-        .header { background: var(--primary); color: white; padding: 12px 15px; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
-        .logo-section { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .header-logo { height: 35px; width: 35px; border-radius: 50%; background: white; }
-        
-        .cart-icon-wrapper { position: relative; cursor: pointer; }
-        .cart-badge { background: #ff6161; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; position: absolute; top: -10px; right: -10px; border: 1px solid white; }
+        .header { background: #2874f0; color: white; padding: 12px 15px; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-img { height: 35px; width: 35px; border-radius: 50%; background: white; }
 
-        /* Content */
-        .container { padding: 12px; }
-        .policy-banner { background: #fff3e0; border: 1px solid #ffe0b2; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.8rem; display: flex; align-items: center; gap: 10px; }
-        
+        /* Main Content */
+        .container { padding: 15px; margin-top: 10px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-        .card { background: white; border-radius: 10px; padding: 10px; text-align: center; border: 1px solid #ddd; }
-        .card img { width: 100%; height: 130px; object-fit: contain; }
-        .card h4 { font-size: 0.85rem; margin-top: 8px; height: 35px; overflow: hidden; }
-        .price { color: #388e3c; font-weight: 600; margin-top: 5px; }
+        .card { background: white; border-radius: 12px; padding: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; }
+        .card img { width: 100%; height: 120px; object-fit: contain; }
 
-        /* Details Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 8000; overflow-y: auto; }
-        .modal-header { padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; background: white; }
-        .modal-body { padding: 20px; max-width: 600px; margin: 0 auto; }
-        .m-img { width: 100%; height: 250px; object-fit: contain; }
+        /* Return Policy Section */
+        .policy-box { 
+            background: #fff3cd; color: #856404; padding: 15px; margin: 20px 0; 
+            border-radius: 8px; border-left: 5px solid #ffeeba; font-size: 0.9rem;
+        }
 
-        /* Bottom Buttons */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; display: flex; z-index: 8001; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
-        .btn-cart { flex: 1; background: white; color: #212121; border: none; font-weight: 600; cursor: pointer; border-top: 1px solid #ddd; }
-        .btn-buy { flex: 1; background: var(--secondary); color: white; border: none; font-weight: 600; cursor: pointer; }
-
-        /* WA Float */
-        .wa-float { position: fixed; bottom: 80px; right: 20px; background: #25D366; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1500; }
+        /* Modal / Details */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; overflow-y: auto; }
+        .modal-header { padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; }
+        .btn-buy { background: #fb641b; color: white; border: none; padding: 15px; width: 100%; font-weight: bold; position: fixed; bottom: 0; font-size: 1.1rem; }
     </style>
 </head>
 <body>
 
     <div id="welcome-screen">
         <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" class="welcome-logo">
-        <h1>BHARAT MART</h1>
-        <p>A Trusted Retail Experience</p>
-        <button class="welcome-btn" onclick="closeWelcome()">Start Shopping</button>
+        <h1 style="letter-spacing: 2px;">BHARAT MART</h1>
+        <p style="margin-top: 10px; font-weight: 300;">Quality & Trust Since 2023</p>
+        <button onclick="startApp()" style="margin-top: 30px; padding: 10px 30px; border-radius: 25px; border: none; background: white; color: #2874f0; font-weight: bold; cursor: pointer;">Shop Now</button>
     </div>
 
-    <div 
+    <div id="google_translate_element"></div>
 
     <header class="header">
-        <div class="logo-section" onclick="location.reload()">
-            <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" class="header-logo">
-            <span style="font-weight: 600;">Bharat Mart</span>
+        <div class="logo-area">
+            <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" class="logo-img">
+            <span style="font-weight: bold;">Bharat Mart</span>
         </div>
-        <div class="cart-icon-wrapper">
-            <i class="fas fa-shopping-cart fa-lg"></i>
-            <span class="cart-badge" id="cart-count">0</span>
+        <div class="icons">
+            <i class="fas fa-shopping-cart"></i>
         </div>
     </header>
 
     <div class="container">
-        <div class="policy-banner">
-            <i class="fas fa-truck-loading fa-lg" style="color:#e65100"></i>
-            <span><strong>7 Days Easy Return:</strong> Defect hone par turant return aur refund payein.</span>
+        <div class="policy-box">
+            <i class="fas fa-undo-alt"></i> <strong>7-Day Easy Return:</strong> Agar product defected hai ya pasand nahi aaya, toh 7 dino ke andar return karein. 
+            <a href="https://wa.me/917348698707" style="color: #856404; font-weight: bold;">Click for Return Request</a>
         </div>
-        <div class="grid" id="main-grid"></div>
+
+        <div class="grid" id="pGrid"></div>
     </div>
 
     <div class="modal" id="pModal">
         <div class="modal-header">
-            <i class="fas fa-arrow-left fa-lg" onclick="closeModal()" style="cursor:pointer"></i>
-            <span style="font-weight: 600;">Product Details</span>
+            <i class="fas fa-arrow-left" onclick="closeModal()"></i>
+            <strong>Product Info</strong>
         </div>
-        <div class="modal-body">
-            <img id="mImg" class="m-img">
-            <h2 id="mName" style="margin-top:15px; font-weight:400"></h2>
-            <h1 id="mPrice" style="color:var(--primary); margin:10px 0"></h1>
-            <p id="mDesc" style="color:#666; font-size:0.9rem; line-height:1.5; border-top:1px solid #eee; padding-top:10px;"></p>
-            <div style="margin-top:20px; padding:10px; background:#f9f9f9; border-radius:5px; font-size:0.8rem;">
-                <strong><i class="fas fa-undo"></i> Return Policy:</strong> Product defect hone par WhatsApp par video bhejein.
+        <div style="padding: 20px;">
+            <img id="mImg" style="width: 100%; height: 250px; object-fit: contain;">
+            <h2 id="mTitle" style="margin-top: 15px;"></h2>
+            <h1 id="mPrice" style="color: #2874f0; margin: 10px 0;"></h1>
+            <p id="mDesc" style="color: #666; line-height: 1.5;"></p>
+            
+            <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">
+                <p style="color: red; font-size: 0.8rem;">* Defect hone par turant WhatsApp par photo bhejein.</p>
             </div>
         </div>
-        <div class="bottom-nav">
-            <button class="btn-cart" onclick="addToCart()">ADD TO CART</button>
-            <button class="btn-buy" onclick="buyNow()">BUY ON WHATSAPP</button>
-        </div>
+        <button class="btn-buy" onclick="orderNow()">ORDER ON WHATSAPP</button>
     </div>
 
-    <a href="https://wa.me/917348698707" class="wa-float"><i class="fab fa-whatsapp"></i></a>
-
     <script>
-        // Data
-        const products = [
-            { id: 1, name: "Premium Bucket (20L)", price: 150, desc: "Strong and durable plastic bucket for long term use.", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400" },
-            { id: 2, name: "Kitchen Container Set", price: 280, desc: "Airtight lids keep food fresh and safe.", img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400" }
-        ];
-
-        let cartCount = 0;
-        let selectedProduct = null;
-
-        // Functions
-        function closeWelcome() {
+        // Start App - Hide Welcome
+        function startApp() {
             document.getElementById('welcome-screen').style.opacity = '0';
-            setTimeout(() => document.getElementById('welcome-screen').style.display = 'none', 500);
+            setTimeout(() => {
+                document.getElementById('welcome-screen').style.display = 'none';
+            }, 800);
         }
 
-        function render() {
-            const grid = document.getElementById('main-grid');
-            grid.innerHTML = products.map(p => `
-                <div class="card" onclick="openModal(${p.id})">
+        // Language Init
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'hi'}, 'google_translate_element');
+        }
+
+        const products = [
+            { id: 1, name: "Premium Bucket", price: 150, desc: "High quality durable plastic.", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400" },
+            { id: 2, name: "Storage Box", price: 280, desc: "Airtight for fresh food storage.", img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400" }
+        ];
+
+        let selected = null;
+
+        function load() {
+            document.getElementById('pGrid').innerHTML = products.map(p => `
+                <div class="card" onclick="openP(${p.id})">
                     <img src="${p.img}">
                     <h4>${p.name}</h4>
-                    <p class="price">₹${p.price}</p>
+                    <p style="color:green; font-weight:bold;">₹${p.price}</p>
                 </div>
             `).join('');
         }
 
-        function openModal(id) {
-            selectedProduct = products.find(p => p.id === id);
-            document.getElementById('mImg').src = selectedProduct.img;
-            document.getElementById('mName').innerText = selectedProduct.name;
-            document.getElementById('mPrice').innerText = "₹" + selectedProduct.price;
-            document.getElementById('mDesc').innerText = selectedProduct.desc;
+        function openP(id) {
+            selected = products.find(p => p.id === id);
+            document.getElementById('mImg').src = selected.img;
+            document.getElementById('mTitle').innerText = selected.name;
+            document.getElementById('mPrice').innerText = "₹" + selected.price;
+            document.getElementById('mDesc').innerText = selected.desc;
             document.getElementById('pModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
-            document.getElementById('pModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
+        function closeModal() { document.getElementById('pModal').style.display = 'none'; }
+
+        function orderNow() {
+            const msg = `Order: ${selected.name} (Price: ₹${selected.price})`;
+            window.open(`https://wa.me/917348698707?text=${msg}`);
         }
 
-        function addToCart() {
-            cartCount++;
-            document.getElementById('cart-count').innerText = cartCount;
-            alert(selectedProduct.name + " Cart mein add ho gaya!");
-        }
-
-        function buyNow() {
-            const msg = `Namaste Bharat Mart, mujhe ye order karna hai:\n*Item:* ${selectedProduct.name}\n*Price:* ₹${selectedProduct.price}`;
-            window.open(`https://wa.me/917348698707?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-
-    
-        }
-
-        window.onload = render;
+        load();
     </script>
-    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>

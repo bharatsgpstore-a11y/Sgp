@@ -12,8 +12,11 @@
         /* Header */
         .header { background: #2874f0; color: white; padding: 10px 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; }
-        .logo-section { display: flex; align-items: center; gap: 10px; }
+        .logo-section { display: flex; align-items: center; gap: 10px; cursor: pointer; }
         .logo-img { height: 45px; width: 45px; background: white; border-radius: 50%; object-fit: contain; padding: 2px; }
+        
+        .right-nav { display: flex; align-items: center; gap: 20px; }
+        .login-btn { background: white; color: #2874f0; border: none; padding: 5px 15px; border-radius: 2px; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
         .cart-icon { position: relative; cursor: pointer; }
         .cart-count { background: #ff6161; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; position: absolute; top: -10px; right: -10px; border: 1px solid white; }
 
@@ -26,56 +29,66 @@
         .p-name { font-size: 0.9rem; margin-top: 8px; color: #212121; height: 35px; overflow: hidden; }
         .p-price { font-weight: bold; font-size: 1.1rem; color: #388e3c; margin: 5px 0; }
 
-        /* Product Details Modal (FULL SCREEN) */
+        /* Product Details Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; animation: slideIn 0.3s ease; }
         @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-        
         .modal-header { padding: 15px; border-bottom: 1px solid #ddd; display: flex; align-items: center; gap: 20px; position: sticky; top: 0; background: white; z-index: 10; }
         .details-container { max-width: 600px; margin: 0 auto; padding-bottom: 80px; }
-        
-        /* Image Gallery */
         .gallery-main { width: 100%; height: 300px; object-fit: contain; background: #fff; }
         .thumbnails { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
         .thumb-img { width: 60px; height: 60px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; object-fit: cover; }
         .thumb-img.active { border: 2px solid #2874f0; }
 
-        /* Description & Reviews */
-        .info-section { padding: 20px; }
-        .rating-badge { background: #388e3c; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
-        .desc-text { color: #666; font-size: 0.9rem; margin-top: 10px; line-height: 1.5; border-top: 1px solid #eee; padding-top: 10px; }
-        
-        .review-box { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
-        .review-item { border-bottom: 1px solid #eee; padding: 10px 0; }
-        .review-user { font-weight: bold; font-size: 0.85rem; }
-        .review-comment { font-size: 0.85rem; color: #444; margin-top: 4px; }
+        /* Login Modal Style */
+        #loginModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.3); z-index: 4000; width: 90%; max-width: 400px; text-align: center; }
+        .google-btn { background: #4285F4; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
-        /* Bottom Buttons */
-        .bottom-bar { position: fixed; bottom: 0; width: 100%; display: flex; height: 60px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
-        .btn-cart { flex: 1; background: white; color: black; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; }
-        .btn-buy { flex: 1; background: #fb641b; color: white; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; }
+        /* Help Button (Floating) */
+        .help-fab { position: fixed; bottom: 80px; right: 20px; background: #25D366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 1500; text-decoration: none; }
 
-        /* Order Form Overlay */
+        /* Form Overlays */
         .form-overlay { display: none; position: fixed; bottom: 0; background: white; width: 100%; padding: 20px; border-radius: 20px 20px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.3); z-index: 3000; }
         input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; outline: none; }
+        .btn-buy { background: #fb641b; color: white; border: none; padding: 15px; width: 100%; font-weight: bold; border-radius: 2px; cursor: pointer; }
+        .bottom-bar { position: fixed; bottom: 0; width: 100%; display: flex; height: 60px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+        .btn-cart-bot { flex: 1; background: white; color: black; border: none; font-weight: bold; }
+        .btn-buy-bot { flex: 1; background: #fb641b; color: white; border: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header class="header">
         <div class="nav-container">
-            <div class="logo-section">
-                <img src="YOUR_LOGO_URL_HERE" class="logo-img" alt="Logo">
+            <div class="logo-section" onclick="location.reload()">
+                <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" class="logo-img" alt="Logo">
                 <span style="font-weight: bold; font-size: 1.1rem; font-style: italic;">Bharat Mart</span>
             </div>
-            <div class="cart-icon">
-                <i class="fas fa-shopping-cart fa-lg"></i>
-                <span class="cart-count" id="cartCount">0</span>
+            <div class="right-nav">
+                <button class="login-btn" onclick="toggleLogin()">Login</button>
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-cart fa-lg"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
             </div>
         </div>
     </header>
 
+    <a href="https://wa.me/917348698707?text=Hello, mujhe help chahiye!" class="help-fab" title="Contact Support">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
     <div class="main-content">
         <div class="grid" id="productGrid"></div>
+    </div>
+
+    <div id="loginModal">
+        <i class="fas fa-times" style="float:right; cursor:pointer;" onclick="toggleLogin()"></i>
+        <h2 style="margin-bottom:10px; color:#2874f0;">Welcome!</h2>
+        <p style="color:#666; font-size:0.9rem;">Bharat Mart mein login karein taaki aap apne orders track kar sakein.</p>
+        <button class="google-btn" onclick="googleLogin()">
+            <i class="fab fa-google"></i> Login with Google
+        </button>
+        <p style="margin-top:15px; font-size:0.8rem; color:#999;">By logging in, you agree to our T&C.</p>
     </div>
 
     <div class="modal" id="pModal">
@@ -83,35 +96,25 @@
             <i class="fas fa-arrow-left fa-lg" onclick="closeModal()"></i>
             <span style="font-weight: bold; color: #2874f0;">Product Details</span>
         </div>
-        
         <div class="details-container">
             <img id="mainImg" class="gallery-main" src="">
             <div class="thumbnails" id="thumbBox"></div>
-            
             <div class="info-section">
-                <h2 id="mName" style="font-weight: 500; font-size: 1.2rem;"></h2>
-                <div style="margin: 10px 0; display: flex; align-items: center; gap: 10px;">
-                    <span class="rating-badge">4.2 <i class="fas fa-star"></i></span>
-                    <span style="color: #878787; font-size: 0.9rem;">1,245 Ratings & 158 Reviews</span>
+                <h2 id="mName"></h2>
+                <div style="margin: 10px 0;">
+                    <span style="background:#388e3c; color:white; padding:2px 8px; border-radius:12px; font-size:0.8rem;">4.2 <i class="fas fa-star"></i></span>
                 </div>
-                <h1 id="mPrice" style="color: #212121; margin-bottom: 10px;"></h1>
-                <p style="color: #388e3c; font-weight: bold; font-size: 0.9rem;">Extra ₹50 off on WhatsApp Order</p>
-                
-                <div class="desc-text">
-                    <strong>Product Details:</strong>
-                    <p id="mDesc"></p>
-                </div>
-
+                <h1 id="mPrice"></h1>
+                <p id="mDesc" style="color:#666; font-size:0.9rem; border-top:1px solid #eee; padding-top:10px; margin-top:10px;"></p>
                 <div class="review-box">
-                    <strong>Ratings & Reviews</strong>
+                    <strong>Customer Reviews</strong>
                     <div id="reviewList"></div>
                 </div>
             </div>
         </div>
-
         <div class="bottom-bar">
-            <button class="btn-cart" id="addCartBtn">ADD TO CART</button>
-            <button class="btn-buy" onclick="showOrderForm()">BUY NOW</button>
+            <button class="btn-cart-bot" id="addCartBtn">ADD TO CART</button>
+            <button class="btn-buy-bot" onclick="showOrderForm()">BUY NOW</button>
         </div>
     </div>
 
@@ -120,7 +123,7 @@
         <input type="text" id="custName" placeholder="Full Name">
         <input type="tel" id="custPhone" placeholder="Mobile Number">
         <textarea id="custAddr" placeholder="Full Address (Dudahi Gola Bazar)" rows="3"></textarea>
-        <button class="btn-buy" style="border-radius: 8px; width: 100%; margin-top: 10px;" onclick="placeOrder()">Confirm Order (WhatsApp)</button>
+        <button class="btn-buy" onclick="placeOrder()">Confirm Order (WhatsApp)</button>
         <button onclick="document.getElementById('orderForm').style.display='none'" style="width:100%; border:none; background:none; color:#999; margin-top:10px;">Cancel</button>
     </div>
 
@@ -130,29 +133,17 @@
                 id: 1, 
                 name: "Bharat SGP Premium Bucket (20L)", 
                 price: 199, 
-                desc: "High-quality plastic material, durable handle, and elegant design. Best for bathroom and kitchen use.",
-                imgs: [
-                    "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400",
-                    "https://m.media-amazon.com/images/I/61M9B4N-OML._SL1100_.jpg",
-                    "https://m.media-amazon.com/images/I/61A703K+vDL._SL1100_.jpg"
-                ],
-                reviews: [
-                    {user: "Rahul Singh", text: "Quality bahut badhiya hai, colour bhi sahi hai."},
-                    {user: "Amit Kumar", text: "Dudahi mein sabse sasta aur majboot saaman."}
-                ]
+                desc: "Strong plastic, stylish design for your bathroom and kitchen.",
+                imgs: ["https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400", "https://m.media-amazon.com/images/I/61M9B4N-OML._SL1100_.jpg"],
+                reviews: [{user: "Rahul", text: "Best Quality!"}]
             },
             { 
                 id: 2, 
-                name: "Kitchen Storage Container Set (6 Pcs)", 
+                name: "Kitchen Container Set", 
                 price: 349, 
-                desc: "Airtight lids, BPA-free plastic. Perfect for storing pulses, rice, and spices.",
-                imgs: [
-                    "https://images.unsplash.com/photo-1601054704854-1a2e79dea4d3?w=400",
-                    "https://m.media-amazon.com/images/I/71YvRk8G3JL._SL1500_.jpg"
-                ],
-                reviews: [
-                    {user: "Priya Devi", text: "Bahut achha container hai, kitchen saaf lagta hai."}
-                ]
+                desc: "Airtight lids, 6 pieces set for fresh storage.",
+                imgs: ["https://images.unsplash.com/photo-1601054704854-1a2e79dea4d3?w=400"],
+                reviews: [{user: "Priya", text: "Must buy for kitchen."}]
             }
         ];
 
@@ -175,21 +166,19 @@
             document.getElementById('mName').innerText = selectedP.name;
             document.getElementById('mPrice').innerText = "₹" + selectedP.price;
             document.getElementById('mDesc').innerText = selectedP.desc;
-            
-            // Thumbnails render
-            document.getElementById('thumbBox').innerHTML = selectedP.imgs.map((img, i) => `
-                <img src="${img}" class="thumb-img ${i===0?'active':''}" onclick="changeImg(this, '${img}')">
-            `).join('');
-
-            // Reviews render
-            document.getElementById('reviewList').innerHTML = selectedP.reviews.map(r => `
-                <div class="review-item">
-                    <p class="review-user">${r.user} <span style="color:#388e3c;"><i class="fas fa-check-circle"></i> Certified Buyer</span></p>
-                    <p class="review-comment">${r.text}</p>
-                </div>
-            `).join('');
-
+            document.getElementById('thumbBox').innerHTML = selectedP.imgs.map((img, i) => `<img src="${img}" class="thumb-img ${i===0?'active':''}" onclick="changeImg(this, '${img}')">`).join('');
+            document.getElementById('reviewList').innerHTML = selectedP.reviews.map(r => `<div style="border-bottom:1px solid #eee; padding:5px 0;"><p style="font-size:0.8rem; font-weight:bold;">${r.user}</p><p style="font-size:0.8rem; color:#444;">${r.text}</p></div>`).join('');
             document.getElementById('pModal').style.display = 'block';
+        }
+
+        function toggleLogin() {
+            const m = document.getElementById('loginModal');
+            m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function googleLogin() {
+            alert("Redirecting to Gmail Login... (Demo purpose only)");
+            toggleLogin();
         }
 
         function changeImg(el, src) {
@@ -199,7 +188,6 @@
         }
 
         function closeModal() { document.getElementById('pModal').style.display = 'none'; }
-        
         function showOrderForm() { document.getElementById('orderForm').style.display = 'block'; }
 
         document.getElementById('addCartBtn').onclick = () => {
@@ -214,16 +202,7 @@
             const p = document.getElementById('custPhone').value;
             const a = document.getElementById('custAddr').value;
             if(!n || !p || !a) return alert("Details bhariye!");
-
-            const msg = `*Naya Order - Bharat Mart*%0A*Item:* ${selectedP.name}%0A*Price:* ₹${selectedP.price}%0A%0A*Customer:* ${n}%0A*Phone:* ${p}%0A*Address:* ${a}`;
-            
-            // Formspree Email
-            fetch('https://formspree.io/f/xaqllvvp', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({Shop: "Bharat SGP Store", Customer: n, Item: selectedP.name})
-            });
-
+            const msg = `*Naya Order*%0A*Item:* ${selectedP.name}%0A*Price:* ₹${selectedP.price}%0A*Customer:* ${n}%0A*Address:* ${a}`;
             window.open(`https://wa.me/917348698707?text=${msg}`, '_blank');
         }
 
@@ -231,5 +210,3 @@
     </script>
 </body>
 </html>
-
-            

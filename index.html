@@ -3,156 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mart - Dudahi</title>
+    <title>Bharat Mart - Sri Ganpati Plastic Store</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
-        :root { --primary: #2874f0; --secondary: #fb641b; --white: #ffffff; }
+        :root { --primary: #2874f0; --secondary: #fb641b; --text: #212121; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #f1f3f6; padding-bottom: 20px; }
+        body { background-color: #f1f3f6; overflow-x: hidden; padding-bottom: 60px; }
+
+        /* Welcome Screen */
+        #welcome-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #2874f0 0%, #0049af 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; color: white; transition: 0.6s;
+        }
+        .welcome-logo { width: 100px; height: 100px; border-radius: 50%; background: white; padding: 5px; margin-bottom: 20px; }
+        .welcome-btn { margin-top: 25px; padding: 12px 40px; border-radius: 30px; border: none; background: #ffe500; color: #2874f0; font-weight: 600; cursor: pointer; }
 
         /* Header */
+        #google_translate_element { background: #fff; text-align: center; border-bottom: 1px solid #ddd; }
         .header { background: var(--primary); color: white; padding: 12px 15px; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
-        .logo-text { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.5px; }
+        .logo-section { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .header-logo { height: 35px; width: 35px; border-radius: 50%; background: white; }
         
-        /* Flipkart Style Category Bar */
-        .category-bar { 
-            background: white; 
-            display: flex; 
-            overflow-x: auto; 
-            padding: 10px 5px; 
-            gap: 15px; 
-            border-bottom: 1px solid #ddd;
-            scrollbar-width: none; /* Hide scrollbar for Chrome/Safari */
-        }
-        .category-bar::-webkit-scrollbar { display: none; }
-        .cat-item { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-width: 70px; 
-            cursor: pointer;
-            text-align: center;
-        }
-        .cat-item i { 
-            background: #f0f5ff; 
-            color: var(--primary); 
-            width: 45px; height: 45px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 1.2rem; 
-            margin-bottom: 5px;
-        }
-        .cat-item span { font-size: 0.75rem; font-weight: 500; color: #333; }
+        .cart-icon-wrapper { position: relative; cursor: pointer; }
+        .cart-badge { background: #ff6161; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; position: absolute; top: -10px; right: -10px; border: 1px solid white; }
 
-        /* Sidebar (Three-Dot) */
-        .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 9000; transition: 0.3s; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
-        .sidebar.active { left: 0; }
-        .sidebar-header { background: var(--primary); color: white; padding: 20px; font-weight: 600; }
-        .menu-item { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; cursor: pointer; color: #333; }
-        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 8500; }
-
-        /* Products Grid */
-        .container { padding: 10px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
-        .card { background: white; border-radius: 8px; padding: 12px; text-align: center; border: 1px solid #eee; }
-        .card img { width: 100%; height: 120px; object-fit: contain; }
-        .card h4 { font-size: 0.85rem; margin-top: 10px; color: #444; height: 35px; overflow: hidden; }
+        /* Content */
+        .container { padding: 12px; }
+        .policy-banner { background: #fff3e0; border: 1px solid #ffe0b2; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.8rem; display: flex; align-items: center; gap: 10px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+        .card { background: white; border-radius: 10px; padding: 10px; text-align: center; border: 1px solid #ddd; }
+        .card img { width: 100%; height: 130px; object-fit: contain; }
+        .card h4 { font-size: 0.85rem; margin-top: 8px; height: 35px; overflow: hidden; }
         .price { color: #388e3c; font-weight: 600; margin-top: 5px; }
 
-        /* Modal Details */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9500; overflow-y: auto; }
-        .modal-header { padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 55px; display: flex; z-index: 9600; }
-        .btn-cart { flex: 1; background: white; border: none; font-weight: 600; border-top: 1px solid #ddd; }
-        .btn-buy { flex: 1; background: var(--secondary); color: white; border: none; font-weight: 600; }
-        
-        .cart-badge { background: #ff6161; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.6rem; position: absolute; top: -5px; right: -8px; border: 1px solid white; }
+        /* Details Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 8000; overflow-y: auto; }
+        .modal-header { padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; background: white; }
+        .modal-body { padding: 20px; max-width: 600px; margin: 0 auto; }
+        .m-img { width: 100%; height: 250px; object-fit: contain; }
+
+        /* Bottom Buttons */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; display: flex; z-index: 8001; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+        .btn-cart { flex: 1; background: white; color: #212121; border: none; font-weight: 600; cursor: pointer; border-top: 1px solid #ddd; }
+        .btn-buy { flex: 1; background: var(--secondary); color: white; border: none; font-weight: 600; cursor: pointer; }
+
+        /* WA Float */
+        .wa-float { position: fixed; bottom: 80px; right: 20px; background: #25D366; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1500; }
     </style>
 </head>
 <body>
 
+    <div id="welcome-screen">
+        <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" class="welcome-logo">
+        <h1>BHARAT MART</h1>
+        <p>A Trusted Retail Experience</p>
+        <button class="welcome-btn" onclick="closeWelcome()">Start Shopping</button>
+    </div>
+
+    <div id="google_translate_element"></div>
+
     <header class="header">
-        <div onclick="toggleSidebar()" style="cursor:pointer;"><i class="fas fa-bars fa-lg"></i></div>
-        <div class="logo-text">BHARAT MART</div>
-        <div style="position:relative; cursor:pointer;">
+        <div class="logo-section" onclick="location.reload()">
+            <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" class="header-logo">
+            <span style="font-weight: 600;">Bharat Mart</span>
+        </div>
+        <div class="cart-icon-wrapper">
             <i class="fas fa-shopping-cart fa-lg"></i>
-            <span class="cart-badge" id="cartCount">0</span>
+            <span class="cart-badge" id="cart-count">0</span>
         </div>
     </header>
 
-    <div class="category-bar">
-        <div class="cat-item" onclick="filterCategory('all')">
-            <i class="fas fa-border-all"></i><span>All</span>
-        </div>
-        <div class="cat-item" onclick="filterCategory('kitchen')">
-            <i class="fas fa-utensils"></i><span>Kitchen</span>
-        </div>
-        <div class="cat-item" onclick="filterCategory('electronics')">
-            <i class="fas fa-plug"></i><span>Electronic</span>
-        </div>
-        <div class="cat-item" onclick="filterCategory('home')">
-            <i class="fas fa-couch"></i><span>Home</span>
-        </div>
-        <div class="cat-item" onclick="filterCategory('plastic')">
-            <i class="fas fa-box"></i><span>Plastic</span>
-        </div>
-    </div>
-
-    <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header"><i class="fas fa-bars"></i> Menu</div>
-        <div class="menu-item" id="google_translate_element"></div> <div class="menu-item" onclick="window.open('https://wa.me/917348698707')"><i class="fas fa-undo"></i> Return Policy</div>
-        <div class="menu-item" onclick="window.open('https://wa.me/917348698707')"><i class="fas fa-headset"></i> Help Center</div>
-    </div>
-
     <div class="container">
-        <h4 id="catLabel" style="margin: 10px 0; color: #666; font-weight: 400;">All Products</h4>
-        <div class="grid" id="productGrid"></div>
+        <div class="policy-banner">
+            <i class="fas fa-truck-loading fa-lg" style="color:#e65100"></i>
+            <span><strong>7 Days Easy Return:</strong> Defect hone par turant return aur refund payein.</span>
+        </div>
+        <div class="grid" id="main-grid"></div>
     </div>
 
     <div class="modal" id="pModal">
         <div class="modal-header">
-            <i class="fas fa-arrow-left fa-lg" onclick="closeModal()"></i>
-            <span style="font-weight:600;">Product Details</span>
+            <i class="fas fa-arrow-left fa-lg" onclick="closeModal()" style="cursor:pointer"></i>
+            <span style="font-weight: 600;">Product Details</span>
         </div>
-        <div style="padding:20px; text-align:center;">
-            <img id="mImg" style="width:100%; height:250px; object-fit:contain;">
-            <h2 id="mName" style="margin-top:15px; font-weight:500;"></h2>
-            <h1 id="mPrice" style="color:var(--primary); margin:10px 0;"></h1>
-            <p id="mDesc" style="color:#666; font-size:0.9rem; line-height:1.5;"></p>
+        <div class="modal-body">
+            <img id="mImg" class="m-img">
+            <h2 id="mName" style="margin-top:15px; font-weight:400"></h2>
+            <h1 id="mPrice" style="color:var(--primary); margin:10px 0"></h1>
+            <p id="mDesc" style="color:#666; font-size:0.9rem; line-height:1.5; border-top:1px solid #eee; padding-top:10px;"></p>
+            <div style="margin-top:20px; padding:10px; background:#f9f9f9; border-radius:5px; font-size:0.8rem;">
+                <strong><i class="fas fa-undo"></i> Return Policy:</strong> Product defect hone par WhatsApp par video bhejein.
+            </div>
         </div>
         <div class="bottom-nav">
             <button class="btn-cart" onclick="addToCart()">ADD TO CART</button>
-            <button class="btn-buy" onclick="buyNow()">BUY NOW (WA)</button>
+            <button class="btn-buy" onclick="buyNow()">BUY ON WHATSAPP</button>
         </div>
     </div>
 
+    <a href="https://wa.me/917348698707" class="wa-float"><i class="fab fa-whatsapp"></i></a>
+
     <script>
+        // Data
         const products = [
-            { id: 1, cat: 'kitchen', name: "Plastic Bucket (20L)", price: 150, desc: "Best quality plastic bucket for daily use.", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400" },
-            { id: 2, cat: 'kitchen', name: "Container Set", price: 280, desc: "Airtight lids for kitchen storage.", img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400" },
-            { id: 3, cat: 'electronics', name: "LED Torch", price: 249, desc: "High range rechargeable flashlight.", img: "https://m.media-amazon.com/images/I/61M9B4N-OML._SL1100_.jpg" },
-            { id: 4, cat: 'home', name: "Aesthetic Door Mat", price: 120, desc: "Soft and stylish mat for home entry.", img: "https://images.unsplash.com/photo-1588600878108-578307a3cc9d?w=400" }
+            { id: 1, name: "Premium Bucket (20L)", price: 150, desc: "Strong and durable plastic bucket for long term use.", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400" },
+            { id: 2, name: "Kitchen Container Set", price: 280, desc: "Airtight lids keep food fresh and safe.", img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400" }
         ];
 
-        let cartTotal = 0;
-        let activeProduct = null;
+        let cartCount = 0;
+        let selectedProduct = null;
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-            const overlay = document.getElementById('overlay');
-            overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+        // Functions
+        function closeWelcome() {
+            document.getElementById('welcome-screen').style.opacity = '0';
+            setTimeout(() => document.getElementById('welcome-screen').style.display = 'none', 500);
         }
 
-        function render(items) {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = items.map(p => `
-                <div class="card" onclick="openDetails(${p.id})">
+        function render() {
+            const grid = document.getElementById('main-grid');
+            grid.innerHTML = products.map(p => `
+                <div class="card" onclick="openModal(${p.id})">
                     <img src="${p.img}">
                     <h4>${p.name}</h4>
                     <p class="price">₹${p.price}</p>
@@ -160,39 +136,37 @@
             `).join('');
         }
 
-        function filterCategory(cat) {
-            const filtered = cat === 'all' ? products : products.filter(p => p.cat === cat);
-            render(filtered);
-            document.getElementById('catLabel').innerText = cat.charAt(0).toUpperCase() + cat.slice(1) + " Items";
-        }
-
-        function openDetails(id) {
-            activeProduct = products.find(p => p.id === id);
-            document.getElementById('mImg').src = activeProduct.img;
-            document.getElementById('mName').innerText = activeProduct.name;
-            document.getElementById('mPrice').innerText = "₹" + activeProduct.price;
-            document.getElementById('mDesc').innerText = activeProduct.desc;
+        function openModal(id) {
+            selectedProduct = products.find(p => p.id === id);
+            document.getElementById('mImg').src = selectedProduct.img;
+            document.getElementById('mName').innerText = selectedProduct.name;
+            document.getElementById('mPrice').innerText = "₹" + selectedProduct.price;
+            document.getElementById('mDesc').innerText = selectedProduct.desc;
             document.getElementById('pModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() { document.getElementById('pModal').style.display = 'none'; }
-        
+        function closeModal() {
+            document.getElementById('pModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
         function addToCart() {
-            cartTotal++;
-            document.getElementById('cartCount').innerText = cartTotal;
-            alert(activeProduct.name + " added to cart!");
+            cartCount++;
+            document.getElementById('cart-count').innerText = cartCount;
+            alert(selectedProduct.name + " Cart mein add ho gaya!");
         }
 
         function buyNow() {
-            const msg = `*Order Detail*%0AProduct: ${activeProduct.name}%0APrice: ₹${activeProduct.price}`;
-            window.open(`https://wa.me/917348698707?text=${msg}`);
+            const msg = `Namaste Bharat Mart, mujhe ye order karna hai:\n*Item:* ${selectedProduct.name}\n*Price:* ₹${selectedProduct.price}`;
+            window.open(`https://wa.me/917348698707?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({pageLanguage: 'hi'}, 'google_translate_element');
         }
 
-        window.onload = () => render(products);
+        window.onload = render;
     </script>
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>

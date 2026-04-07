@@ -3,206 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BHARAT SGPstore - Online Order</title>
+    <title>Bharat Mart - Bharat SGP Store</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; padding-top: 80px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: #f1f3f6; }
+
+        /* Header */
+        .header { background: #2874f0; color: white; padding: 10px 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; }
+        .logo-section { display: flex; align-items: center; gap: 10px; }
+        .logo-img { height: 45px; width: 45px; background: white; border-radius: 50%; object-fit: contain; padding: 2px; }
+        .cart-icon { position: relative; cursor: pointer; }
+        .cart-count { background: #ff6161; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; position: absolute; top: -10px; right: -10px; border: 1px solid white; }
+
+        /* Grid */
+        .main-content { margin-top: 75px; padding: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+        .product-card { background: white; padding: 10px; border-radius: 4px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .product-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .product-card img { width: 100%; height: 140px; object-fit: contain; }
+        .p-name { font-size: 0.9rem; margin-top: 8px; color: #212121; height: 35px; overflow: hidden; }
+        .p-price { font-weight: bold; font-size: 1.1rem; color: #388e3c; margin: 5px 0; }
+
+        /* Product Details Modal (FULL SCREEN) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
         
-        /* New Professional Header with Logo */
-        .header { 
-            background: #1e3c72; 
-            color: white; 
-            padding: 0.7rem 1rem; 
-            position: fixed; 
-            width: 100%; 
-            top: 0; 
-            z-index: 1000; 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2); 
-        }
-
-        .brand-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-img {
-            height: 45px;
-            width: 45px;
-            background: white;
-            border-radius: 8px;
-            object-fit: contain;
-            padding: 3px;
-        }
-
-        .brand-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            line-height: 1;
-        }
-
-        .cart-icon { position: relative; color: white; cursor: pointer; margin-right: 10px; }
-        .cart-count { background: #ff4757; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; position: absolute; top: -8px; right: -8px; }
+        .modal-header { padding: 15px; border-bottom: 1px solid #ddd; display: flex; align-items: center; gap: 20px; position: sticky; top: 0; background: white; z-index: 10; }
+        .details-container { max-width: 600px; margin: 0 auto; padding-bottom: 80px; }
         
-        /* Rest of the styles */
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; padding: 15px; max-width: 1200px; margin: 0 auto; }
-        .product-card { background: white; border-radius: 12px; padding: 12px; box-shadow: 0 3px 8px rgba(0,0,0,0.05); text-align: center; transition: 0.3s; }
-        .product-card:hover { transform: translateY(-3px); }
-        .product-image { width: 100%; height: 130px; object-fit: cover; border-radius: 8px; background: #eee; }
-        .product-title { font-size: 0.9rem; margin-top: 8px; height: 35px; overflow: hidden; color: #333; font-weight: 500; }
-        .product-price { color: #1e3c72; font-weight: bold; margin: 8px 0; font-size: 1.1rem; }
-        .add-btn { background: #1e3c72; color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .add-btn:active { transform: scale(0.95); }
+        /* Image Gallery */
+        .gallery-main { width: 100%; height: 300px; object-fit: contain; background: #fff; }
+        .thumbnails { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+        .thumb-img { width: 60px; height: 60px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; object-fit: cover; }
+        .thumb-img.active { border: 2px solid #2874f0; }
+
+        /* Description & Reviews */
+        .info-section { padding: 20px; }
+        .rating-badge { background: #388e3c; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
+        .desc-text { color: #666; font-size: 0.9rem; margin-top: 10px; line-height: 1.5; border-top: 1px solid #eee; padding-top: 10px; }
         
-        /* Modal Styles */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; overflow-y: auto; }
-        .modal-content { background: white; margin: 5% auto; width: 92%; max-width: 420px; padding: 25px; border-radius: 20px; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; outline: none; }
-        input:focus { border-color: #1e3c72; }
-        .order-btn { background: #28a745; color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 15px; box-shadow: 0 4px 10px rgba(40,167,69,0.3); }
-        .cart-item-list { max-height: 200px; overflow-y: auto; margin-bottom: 15px; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; }
-        .wa-link { display: block; text-align: center; margin-top: 20px; color: #25D366; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+        .review-box { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+        .review-item { border-bottom: 1px solid #eee; padding: 10px 0; }
+        .review-user { font-weight: bold; font-size: 0.85rem; }
+        .review-comment { font-size: 0.85rem; color: #444; margin-top: 4px; }
+
+        /* Bottom Buttons */
+        .bottom-bar { position: fixed; bottom: 0; width: 100%; display: flex; height: 60px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+        .btn-cart { flex: 1; background: white; color: black; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; }
+        .btn-buy { flex: 1; background: #fb641b; color: white; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; }
+
+        /* Order Form Overlay */
+        .form-overlay { display: none; position: fixed; bottom: 0; background: white; width: 100%; padding: 20px; border-radius: 20px 20px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.3); z-index: 3000; }
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; outline: none; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="brand-section">
-            <img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Logo" class="logo-img">
-            <div class="brand-name">BHARAT<br><span style="font-size: 0.8rem; letter-spacing: 1px;">SGPstore</span></div>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="YOUR_LOGO_URL_HERE" class="logo-img" alt="Logo">
+                <span style="font-weight: bold; font-size: 1.1rem; font-style: italic;">Bharat Mart</span>
+            </div>
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart fa-lg"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
         </div>
-        <div class="cart-icon" onclick="toggleModal()">
-            <i class="fas fa-shopping-cart fa-lg"></i>
-            <span class="cart-count" id="count">0</span>
+    </header>
+
+    <div class="main-content">
+        <div class="grid" id="productGrid"></div>
+    </div>
+
+    <div class="modal" id="pModal">
+        <div class="modal-header">
+            <i class="fas fa-arrow-left fa-lg" onclick="closeModal()"></i>
+            <span style="font-weight: bold; color: #2874f0;">Product Details</span>
+        </div>
+        
+        <div class="details-container">
+            <img id="mainImg" class="gallery-main" src="">
+            <div class="thumbnails" id="thumbBox"></div>
+            
+            <div class="info-section">
+                <h2 id="mName" style="font-weight: 500; font-size: 1.2rem;"></h2>
+                <div style="margin: 10px 0; display: flex; align-items: center; gap: 10px;">
+                    <span class="rating-badge">4.2 <i class="fas fa-star"></i></span>
+                    <span style="color: #878787; font-size: 0.9rem;">1,245 Ratings & 158 Reviews</span>
+                </div>
+                <h1 id="mPrice" style="color: #212121; margin-bottom: 10px;"></h1>
+                <p style="color: #388e3c; font-weight: bold; font-size: 0.9rem;">Extra ₹50 off on WhatsApp Order</p>
+                
+                <div class="desc-text">
+                    <strong>Product Details:</strong>
+                    <p id="mDesc"></p>
+                </div>
+
+                <div class="review-box">
+                    <strong>Ratings & Reviews</strong>
+                    <div id="reviewList"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-bar">
+            <button class="btn-cart" id="addCartBtn">ADD TO CART</button>
+            <button class="btn-buy" onclick="showOrderForm()">BUY NOW</button>
         </div>
     </div>
 
-    <div class="products-grid" id="grid"></div>
-
-    <div class="modal" id="orderModal">
-        <div class="modal-content">
-            <h3 style="color: #1e3c72; margin-bottom: 15px;">🛒 Aapka Order List</h3>
-            <div id="cartList" class="cart-item-list"></div>
-            <p style="font-weight: bold; font-size: 1.4rem; margin-bottom: 15px; color: #333;">Total Bill: ₹<span id="totalPrice">0</span></p>
-            
-            <h4 style="border-top: 1px solid #eee; padding-top: 15px; margin-bottom: 5px;">Delivery Details:</h4>
-            <input type="text" id="name" placeholder="Apna Poora Naam" required>
-            <input type="tel" id="phone" placeholder="Mobile Number" required>
-            <textarea id="address" placeholder="Pura Address (Dudahi Gola Bazar)" rows="3" required></textarea>
-            
-            <button class="order-btn" id="submitBtn" onclick="sendOrder()">Confirm Order Karein</button>
-            <button onclick="toggleModal()" style="width:100%; background:none; border:none; color:#999; margin-top:15px; cursor:pointer; font-weight: 500;">Wapas Jayein</button>
-            
-            <a href="https://wa.me/c/917348698707" target="_blank" class="wa-link">
-                <i class="fab fa-whatsapp"></i> Full Catalogue WhatsApp par Dekhein
-            </a>
-        </div>
+    <div class="form-overlay" id="orderForm">
+        <h3 style="color: #2874f0; margin-bottom: 10px;">Delivery Address</h3>
+        <input type="text" id="custName" placeholder="Full Name">
+        <input type="tel" id="custPhone" placeholder="Mobile Number">
+        <textarea id="custAddr" placeholder="Full Address (Dudahi Gola Bazar)" rows="3"></textarea>
+        <button class="btn-buy" style="border-radius: 8px; width: 100%; margin-top: 10px;" onclick="placeOrder()">Confirm Order (WhatsApp)</button>
+        <button onclick="document.getElementById('orderForm').style.display='none'" style="width:100%; border:none; background:none; color:#999; margin-top:10px;">Cancel</button>
     </div>
 
     <script>
         const products = [
-            { id: 1, name: "Plastic Bucket (Badi)", price: 150, img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300" },
-            { id: 2, name: "Plastic Mug", price: 30, img: "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=300" },
-            { id: 3, name: "Cleaning Brush", price: 60, img: "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=300" },
-            { id: 4, name: "Storage Box (Large)", price: 280, img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=300" },
-            { id: 5, name: "Kitchen Container Set", price: 350, img: "https://images.unsplash.com/photo-1601054704854-1a2e79dea4d3?w=300" },
-            { id: 6, name: "Plastic Chair (Premium)", price: 550, img: "https://images.unsplash.com/photo-1562113530-57ba4676e0c3?w=300" },
-            { id: 7, name: "Dustpan & Broom Set", price: 120, img: "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=300" },
-            { id: 8, name: "Water Jug (2 Litre)", price: 90, img: "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=300" },
-            { id: 9, name: "Laundry Basket", price: 220, img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=300" },
-            { id: 10, name: "Plastic Stool", price: 180, img: "https://images.unsplash.com/photo-1503602642458-232111445657?w=300" }
+            { 
+                id: 1, 
+                name: "Bharat SGP Premium Bucket (20L)", 
+                price: 199, 
+                desc: "High-quality plastic material, durable handle, and elegant design. Best for bathroom and kitchen use.",
+                imgs: [
+                    "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400",
+                    "https://m.media-amazon.com/images/I/61M9B4N-OML._SL1100_.jpg",
+                    "https://m.media-amazon.com/images/I/61A703K+vDL._SL1100_.jpg"
+                ],
+                reviews: [
+                    {user: "Rahul Singh", text: "Quality bahut badhiya hai, colour bhi sahi hai."},
+                    {user: "Amit Kumar", text: "Dudahi mein sabse sasta aur majboot saaman."}
+                ]
+            },
+            { 
+                id: 2, 
+                name: "Kitchen Storage Container Set (6 Pcs)", 
+                price: 349, 
+                desc: "Airtight lids, BPA-free plastic. Perfect for storing pulses, rice, and spices.",
+                imgs: [
+                    "https://images.unsplash.com/photo-1601054704854-1a2e79dea4d3?w=400",
+                    "https://m.media-amazon.com/images/I/71YvRk8G3JL._SL1500_.jpg"
+                ],
+                reviews: [
+                    {user: "Priya Devi", text: "Bahut achha container hai, kitchen saaf lagta hai."}
+                ]
+            }
         ];
 
-        let cart = [];
+        let cartCount = 0;
+        let selectedP = null;
 
-        function displayProducts() {
-            document.getElementById('grid').innerHTML = products.map(p => `
-                <div class="product-card">
-                    <img src="${p.img}" class="product-image">
-                    <h4 class="product-title">${p.name}</h4>
-                    <p class="product-price">₹${p.price}</p>
-                    <button class="add-btn" onclick="add(${p.id})">Add to Cart</button>
-                </div>`).join('');
+        function renderProducts() {
+            document.getElementById('productGrid').innerHTML = products.map(p => `
+                <div class="product-card" onclick="openDetails(${p.id})">
+                    <img src="${p.imgs[0]}">
+                    <p class="p-name">${p.name}</p>
+                    <p class="p-price">₹${p.price}</p>
+                </div>
+            `).join('');
         }
 
-        function add(id) {
-            const p = products.find(x => x.id === id);
-            cart.push(p);
-            update();
-            const countBtn = document.getElementById('count');
-            countBtn.style.transform = "scale(1.3)";
-            setTimeout(() => countBtn.style.transform = "scale(1)", 200);
-        }
-
-        function update() {
-            document.getElementById('count').innerText = cart.length;
-            const total = cart.reduce((s, i) => s + i.price, 0);
-            document.getElementById('totalPrice').innerText = total;
-            document.getElementById('cartList').innerHTML = cart.map(i => `
-                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom: 1px solid #f9f9f9;">
-                    <span style="font-size:0.85rem;">${i.name}</span>
-                    <span style="font-weight:bold;">₹${i.price}</span>
-                </div>`).join('');
-        }
-
-        function toggleModal() {
-            const m = document.getElementById('orderModal');
-            m.style.display = m.style.display === 'block' ? 'none' : 'block';
-        }
-
-        async function sendOrder() {
-            const n = document.getElementById('name').value;
-            const p = document.getElementById('phone').value;
-            const a = document.getElementById('address').value;
-            const t = document.getElementById('totalPrice').innerText;
-
-            if(!n || !p || !a) return alert("Kripya Naam, Number aur Address bharein!");
-            if(cart.length === 0) return alert("Aapka cart khali hai!");
+        function openDetails(id) {
+            selectedP = products.find(x => x.id === id);
+            document.getElementById('mainImg').src = selectedP.imgs[0];
+            document.getElementById('mName').innerText = selectedP.name;
+            document.getElementById('mPrice').innerText = "₹" + selectedP.price;
+            document.getElementById('mDesc').innerText = selectedP.desc;
             
-            const btn = document.getElementById('submitBtn');
-            btn.innerText = "Order Bhej Rahe Hain...";
-            btn.disabled = true;
+            // Thumbnails render
+            document.getElementById('thumbBox').innerHTML = selectedP.imgs.map((img, i) => `
+                <img src="${img}" class="thumb-img ${i===0?'active':''}" onclick="changeImg(this, '${img}')">
+            `).join('');
 
-            const formID = "xaqllvvp";
+            // Reviews render
+            document.getElementById('reviewList').innerHTML = selectedP.reviews.map(r => `
+                <div class="review-item">
+                    <p class="review-user">${r.user} <span style="color:#388e3c;"><i class="fas fa-check-circle"></i> Certified Buyer</span></p>
+                    <p class="review-comment">${r.text}</p>
+                </div>
+            `).join('');
 
-            try {
-                const response = await fetch(`https://formspree.io/f/${formID}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        Shop: "BHARAT SGPstore",
-                        Customer: n,
-                        Phone: p,
-                        Address: a,
-                        OrderItems: cart.map(i => i.name).join(", "),
-                        TotalAmount: "₹" + t
-                    })
-                });
-
-                if(response.ok) {
-                    alert("🎉 Order Successful!\nBHARAT SGPstore par shopping karne ke liye dhanyawad. Hum aapse jald sampark karenge.");
-                    cart = [];
-                    update();
-                    toggleModal();
-                    document.getElementById('name').value = '';
-                    document.getElementById('phone').value = '';
-                    document.getElementById('address').value = '';
-                } else {
-                    alert("Kuch error aaya, kripya dubara try karein.");
-                }
-            } catch (err) {
-                alert("Network error!");
-            }
-            btn.innerText = "Confirm Order Karein";
-            btn.disabled = false;
+            document.getElementById('pModal').style.display = 'block';
         }
 
-        displayProducts();
+        function changeImg(el, src) {
+            document.getElementById('mainImg').src = src;
+            document.querySelectorAll('.thumb-img').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function closeModal() { document.getElementById('pModal').style.display = 'none'; }
+        
+        function showOrderForm() { document.getElementById('orderForm').style.display = 'block'; }
+
+        document.getElementById('addCartBtn').onclick = () => {
+            cartCount++;
+            document.getElementById('cartCount').innerText = cartCount;
+            alert("Cart mein add ho gaya!");
+            closeModal();
+        };
+
+        function placeOrder() {
+            const n = document.getElementById('custName').value;
+            const p = document.getElementById('custPhone').value;
+            const a = document.getElementById('custAddr').value;
+            if(!n || !p || !a) return alert("Details bhariye!");
+
+            const msg = `*Naya Order - Bharat Mart*%0A*Item:* ${selectedP.name}%0A*Price:* ₹${selectedP.price}%0A%0A*Customer:* ${n}%0A*Phone:* ${p}%0A*Address:* ${a}`;
+            
+            // Formspree Email
+            fetch('https://formspree.io/f/xaqllvvp', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({Shop: "Bharat SGP Store", Customer: n, Item: selectedP.name})
+            });
+
+            window.open(`https://wa.me/917348698707?text=${msg}`, '_blank');
+        }
+
+        renderProducts();
     </script>
 </body>
 </html>
+
+            

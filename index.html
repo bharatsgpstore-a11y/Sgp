@@ -1,142 +1,149 @@
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mart - SGP Store</title>
+    <title>Bharat Mart - Sri Ganpati Plastic Store</title>
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: #f1f3f6; padding-bottom: 20px; }
+        :root { --primary: #2874f0; --secondary: #fb641b; --text: #212121; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f1f3f6; overflow-x: hidden; }
 
-        /* Fixed Header */
-        .header { background: #2874f0; color: white; padding: 12px 0; position: fixed; width: 100%; top: 0; z-index: 1000; }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; }
-        .logo-section { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .logo-img { height: 40px; width: 40px; background: white; border-radius: 50%; object-fit: contain; padding: 2px; }
-        
-        .cart-icon { position: relative; cursor: pointer; font-size: 1.3rem; }
-        .cart-count { background: #ff6161; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; position: absolute; top: -8px; right: -10px; border: 1px solid white; }
+        /* Welcome Screen Animation */
+        #welcome-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #2874f0 0%, #0049af 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; color: white; transition: transform 0.6s ease-in-out, opacity 0.5s;
+        }
+        .welcome-logo { width: 120px; height: 120px; border-radius: 50%; background: white; padding: 10px; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .welcome-btn { margin-top: 30px; padding: 12px 40px; border-radius: 30px; border: none; background: #ffe500; color: #2874f0; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
+        .welcome-btn:hover { transform: scale(1.05); background: white; }
 
-        /* Products Grid */
-        .main-content { margin-top: 70px; padding: 10px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
-        .product-card { background: white; padding: 12px; border-radius: 8px; text-align: center; cursor: pointer; border: 1px solid #ddd; }
-        .product-card img { width: 100%; height: 130px; object-fit: contain; }
-        .p-name { font-size: 0.9rem; margin-top: 8px; color: #212121; height: 38px; overflow: hidden; font-weight: 500; }
-        .p-price { font-weight: bold; font-size: 1.1rem; color: #388e3c; margin-top: 5px; }
+        /* Language & Header */
+        #google_translate_element { background: #fff; padding: 5px; text-align: center; border-bottom: 1px solid #ddd; }
+        .header { background: var(--primary); color: white; padding: 12px 15px; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .logo-section { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .header-logo { height: 35px; width: 35px; border-radius: 50%; background: white; }
 
-        /* Details Modal (Full Screen) */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; }
-        .modal-header { padding: 15px; border-bottom: 1px solid #ddd; display: flex; align-items: center; gap: 15px; background: white; position: sticky; top: 0; z-index: 10; }
-        .details-body { padding: 15px; max-width: 600px; margin: 0 auto; }
-        .main-img-large { width: 100%; height: 280px; object-fit: contain; margin-bottom: 15px; }
-        
-        /* Buttons Bar */
-        .bottom-action-bar { position: fixed; bottom: 0; width: 100%; display: flex; height: 55px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 2500; }
-        .btn-cart { flex: 1; background: #fff; color: #212121; border: 1px solid #ddd; font-weight: bold; font-size: 1rem; cursor: pointer; }
-        .btn-buy { flex: 1; background: #fb641b; color: white; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; }
+        /* Policy & Grid */
+        .container { padding: 12px; }
+        .return-policy { background: #fff3e0; border: 1px solid #ffe0b2; padding: 12px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: #e65100; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+        .card { background: white; border-radius: 10px; padding: 12px; text-align: center; border: 1px solid #eee; transition: 0.3s; }
+        .card img { width: 100%; height: 130px; object-fit: contain; margin-bottom: 10px; }
+        .card h4 { font-size: 0.9rem; color: #333; height: 40px; overflow: hidden; }
+        .card .price { color: #388e3c; font-weight: 600; font-size: 1.1rem; margin-top: 5px; }
 
-        /* Reviews Section */
-        .review-section { margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px; }
-        .review-item { border-bottom: 1px solid #eee; padding: 8px 0; font-size: 0.85rem; }
-        
-        /* Floating WhatsApp Button */
-        .whatsapp-float { position: fixed; bottom: 70px; right: 20px; background: #25D366; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-decoration: none; z-index: 1500; }
+        /* Full Screen Detail Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 8000; overflow-y: auto; }
+        .modal-header { padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; background: white; }
+        .modal-content { padding: 20px; max-width: 600px; margin: 0 auto; }
+        .m-img { width: 100%; height: 280px; object-fit: contain; }
+        .buy-now-btn { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--secondary); color: white; border: none; padding: 18px; font-weight: 600; font-size: 1.1rem; cursor: pointer; z-index: 8001; }
+
+        /* WhatsApp Float */
+        .wa-float { position: fixed; bottom: 80px; right: 20px; background: #25D366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1500; text-decoration: none; }
     </style>
 </head>
 <body>
 
+    <div id="welcome-screen">
+        <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" class="welcome-logo">
+        <h1 style="letter-spacing: 2px;">WELCOME TO BHARAT MART</h1>
+        <p style="font-weight: 300; margin-top: 5px;">A Trusted Retail Experience Since 2023</p>
+        <button class="welcome-btn" onclick="exitWelcome()">Let's Shop</button>
+    </div>
+
+    <div id="google_translate_element"></div>
+
     <header class="header">
-        <div class="nav-container">
-            <div class="logo-section" onclick="location.reload()">
-                <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" class="logo-img">
-                <span style="font-weight: bold;">Bharat Mart</span>
-            </div>
-            <div class="cart-icon">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="cart-count" id="cartCount">0</span>
-            </div>
+        <div class="logo-section" onclick="location.reload()">
+            <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" class="header-logo">
+            <span style="font-weight: 600; font-style: italic;">Bharat Mart</span>
+        </div>
+        <div class="header-icons">
+            <i class="fas fa-shopping-cart fa-lg"></i>
         </div>
     </header>
 
-    <a href="https://wa.me/917348698707" class="whatsapp-float">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <div class="container">
+        <div class="return-policy">
+            <i class="fas fa-shield-alt fa-2x"></i>
+            <div>
+                <strong>7 Days Easy Return & Refund</strong><br>
+                Defected items par 100% money back guarantee.
+            </div>
+        </div>
 
-    <div class="main-content">
-        <div class="grid" id="productGrid"></div>
+        <div class="grid" id="product-grid"></div>
     </div>
 
     <div class="modal" id="pModal">
         <div class="modal-header">
-            <i class="fas fa-arrow-left fa-lg" onclick="closeModal()" style="cursor:pointer; padding: 5px;"></i>
-            <span style="font-weight: bold;">Product Details</span>
+            <i class="fas fa-arrow-left fa-lg" onclick="closeModal()" style="cursor:pointer;"></i>
+            <span style="font-weight: 600;">Product Details</span>
         </div>
-        <div class="details-body">
-            <img id="viewImg" class="main-img-large" src="">
-            <h2 id="viewName" style="font-weight: 500; font-size: 1.2rem;"></h2>
-            <h1 id="viewPrice" style="color: #212121; margin: 10px 0;"></h1>
-            <p id="viewDesc" style="color: #666; font-size: 0.9rem; line-height: 1.4;"></p>
+        <div class="modal-content">
+            <img id="mImg" class="m-img">
+            <h2 id="mName" style="margin-top: 20px; font-weight: 400;"></h2>
+            <h1 id="mPrice" style="color: var(--primary); margin: 10px 0;"></h1>
+            <p id="mDesc" style="color: #666; font-size: 0.95rem; line-height: 1.6; border-top: 1px solid #eee; padding-top: 15px;"></p>
             
-            <div class="review-section">
-                <strong>Customer Reviews:</strong>
-                <div id="viewReviews" style="margin-top: 10px;"></div>
+            <div style="margin-top: 25px; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+                <p style="font-size: 0.85rem; color: #444;"><i class="fas fa-info-circle"></i> <strong>Return Policy:</strong> Defect hone par WhatsApp par photo aur video bhejein. Return process 24 ghante mein shuru ho jayega.</p>
             </div>
         </div>
-        <div class="bottom-action-bar">
-            <button class="btn-cart" onclick="addToCart()">ADD TO CART</button>
-            <button class="btn-buy" onclick="alert('WhatsApp Order Process Starting...')">BUY NOW</button>
-        </div>
+        <button class="buy-now-btn" onclick="whatsappOrder()">ORDER ON WHATSAPP</button>
     </div>
 
-    <script>
+    <a href="https://wa.me/917348698707" class="wa-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'hi'}, 'google_translate_element');
+        }
+
+        function exitWelcome() {
+            const screen = document.getElementById('welcome-screen');
+            screen.style.opacity = '0';
+            screen.style.transform = 'translateY(-100%)';
+            setTimeout(() => screen.style.display = 'none', 600);
+        }
+
         const products = [
-            { 
-                id: 1, 
-                name: "Bharat SGP Premium Bucket (20L)", 
-                price: 199, 
-                desc: "High-quality plastic, extra strong handle. Perfect for daily use in bathroom or kitchen.",
-                img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400",
-                reviews: ["Rahul: Very strong!", "Suresh: Sahi price mein hai."]
-            },
-            { 
-                id: 2, 
-                name: "Kitchen Storage Container", 
-                price: 349, 
-                desc: "Airtight lids keep food fresh. 6-piece set made of food-grade plastic.",
-                img: "https://images.unsplash.com/photo-1601054704854-1a2e79dea4d3?w=400",
-                reviews: ["Anjali: Best for masala storage."]
-            }
+            { id: 1, name: "Premium Bucket (20L) - Bharat SGP", price: 150, desc: "Ultra-durable plastic bucket with comfortable grip handle. Perfect for heavy-duty household use.", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400" },
+            { id: 2, name: "Kitchen Storage Container Set", price: 280, desc: "Airtight lids to keep your food fresh. BPA-free high quality plastic. Set of 6 containers.", img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400" },
+            { id: 3, name: "Plastic Chair (Premium)", price: 550, desc: "Ergonomic design for comfort. Weather-resistant and easy to clean.", img: "https://images.unsplash.com/photo-1562113530-57ba4679268e?w=400" }
         ];
 
-        let cartTotal = 0;
-        let activeP = null;
+        let selectedItem = null;
 
-        function render() {
-            const container = document.getElementById('productGrid');
-            container.innerHTML = products.map(p => `
-                <div class="product-card" onclick="showProduct(${p.id})">
+        function displayProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = products.map(p => `
+                <div class="card" onclick="openProduct(${p.id})">
                     <img src="${p.img}">
-                    <p class="p-name">${p.name}</p>
-                    <p class="p-price">₹${p.price}</p>
+                    <h4>${p.name}</h4>
+                    <p class="price">₹${p.price}</p>
                 </div>
             `).join('');
         }
 
-        function showProduct(id) {
-            activeP = products.find(p => p.id === id);
-            document.getElementById('viewImg').src = activeP.img;
-            document.getElementById('viewName').innerText = activeP.name;
-            document.getElementById('viewPrice').innerText = "₹" + activeP.price;
-            document.getElementById('viewDesc').innerText = activeP.desc;
-            
-            document.getElementById('viewReviews').innerHTML = activeP.reviews.map(r => `
-                <div class="review-item"><i class="fas fa-user-circle"></i> ${r}</div>
-            `).join('');
-
+        function openProduct(id) {
+            selectedItem = products.find(p => p.id === id);
+            document.getElementById('mImg').src = selectedItem.img;
+            document.getElementById('mName').innerText = selectedItem.name;
+            document.getElementById('mPrice').innerText = "₹" + selectedItem.price;
+            document.getElementById('mDesc').innerText = selectedItem.desc;
             document.getElementById('pModal').style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Scroll lock
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
@@ -144,13 +151,14 @@
             document.body.style.overflow = 'auto';
         }
 
-        function addToCart() {
-            cartTotal++;
-            document.getElementById('cartCount').innerText = cartTotal;
-            alert(activeP.name + " Cart mein add ho gaya!");
+        function whatsappOrder() {
+            const message = `Namaste Bharat Mart, mujhe ye item order karna hai:%0A*Product:* ${selectedItem.name}%0A*Price:* ₹${selectedItem.price}%0A%0A*Address:* (Kripya apna pata likhein)`;
+            window.open(`https://wa.me/917348698707?text=${message}`, '_blank');
         }
 
-        render();
+        // Initialize
+        window.onload = displayProducts;
     </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>

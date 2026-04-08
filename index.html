@@ -3,146 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mart - SGP Store</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    
+    <title>Bharat Mart | Welcome</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #f8f9fa; }
-
-        /* Aesthetic Welcome Screen */
-        #welcome-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #2874f0, #0049af);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 5000; color: white; transition: 0.8s ease-in-out;
-        }
-        .welcome-logo { width: 100px; animation: pulse 2s infinite; margin-bottom: 20px; border-radius: 50%; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-
-        /* Language Selector Styling */
-        #google_translate_element { padding: 10px; background: white; text-align: center; border-bottom: 1px solid #ddd; }
-
-        /* Header */
-        .header { background: #2874f0; color: white; padding: 12px 15px; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
-        .logo-area { display: flex; align-items: center; gap: 10px; }
-        .logo-img { height: 35px; width: 35px; border-radius: 50%; background: white; }
-
-        /* Main Content */
-        .container { padding: 15px; margin-top: 10px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-        .card { background: white; border-radius: 12px; padding: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; }
-        .card img { width: 100%; height: 120px; object-fit: contain; }
-
-        /* Return Policy Section */
-        .policy-box { 
-            background: #fff3cd; color: #856404; padding: 15px; margin: 20px 0; 
-            border-radius: 8px; border-left: 5px solid #ffeeba; font-size: 0.9rem;
+        :root {
+            --primary-color: #2874f0;
+            --secondary-color: #fb641b;
+            --light-bg: #f1f3f6;
         }
 
-        /* Modal / Details */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; overflow-y: auto; }
-        .modal-header { padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; }
-        .btn-buy { background: #fb641b; color: white; border: none; padding: 15px; width: 100%; font-weight: bold; position: fixed; bottom: 0; font-size: 1.1rem; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--light-bg);
+        }
+
+        /* Header Section */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .top-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-area img {
+            height: 50px;
+            border-radius: 5px;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+            display: flex;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 2px 0 0 2px;
+            outline: none;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            background: #fff;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Navigation & Categories */
+        nav {
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .category-item {
+            display: inline-block;
+            margin: 0 15px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* Product Section */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .welcome-msg {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 150px;
+            background: #eee;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rating { color: #388e3c; font-weight: bold; font-size: 0.9em; }
+        .price { font-size: 1.2em; font-weight: bold; margin: 10px 0; }
+
+        .btn-order {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        /* Review Section */
+        .review-box {
+            margin-top: 10px;
+            font-size: 0.8em;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 5px;
+        }
+
+        /* Footer Links */
+        .footer-links {
+            margin-top: 50px;
+            padding: 20px;
+            background: #212121;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+        }
     </style>
 </head>
 <body>
 
-    <div id="welcome-screen">
-        <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" class="welcome-logo">
-        <h1 style="letter-spacing: 2px;">BHARAT MART</h1>
-        <p style="margin-top: 10px; font-weight: 300;">Quality & Trust Since 2023</p>
-        <button onclick="startApp()" style="margin-top: 30px; padding: 10px 30px; border-radius: 25px; border: none; background: white; color: #2874f0; font-weight: bold; cursor: pointer;">Shop Now</button>
-    </div>
-
-    <div id="google_translate_element"></div>
-
-    <header class="header">
+<header>
+    <div class="top-bar">
         <div class="logo-area">
-            <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" class="logo-img">
-            <span style="font-weight: bold;">Bharat Mart</span>
+            <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" alt="Bharat Mart Logo">
+            <h1>Bharat Mart</h1>
         </div>
-        <div class="icons">
-            <i class="fas fa-shopping-cart"></i>
+        <div class="search-container">
+            <input type="text" placeholder="Products, Brands aur bahut kuch search karein...">
+            <button>Search</button>
         </div>
-    </header>
+        <div class="nav-icons">
+            <span>🛒 Cart</span>
+        </div>
+    </div>
+</header>
 
-    <div class="container">
-        <div class="policy-box">
-            <i class="fas fa-undo-alt"></i> <strong>7-Day Easy Return:</strong> Agar product defected hai ya pasand nahi aaya, toh 7 dino ke andar return karein. 
-            <a href="https://wa.me/917348698707" style="color: #856404; font-weight: bold;">Click for Return Request</a>
-        </div>
+<nav>
+    <div class="category-item">Fashion</div>
+    <div class="category-item">Mobiles</div>
+    <div class="category-item">Electronics</div>
+    <div class="category-item">Home</div>
+    <div class="category-item">Toys</div>
+    <div class="category-item">Food</div>
+    <div class="category-item">Books</div>
+</nav>
 
-        <div class="grid" id="pGrid"></div>
+<div class="container">
+    <div class="welcome-msg">
+        <h2>Welcome to Bharat Mart</h2>
+        <p>Aapki apni bharosemand online shop</p>
     </div>
 
-    <div class="modal" id="pModal">
-        <div class="modal-header">
-            <i class="fas fa-arrow-left" onclick="closeModal()"></i>
-            <strong>Product Info</strong>
-        </div>
-        <div style="padding: 20px;">
-            <img id="mImg" style="width: 100%; height: 250px; object-fit: contain;">
-            <h2 id="mTitle" style="margin-top: 15px;"></h2>
-            <h1 id="mPrice" style="color: #2874f0; margin: 10px 0;"></h1>
-            <p id="mDesc" style="color: #666; line-height: 1.5;"></p>
-            
-            <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">
-                <p style="color: red; font-size: 0.8rem;">* Defect hone par turant WhatsApp par photo bhejein.</p>
-            </div>
-        </div>
-        <button class="btn-buy" onclick="orderNow()">ORDER ON WHATSAPP</button>
-    </div>
+    <div class="product-grid">
 
-    <script>
-        // Start App - Hide Welcome
-        function startApp() {
-            document.getElementById('welcome-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('welcome-screen').style.display = 'none';
-            }, 800);
-        }
-
-        // Language Init
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'hi'}, 'google_translate_element');
-        }
-
-        const products = [
-            { id: 1, name: "Premium Bucket", price: 150, desc: "High quality durable plastic.", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400" },
-            { id: 2, name: "Storage Box", price: 280, desc: "Airtight for fresh food storage.", img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400" }
-        ];
-
-        let selected = null;
-
-        function load() {
-            document.getElementById('pGrid').innerHTML = products.map(p => `
-                <div class="card" onclick="openP(${p.id})">
-                    <img src="${p.img}">
-                    <h4>${p.name}</h4>
-                    <p style="color:green; font-weight:bold;">₹${p.price}</p>
-                </div>
-            `).join('');
-        }
-
-        function openP(id) {
-            selected = products.find(p => p.id === id);
-            document.getElementById('mImg').src = selected.img;
-            document.getElementById('mTitle').innerText = selected.name;
-            document.getElementById('mPrice').innerText = "₹" + selected.price;
-            document.getElementById('mDesc').innerText = selected.desc;
-            document.getElementById('pModal').style.display = 'block';
-        }
-
-        function closeModal() { document.getElementById('pModal').style.display = 'none'; }
-
-        function orderNow() {
-            const msg = `Order: ${selected.name} (Price: ₹${selected.price})`;
-            window.open(`https://wa.me/917348698707?text=${msg}`);
-        }
-
-        load();
-    </script>
-</body>
-</html>
+        

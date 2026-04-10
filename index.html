@@ -232,6 +232,10 @@
     <header>
         <div class="header-container">
             <div class="logo">
+    <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" alt="Bharat Mart Logo" style="height: 50px; width: auto; vertical-align: middle;">
+    <span style="font-size: 24px; font-weight: bold; margin-left: 10px; vertical-align: middle;">Bharat Mart</span>
+</div>
+
                 <h1>Bharat Mart</h1>
             </div>
             <div class="search-bar">
@@ -270,6 +274,86 @@
                 </div>
 
                 <div class="product-card">
+    <div class="slider-container">
+        <div class="slides active">
+            <img src="IMAGE_LINK_1" alt="Image 1" style="width:100%; height:200px; object-fit:cover;">
+        </div>
+        <div class="slides">
+            <img src="IMAGE_LINK_2" alt="Image 2" style="width:100%; height:200px; object-fit:cover;">
+        </div>
+        <div class="slides">
+            <img src="IMAGE_LINK_3" alt="Image 3" style="width:100%; height:200px; object-fit:cover;">
+        </div>
+
+        <button class="prev" onclick="changeSlide(-1, this)">&#10094;</button>
+        <button class="next" onclick="changeSlide(1, this)">&#10095;</button>
+    </div>
+
+    <div class="product-details">
+        <p class="product-category">Electronics</p>
+        <p class="product-name">Product ka Naam</p>
+        <p class="product-price">₹1,999</p>
+        <a href="https://wa.me/917348698707?text=Mujhe ye product pasand hai" class="whatsapp-btn">
+            Order on WhatsApp
+        </a>
+    </div>
+</div>
+
+<style>
+    /* Slider Styling */
+    .slider-container {
+        position: relative;
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        background: #eee;
+    }
+    .slides {
+        display: none;
+        width: 100%;
+        height: 100%;
+    }
+    .slides.active {
+        display: block;
+    }
+    .prev, .next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+    .next { right: 0; }
+    .prev { left: 0; }
+</style>
+
+<script>
+    function changeSlide(n, btn) {
+        let container = btn.parentElement;
+        let slides = container.getElementsByClassName("slides");
+        let activeIndex = 0;
+
+        // Current active slide dhoondein
+        for (let i = 0; i < slides.length; i++) {
+            if (slides[i].classList.contains("active")) {
+                activeIndex = i;
+                slides[i].classList.remove("active");
+            }
+        }
+
+        // Naya index set karein
+        let nextIndex = activeIndex + n;
+        if (nextIndex >= slides.length) nextIndex = 0;
+        if (nextIndex < 0) nextIndex = slides.length - 1;
+
+        slides[nextIndex].classList.add("active");
+    }
+</script>
+
                     <div class="product-image">[Image Placeholder]</div>
                     <div class="product-details">
                         <div>

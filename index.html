@@ -1,395 +1,55 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mart - Aapki Apni Dukaan</title>
-    <style>
-        /* --- Basic Reset --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  const products = [
+  { id: 1, name: "Mobile", price: 15000, category: "electronics" },
+  { id: 2, name: "T-Shirt", price: 500, category: "clothes" },
+  { id: 3, name: "Shoes", price: 2000, category: "shoes" },
+  { id: 4, name: "Headphones", price: 3000, category: "electronics" }
+];
 
-        body {
-            background-color: #f0f2f5;
-            color: #333;
-        }
+let cart = [];
 
-        /* --- Global Colors (Blue Theme) --- */
-        :root {
-            --primary-blue: #0056b3; /* Deep Blue */
-            --secondary-blue: #007bff; /* Bright Blue */
-            --light-blue: #e6f0ff;
-            --white: #ffffff;
-            --gray: #6c757d;
-        }
+function displayProducts(category = "all") {
+  const container = document.getElementById("products");
+  container.innerHTML = "";
 
-        /* --- Header & Search Bar --- */
-        header {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            padding: 15px 5%;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo h1 {
-            font-size: 24px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .search-bar {
-            display: flex;
-            flex-grow: 1;
-            max-width: 500px;
-            margin: 0 20px;
-        }
-
-        .search-bar input {
-            width: 100%;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 20px 0 0 20px;
-            outline: none;
-        }
-
-        .search-bar button {
-            padding: 10px 20px;
-            border: none;
-            background-color: var(--secondary-blue);
-            color: var(--white);
-            border-radius: 0 20px 20px 0;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .search-bar button:hover {
-            background-color: #0069d9;
-        }
-
-        /* --- Hero Section (Welcome) --- */
-        .hero {
-            background-color: var(--light-blue);
-            text-align: center;
-            padding: 50px 20px;
-            margin-bottom: 30px;
-        }
-
-        .hero h2 {
-            font-size: 32px;
-            color: var(--primary-blue);
-            margin-bottom: 10px;
-        }
-
-        .hero p {
-            color: var(--gray);
-            font-size: 18px;
-        }
-
-        /* --- Products Section --- */
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px 50px;
-        }
-
-        .products-section h3 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: var(--primary-blue);
-            border-bottom: 2px solid var(--primary-blue);
-            display: inline-block;
-            padding-bottom: 5px;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        /* --- Product Card Styling --- */
-        .product-card {
-            background-color: var(--white);
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 200px;
-            background-color: #eee; /* Placeholder background */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gray);
-            font-size: 14px;
-        }
-
-        .product-details {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }<div class="product-details">
-    <p class="product-category">Electronics</p>
-    <p class="product-name">Wireless Headphones</p>
-    
-    <div class="rating-display" style="margin-bottom: 10px;">
-        <span style="color: #ffc107; font-size: 18px;">★★★★☆</span> 
-        <span style="font-size: 14px; color: #666;">(4.2/5)</span>
-        <p style="font-size: 12px; color: #007bff; cursor: pointer;">158 Reviews dekhien</p>
-    </div>
-    <p class="product-price">₹2,499</p>
-    <a href="https://wa.me/917348698707?text=Mujhe Wireless Headphones order karna hai" class="whatsapp-btn">
-        Order on WhatsApp
-    </a>
-</div>
-
-
-        .product-name {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-        }
-
-        .product-category {
-            font-size: 12px;
-            color: var(--secondary-blue);
-            text-transform: uppercase;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .product-price {
-            font-size: 20px;
-            font-weight: bold;
-            color: #28a745; /* Green for price */
-            margin-bottom: 15px;
-        }
-
-        /* --- WhatsApp Order Button --- */
-        .whatsapp-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #25D366; /* WhatsApp Green */
-            color: var(--white);
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-
-        .whatsapp-btn:hover {
-            background-color: #1ebe57;
-        }
-
-        .whatsapp-btn svg {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            fill: var(--white);
-        }
-
-        /* --- Footer --- */
-        footer {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            text-align: center;
-            padding: 20px;
-            margin-top: auto;
-        }
-
-        /* --- Responsive Adjustments --- */
-        @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .search-bar {
-                width: 100%;
-                margin: 10px 0;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <div class="header-container">
-            <div class="logo">
-    <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" alt="Bharat Mart Logo" style="height: 50px; width: auto; vertical-align: middle;">
-    <span style="font-size: 24px; font-weight: bold; margin-left: 10px; vertical-align: middle;">Bharat Mart</span>
-</div>
-
-                <h1>Bharat Mart</h1>
-            </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Products search karein...">
-                <button type="submit">Search</button>
-            </div>
+  products
+    .filter(p => category === "all" || p.category === category)
+    .forEach(p => {
+      container.innerHTML += `
+        <div class="product">
+          <h3>${p.name}</h3>
+          <p>₹${p.price}</p>
+          <button onclick="addToCart(${p.id})">Add to Cart</button>
         </div>
-    </header>
+      `;
+    });
+}
 
-    <section class="hero">
-        <h2>Welcome to Bharat Mart</h2>
-        <p>Aapki zarurat ka har samaan, bas ek click door.</p>
-    </section>
+function addToCart(id) {
+  cart.push(products.find(p => p.id === id));
+  document.getElementById("cart-count").innerText = cart.length;
+}
 
-    <main class="main-container">
-        <section class="products-section">
-            <h3>Hamare Products</h3>
-            
-            <div class="product-grid">
-                
-                <div class="product-card">
-                    <div class="product-image">
-                        [Image Placeholder]
-                    </div>
-                    <div class="product-details">
-                        <div>
-                            <p class="product-category">Kitchen</p>
-                            <p class="product-name">Wireless Headphones</p>
-                        </div>
-                        <p class="product-price">₹449</p>
-                        <a href="https://wa.me/917348698707?text=Mujhe%20'Wireless%20Headphones'%20order%20karna%20hai.%20Price:%20₹2,499" class="whatsapp-btn" target="_blank">
-                            <svg viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.1-16.4-14.6-27.4-32.7-30.6-38.1-3.2-5.4-.3-8.3 2.4-11 2.5-2.4 5.5-6.5 8.3-9.7 2.8-3.3 3.7-5.6 5.5-9.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.7 23.5 9.2 31.6 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
-                            Order on WhatsApp
-                        </a>
-                    </div>
-                </div>
+displayProducts();
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
 
-                <div class="product-card">
-    <div class="slider-container">
-        <div class="slides active">
-            <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/924aa134-8630-44b9-9da1-a5b04107caec.png" alt="Image 1" style="width:100%; height:200px; object-fit:cover;">
-        </div>
-        <div class="slides">
-            <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/924aa134-8630-44b9-9da1-a5b04107caec.png" alt="Image 2" style="width:100%; height:200px; object-fit:cover;">
-        </div>
-        <div class="slides">
-            <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/924aa134-8630-44b9-9da1-a5b04107caec.png" alt="Image 3" style="width:100%; height:200px; object-fit:cover;">
-        </div>
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-        <button class="prev" onclick="changeSlide(-1, this)">&#10094;</button>
-        <button class="next" onclick="changeSlide(1, this)">&#10095;</button>
-    </div>
+mongoose.connect("mongodb://127.0.0.1:27017/ecommerce");
 
-    <div class="product-details">
-        <p class="product-category">Electronics</p>
-        <p class="product-name">Product ka Naam</p>
-        <p class="product-price">₹1,999</p>
-        <a href="https://wa.me/917348698707?text=Mujhe ye product pasand hai" class="whatsapp-btn">
-            Order on WhatsApp
-        </a>
-    </div>
-</div>
+app.get("/products", async (req, res) => {
+  res.json([
+    { name: "Mobile", price: 15000, category: "electronics" },
+    { name: "Shoes", price: 2000, category: "shoes" }
+  ]);
+});
 
-<style>
-    /* Slider Styling */
-    .slider-container {
-        position: relative;
-        width: 100%;
-        height: 200px;
-        overflow: hidden;
-        background: #eee;
-    }
-    .slides {
-        display: none;
-        width: 100%;
-        height: 100%;
-    }
-    .slides.active {
-        display: block;
-    }
-    .prev, .next {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0,0,0,0.5);
-        color: white;
-        border: none;
-        padding: 10px;
-        cursor: pointer;
-        font-size: 18px;
-    }
-    .next { right: 0; }
-    .prev { left: 0; }
-</style>
-
-<script>
-    function changeSlide(n, btn) {
-        let container = btn.parentElement;
-        let slides = container.getElementsByClassName("slides");
-        let activeIndex = 0;
-
-        // Current active slide dhoondein
-        for (let i = 0; i < slides.length; i++) {
-            if (slides[i].classList.contains("active")) {
-                activeIndex = i;
-                slides[i].classList.remove("active");
-            }
-        }
-
-        // Naya index set karein
-        let nextIndex = activeIndex + n;
-        if (nextIndex >= slides.length) nextIndex = 0;
-        if (nextIndex < 0) nextIndex = slides.length - 1;
-
-        slides[nextIndex].classList.add("active");
-    }
-</script>
-
-                    <div class="product-image">[Image Placeholder]</div>
-                    <div class="product-details">
-                        <div>
-                            <p class="product-category">Fashion</p>
-                            <p class="product-name">Men's Casual Shirt</p>
-                        </div>
-                        <p class="product-price">₹1,199</p>
-                        <a href="https://wa.me/917348698707?text=Mujhe%20'Men's%20Casual%20Shirt'%20order%20karna%20hai.%20Price:%20₹1,199" class="whatsapp-btn" target="_blank">
-                            <svg viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.1-16.4-14.6-27.4-32.7-30.6-38.1-3.2-5.4-.3-8.3 2.4-11 2.5-2.4 5.5-6.5 8.3-9.7 2.8-3.3 3.7-5.6 5.5-9.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.7 23.5 9.2 31.6 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
-                            Order on WhatsApp
-                        </a>
-                    </div>
-                </div>
-                
-                </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2023 Bharat Mart. All Rights Reserved.</p>
-        <p>Aapki Apni Dukaan</p>
-    </footer>
-
-</body>
-</html>
+app.listen(5000, () => {
+  console.log("Server running on port 5000");
+});
+<input type="email" placeholder="Email">
+<input type="password" placeholder="Password">
+<button>Login</button>

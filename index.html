@@ -1,55 +1,82 @@
-  const products = [
-  { id: 1, name: "Mobile", price: 15000, category: "electronics" },
-  { id: 2, name: "T-Shirt", price: 500, category: "clothes" },
-  { id: 3, name: "Shoes", price: 2000, category: "shoes" },
-  { id: 4, name: "Headphones", price: 3000, category: "electronics" }
-];
+  <!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharat Mall - Checkout</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+        .product-card { background: white; padding: 20px; border-radius: 8px; max-width: 400px; margin: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { background: #28a745; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background: #218838; }
+    </style>
+</head>
+<body>
 
-let cart = [];
+<div class="product-card">
+    <h2>Smart Watch</h2>
+    <p>Price: ₹1,499</p>
+    <hr>
+    <h3>Order Details</h3>
+    <input type="text" id="custName" placeholder="Aapka Naam" required>
+    <input type="text" id="custPhone" placeholder="Mobile Number" required>
+    <input type="text" id="custAddress" placeholder="Full Address" required>
+    <button onclick="submitOrder()">Order Now (COD)</button>
+    <p id="msg"></p>
+</div>
 
-function displayProducts(category = "all") {
-  const container = document.getElementById("products");
-  container.innerHTML = "";
+<script>
+    function submitOrder() {
+        const scriptURL = 'YOUR_GOOGLE_SCRIPT_URL_HERE'; // Yahan apna URL dalein
+        const msg = document.getElementById('msg');
+        
+        const orderData = {
+            product: "Smart Watch",
+            price: "1499",
+            name: document.getElementById('custName').value,
+            phone: document.getElementById('custPhone').value,
+            address: document.getElementById('custAddress').value
+        };
 
-  products
-    .filter(p => category === "all" || p.category === category)
-    .forEach(p => {
-      container.innerHTML += `
-        <div class="product">
-          <h3>${p.name}</h3>
-          <p>₹${p.price}</p>
-          <button onclick="addToCart(${p.id})">Add to Cart</button>
-        </div>
-      `;
-    });
-}
+        if(!orderData.name || !orderData.phone) {
+            alert("Please fill all details");
+            return;
+        }
 
-function addToCart(id) {
-  cart.push(products.find(p => p.id === id));
-  document.getElementById("cart-count").innerText = cart.length;
-}
+        msg.innerHTML = "Processing...";
 
-displayProducts();
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            body: JSON.stringify(orderData)
+        })
+        .then(() => {
+            msg.innerHTML = "✅ Order Successful! Hum aapse jald sampark karenge.";
+            msg.style.color = "green";
+        })
+        .catch(error => {
+            msg.innerHTML = "❌ Error! Try again.";
+            console.error('Error!', error.message);
+        });
+    }
+</script>
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-mongoose.connect("mongodb://127.0.0.1:27017/ecommerce");
-
-app.get("/products", async (req, res) => {
-  res.json([
-    { name: "Mobile", price: 15000, category: "electronics" },
-    { name: "Shoes", price: 2000, category: "shoes" }
+</body>
+</html>
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  
+  sheet.appendRow([
+    data.product, 
+    data.price, 
+    data.name, 
+    data.phone, 
+    data.address, 
+    new Date()
   ]);
-});
-
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
-});
-<input type="email" placeholder="Email">
-<input type="password" placeholder="Password">
-<button>Login</button>
+  
+  return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
+}

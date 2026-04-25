@@ -11,36 +11,6 @@
         header { background: var(--primary); color: white; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; }
         .logo img { height: 40px; vertical-align: middle; }
 
-        /* --- Search Bar Styling --- */
-        .search-area {
-            background: white;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-            border-bottom: 1px solid #ddd;
-        }
-        .search-container {
-            width: 90%;
-            max-width: 500px;
-            display: flex;
-            border: 1px solid #ccc;
-            border-radius: 25px;
-            overflow: hidden;
-        }
-        .search-container input {
-            width: 100%;
-            padding: 10px 15px;
-            border: none;
-            outline: none;
-        }
-        .search-container button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0 15px;
-            cursor: pointer;
-        }
-
         /* Product Grid */
         .container { max-width: 1200px; margin: 20px auto; padding: 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .card { background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
@@ -67,17 +37,10 @@
     </div>
 </header>
 
-<div class="search-area">
-    <div class="search-container">
-        <input type="text" id="myInput" onkeyup="searchFn()" placeholder="Samaan dhoondein...">
-        <button>🔍</button>
-    </div>
-</div>
-
-<div class="container" id="productGrid">
+<div class="container">
     <div class="card">
         <img src="https://via.placeholder.com/300x200?text=Smartphone">
-        <h3 class="p-name">Premium Smartphone</h3>
+        <h3>Premium Smartphone</h3>
         <p style="color: #ff9f00;">★★★★☆ (4.2)</p>
         <p style="font-size: 20px; font-weight: bold;">₹14,999</p>
         <button class="buy-btn" onclick="openOrder('Premium Smartphone', '₹14,999')">Order Karein</button>
@@ -85,7 +48,7 @@
 
     <div class="card">
         <img src="https://via.placeholder.com/300x200?text=Headphones">
-        <h3 class="p-name">Wireless Headphones</h3>
+        <h3>Wireless Headphones</h3>
         <p style="color: #ff9f00;">★★★★★ (5.0)</p>
         <p style="font-size: 20px; font-weight: bold;">₹1,999</p>
         <button class="buy-btn" onclick="openOrder('Wireless Headphones', '₹1,999')">Order Karein</button>
@@ -119,21 +82,6 @@
     let currentProduct = "";
     let currentPrice = "";
 
-    // Search function added
-    function searchFn() {
-        let input = document.getElementById("myInput").value.toLowerCase();
-        let cards = document.getElementsByClassName("card");
-
-        for (let i = 0; i < cards.length; i++) {
-            let name = cards[i].getElementsByClassName("p-name")[0].innerText.toLowerCase();
-            if (name.includes(input)) {
-                cards[i].style.display = "";
-            } else {
-                cards[i].style.display = "none";
-            }
-        }
-    }
-
     function openOrder(name, price) {
         currentProduct = name;
         currentPrice = price;
@@ -155,6 +103,7 @@
             return;
         }
 
+        // Final Message for WhatsApp
         let message = `*Naya Order - Bharat Mart*%0A` +
                       `--------------------------%0A` +
                       `*Product:* ${currentProduct}%0A` +
@@ -166,6 +115,7 @@
                       `--------------------------%0A` +
                       `Kripya jaldi deliver karein!`;
 
+        // Send to your WhatsApp number 7348698707
         window.open(`https://wa.me/917348698707?text=${message}`, '_blank');
         closeOrder();
     }

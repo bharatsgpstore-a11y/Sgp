@@ -3,157 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mart | Best Online Shopping</title>
+    <title>Bharat Mart - Ultimate Shopping</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
-        /* --- Colors & Styles --- */
-        :root {
-            --primary-blue: #004aad;
-            --whatsapp-green: #25D366;
-            --bg-color: #f4f7f9;
-        }
+        :root { --primary: #2874f0; --secondary: #fb641b; --green: #388e3c; --bg: #f1f3f6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg); }
 
-        body { font-family: 'Poppins', sans-serif; margin: 0; background: var(--bg-color); }
+        /* Header */
+        .header { background: var(--primary); color: white; padding: 12px 15px; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
+        .menu-btn { font-size: 1.3rem; cursor: pointer; }
+        
+        /* Category Bar (Flipkart Style) */
+        .category-bar { background: white; display: flex; overflow-x: auto; padding: 10px 5px; gap: 15px; border-bottom: 1px solid #ddd; position: sticky; top: 48px; z-index: 900; }
+        .category-bar::-webkit-scrollbar { display: none; }
+        .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 80px; cursor: pointer; }
+        .cat-item i { background: #f0f5ff; color: var(--primary); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; font-size: 1.1rem; }
+        .cat-item span { font-size: 0.75rem; font-weight: 500; color: #444; }
 
-        /* --- Header --- */
-        header { background: var(--primary-blue); padding: 15px 5%; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: auto; flex-wrap: wrap; }
-        .logo { display: flex; align-items: center; text-decoration: none; color: white; }
-        .logo img { height: 50px; margin-right: 10px; border-radius: 5px; }
-        .search-box { flex-grow: 1; margin: 0 20px; display: flex; }
-        .search-box input { width: 100%; padding: 10px; border: none; border-radius: 5px 0 0 5px; outline: none; }
-        .search-box button { background: #ff9f00; border: none; padding: 10px 15px; color: white; cursor: pointer; border-radius: 0 5px 5px 0; font-weight: bold; }
+        /* Sidebar Menu */
+        .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 9000; transition: 0.3s; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
+        .sidebar.active { left: 0; }
+        .sidebar-header { background: var(--primary); color: white; padding: 20px; font-weight: 600; font-size: 1.1rem; }
+        .menu-link { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; color: #333; cursor: pointer; }
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 8500; }
 
-        /* --- Categories --- */
-        .cats { background: white; padding: 10px; display: flex; justify-content: center; gap: 20px; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid #ddd; }
-        .cat-link { text-decoration: none; color: #333; font-size: 14px; font-weight: 500; }
+        /* Language Selector Fix */
+        #google_translate_element { padding: 10px 20px; border-bottom: 1px solid #eee; }
 
-        /* --- Product Section --- */
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+        /* Grid */
+        .container { padding: 12px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+        .card { background: white; border-radius: 10px; padding: 12px; text-align: center; border: 1px solid #eee; transition: 0.2s; }
+        .card:active { transform: scale(0.96); }
+        .card img { width: 100%; height: 130px; object-fit: contain; }
+        .card h4 { font-size: 0.85rem; margin-top: 10px; color: #333; height: 38px; overflow: hidden; }
+        .price { color: var(--green); font-weight: 600; font-size: 1.1rem; margin-top: 5px; }
 
-        /* --- Image Slider Inside Card --- */
-        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; }
-        .product-card:hover { transform: translateY(-5px); }
-        .slider { position: relative; width: 100%; height: 250px; }
-        .slides { display: none; width: 100%; height: 100%; object-fit: cover; }
-        .active-slide { display: block; }
-        .slide-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: white; border: none; padding: 10px; cursor: pointer; font-size: 20px; }
-        .next { right: 0; }
-        .prev { left: 0; }
-
-        /* --- Details --- */
-        .details { padding: 20px; text-align: center; }
-        .p-name { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
-        .p-price { color: #d32f2f; font-size: 20px; font-weight: bold; margin-bottom: 10px; }
-        .rating { color: #ff9f00; margin-bottom: 15px; }
-
-        .order-btn { display: flex; align-items: center; justify-content: center; background: var(--whatsapp-green); color: white; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; gap: 10px; }
-        .order-btn:hover { background: #1eb954; }
-
-        footer { background: #333; color: white; text-align: center; padding: 20px; margin-top: 50px; }
+        /* Modals */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9500; overflow-y: auto; }
+        .modal-header { padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; background: white; }
+        .form-box { padding: 20px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; }
+        
+        .btn-action { width: 100%; background: var(--secondary); color: white; border: none; padding: 16px; font-weight: 600; position: fixed; bottom: 0; cursor: pointer; }
+        .btn-success { width: 100%; background: var(--green); color: white; border: none; padding: 15px; font-weight: 600; border-radius: 8px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="nav-container">
-        <a href="#" class="logo">
-            <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" alt="Bharat Mart">
-            <h2>Bharat Mart</h2>
-        </a>
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search Mobile, Electronics, Fashion...">
-            <button onclick="search()">Search</button>
+    <header class="header">
+        <div class="menu-btn" onclick="toggleMenu()"><i class="fas fa-ellipsis-v"></i></div>
+        <div style="font-weight:600; letter-spacing:1px;">BHARAT MART</div>
+        <div style="position:relative;"><i class="fas fa-shopping-bag fa-lg"></i></div>
+    </header>
+
+    <div class="category-bar">
+        <div class="cat-item" onclick="filter('all')"><i class="fas fa-th"></i><span>All Items</span></div>
+        <div class="cat-item" onclick="filter('kitchen')"><i class="fas fa-blender"></i><span>Kitchen</span></div>
+        <div class="cat-item" onclick="filter('electronics')"><i class="fas fa-mobile-alt"></i><span>Electronics</span></div>
+        <div class="cat-item" onclick="filter('home')"><i class="fas fa-lamp"></i><span>Home Acc.</span></div>
+        <div class="cat-item" onclick="filter('plastic')"><i class="fas fa-recycle"></i><span>Plastic</span></div>
+    </div>
+
+    <div class="sidebar-overlay" id="overlay" onclick="toggleMenu()"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">Menu Options</div>
+        <div id="google_translate_element"></div>
+        <div class="menu-link" onclick="window.open('https://wa.me/917348698707')"><i class="fas fa-undo"></i> Return & Refund</div>
+        <div class="menu-link" onclick="window.open('https://wa.me/917348698707')"><i class="fas fa-phone-alt"></i> Contact Support</div>
+    </div>
+
+    <div class="container">
+        <h4 id="catTitle" style="margin-bottom: 10px; color: #777;">Showing: All Products</h4>
+        <div class="grid" id="productGrid"></div>
+    </div>
+
+    <div class="modal" id="pModal">
+        <div class="modal-header">
+            <i class="fas fa-arrow-left fa-lg" onclick="closeM('pModal')"></i>
+            <span style="font-weight:600;">Item Description</span>
+        </div>
+        <div style="padding:20px; text-align:center; padding-bottom: 80px;">
+            <img id="mImg" style="width:100%; height:250px; object-fit:contain;">
+            <h2 id="mName" style="margin-top:15px; font-weight:500;"></h2>
+            <h1 id="mPrice" style="color:var(--primary); margin:10px 0;"></h1>
+            <p id="mDesc" style="color:#666; font-size:0.9rem; line-height:1.5;"></p>
+        </div>
+        <button class="btn-action" onclick="openCheckout()">PROCEED TO ORDER</button>
+    </div>
+
+    <div class="modal" id="checkoutModal">
+        <div class="modal-header">
+            <i class="fas fa-arrow-left fa-lg" onclick="closeM('checkoutModal')"></i>
+            <span style="font-weight:600;">Delivery Details</span>
+        </div>
+        <div class="form-box">
+            <div style="background:#eef; padding:10px; border-radius:8px; margin-bottom:15px;">
+                <p><strong>Ordering:</strong> <span id="cItem"></span></p>
+                <p><strong>Amount:</strong> <span id="cPrice"></span></p>
+            </div>
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="Apna naam likhein">
+            </div>
+            <div class="input-group">
+                <label>Full Address</label>
+                <textarea id="addr" rows="3" placeholder="Ghar ka pata, Landmark ke sath"></textarea>
+            </div>
+            <div class="input-group">
+                <label>Pincode</label>
+                <input type="number" id="pin" placeholder="6-digit pincode">
+            </div>
+            <button class="btn-success" onclick="finalOrder()">CONFIRM & SEND ON WHATSAPP</button>
         </div>
     </div>
-</header>
 
-<div class="cats">
-    <a href="#" class="cat-link">Mobiles</a>
-    <a href="#" class="cat-link">Electronics</a>
-    <a href="#" class="cat-link">Fashion</a>
-    <a href="#" class="cat-link">Toys</a>
-    <a href="#" class="cat-link">Food</a>
-    <a href="#" class="cat-link">Books</a>
-</div>
+    <script>
+        const products = [
+            // Kitchen Items
+            { id: 1, cat: 'kitchen', name: "20L Strong Plastic Bucket", price: 150, desc: "Buraq brand high quality durable bucket.", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400" },
+            { id: 2, cat: 'kitchen', name: "Airtight Spice Box Set", price: 320, desc: "6-piece set to keep spices fresh and safe.", img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400" },
+            { id: 3, cat: 'kitchen', name: "Plastic Water Jug (2.5L)", price: 99, desc: "Elegant design jug with strong handle.", img: "https://m.media-amazon.com/images/I/61NlBvYy-9L._SL1500_.jpg" },
 
-<div class="container">
-    <h2 style="margin-bottom: 20px; color: var(--primary-blue);">Welcome to Bharat Mart</h2>
-    
-    <div class="grid">
-        
-        <div class="product-card">
-            <div class="slider" id="slider1">
-                <img src="https://via.placeholder.com/300x250?text=Image+1" class="slides active-slide">
-                <img src="https://via.placeholder.com/300x250?text=Image+2" class="slides">
-                <img src="https://via.placeholder.com/300x250?text=Image+3" class="slides">
-                <button class="slide-btn prev" onclick="moveSlide(-1, 'slider1')">&#10094;</button>
-                <button class="slide-btn next" onclick="moveSlide(1, 'slider1')">&#10095;</button>
-            </div>
-            <div class="details">
-                <div class="p-name">Premium Smartphone</div>
-                <div class="rating">★★★★☆ (4.5)</div>
-                <div class="p-price">₹15,999</div>
-                <a href="https://wa.me/917348698707?text=Hi Bharat Mart, I want to order 'Premium Smartphone' (Price: ₹15,999)" target="_blank" class="order-btn">
-                    Order via WhatsApp
-                </a>
-            </div>
-        </div>
+            // Electronics Items
+            { id: 4, cat: 'electronics', name: "High Power Rechargeable Torch", price: 249, desc: "High range LED flashlight for home use.", img: "https://m.media-amazon.com/images/I/61M9B4N-OML._SL1100_.jpg" },
+            { id: 5, cat: 'electronics', name: "Universal Smartphone Tripod", price: 180, desc: "Perfect for vlogging and YouTube videos.", img: "https://m.media-amazon.com/images/I/61m9-L-Y1vL._SL1100_.jpg" },
+            { id: 6, cat: 'electronics', name: "Bluetooth Wireless Earbuds", price: 499, desc: "Deep bass and 20 hours battery backup.", img: "https://m.media-amazon.com/images/I/510+-7V77DL._SL1500_.jpg" },
 
-        <div class="product-card">
-            <div class="slider" id="slider2">
-                <img src="https://via.placeholder.com/300x250?text=Product+A" class="slides active-slide">
-                <img src="https://via.placeholder.com/300x250?text=Product+B" class="slides">
-                <img src="https://via.placeholder.com/300x250?text=Product+C" class="slides">
-                <button class="slide-btn prev" onclick="moveSlide(-1, 'slider2')">&#10094;</button>
-                <button class="slide-btn next" onclick="moveSlide(1, 'slider2')">&#10095;</button>
-            </div>
-            <div class="details">
-                <div class="p-name">Modern Electronics</div>
-                <div class="rating">★★★★★ (5.0)</div>
-                <div class="p-price">₹2,499</div>
-                <a href="https://wa.me/917348698707?text=Hi Bharat Mart, I want to order 'Modern Electronics' (Price: ₹2,499)" target="_blank" class="order-btn">
-                    Order via WhatsApp
-                </a>
-            </div>
-        </div>
+            // Home Accessories
+            { id: 7, cat: 'home', name: "Anti-Slip Aesthetic Door Mat", price: 120, desc: "Soft microfibre mat with beautiful pattern.", img: "https://images.unsplash.com/photo-1588600878108-578307a3cc9d?w=400" },
+            { id: 8, cat: 'home', name: "Wall Hanging Key Holder", price: 150, desc: "Wooden finish stylish holder for keys.", img: "https://m.media-amazon.com/images/I/71R2o58RzYL._SL1500_.jpg" },
+            { id: 9, cat: 'home', name: "Foldable Laundry Basket", price: 210, desc: "Nylon mesh basket to keep clothes organized.", img: "https://m.media-amazon.com/images/I/71M0G7x3G-L._SL1500_.jpg" },
 
-    </div>
-</div>
+            // Plastic Items
+            { id: 10, cat: 'plastic', name: "Multipurpose Plastic Stool", price: 190, desc: "Lightweight and strong stool for daily use.", img: "https://m.media-amazon.com/images/I/61-z8zX90xL._SL1500_.jpg" }
+        ];
 
-<footer>
-    <p>&copy; 2026 Bharat Mart | WhatsApp: 7348698707</p>
-    <p>Return | Help | About Us</p>
-</footer>
+        let selected = null;
 
-<script>
-    // Slider Logic
-    function moveSlide(step, sliderId) {
-        const slider = document.getElementById(sliderId);
-        const slides = slider.getElementsByClassName('slides');
-        let currentIdx = 0;
-
-        for (let i = 0; i < slides.length; i++) {
-            if (slides[i].classList.contains('active-slide')) {
-                currentIdx = i;
-                slides[i].classList.remove('active-slide');
-                break;
-            }
+        function render(items) {
+            document.getElementById('productGrid').innerHTML = items.map(p => `
+                <div class="card" onclick="openDetails(${p.id})">
+                    <img src="${p.img}">
+                    <h4>${p.name}</h4>
+                    <p class="price">₹${p.price}</p>
+                </div>
+            `).join('');
         }
 
-        let newIdx = currentIdx + step;
-        if (newIdx >= slides.length) newIdx = 0;
-        if (newIdx < 0) newIdx = slides.length - 1;
+        function filter(cat) {
+            const filtered = cat === 'all' ? products : products.filter(p => p.cat === cat);
+            render(filtered);
+            document.getElementById('catTitle').innerText = "Showing: " + cat.toUpperCase();
+            if(window.innerWidth < 600) toggleMenu(); 
+        }
 
-        slides[newIdx].classList.add('active-slide');
-    }
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+            const overlay = document.getElementById('overlay');
+            overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+        }
 
-    // Search Simulation
-    function search() {
-        let val = document.getElementById('searchInput').value.toLowerCase();
-        alert("Searching for: " + val + "\n(This feature works with a database/Google Sheet)");
-    }
-</script>
+        function openDetails(id) {
+            selected = products.find(p => p.id === id);
+            document.getElementById('mImg').src = selected.img;
+            document.getElementById('mName').innerText = selected.name;
+            document.getElementById('mPrice').innerText = "₹" + selected.price;
+            document.getElementById('mDesc').innerText = selected.desc;
+            document.getElementById('pModal').style.display = 'block';
+        }
 
+        function openCheckout() {
+            document.getElementById('cItem').innerText = selected.name;
+            document.getElementById('cPrice').innerText = "₹" + selected.price;
+            document.getElementById('checkoutModal').style.display = 'block';
+        }
+
+        function closeM(id) { document.getElementById(id).style.display = 'none'; }
+
+        function finalOrder() {
+            const n = document.getElementById('name').value;
+            const a = document.getElementById('addr').value;
+            const p = document.getElementById('pin').value;
+
+            if(!n || !a || !p) { alert("Please fill all details!"); return; }
+
+            const msg = `*NEW ORDER - BHARAT MART*%0A` +
+                        `*Item:* ${selected.name}%0A` +
+                        `*Price:* ₹${selected.price}%0A%0A` +
+                        `*Customer Name:* ${n}%0A` +
+                        `*Address:* ${a}%0A` +
+                        `*Pincode:* ${p}`;
+
+            window.open(`https://wa.me/917348698707?text=${msg}`);
+            location.reload(); 
+        }
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'hi'}, 'google_translate_element');
+        }
+
+        window.onload = () => render(products);
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>

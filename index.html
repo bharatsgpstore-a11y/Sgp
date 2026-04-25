@@ -2,122 +2,283 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mart | Order Now</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bharat Mart | Sabhi Zarurat ka Samaan</title>
     <style>
-        :root { --primary: #004aad; --dark: #333; --white: #fff; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f4f4; }
-        
-        header { background: var(--primary); color: white; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; }
-        .logo img { height: 40px; vertical-align: middle; }
+        :root { --primary: #004aad; --accent: #ff9f00; --whatsapp: #25D366; --white: #fff; --grey-light: #f0f2f5; --text-main: #333; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--grey-light); color: var(--text-main); font-size: 14px; padding-bottom: 80px; overflow-x: hidden;}
 
-        /* Product Grid */
-        .container { max-width: 1200px; margin: 20px auto; padding: 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
-        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; }
-        .buy-btn { background: #ff9f00; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        /* Header */
+        header { background: var(--primary); padding: 12px 15px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .header-top { display: flex; justify-content: space-between; align-items: center; color: white; font-size: 18px; font-weight: bold; margin-bottom: 10px; }
 
-        /* Order Modal (Popup) */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
-        .modal-content { background: white; margin: 10% auto; padding: 25px; width: 90%; max-width: 450px; border-radius: 15px; position: relative; }
-        .close { position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer; }
+        /* Search Section */
+        .search-area { display: flex; align-items: center; background: white; border-radius: 25px; padding: 0 15px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+        .search-input { width: 100%; padding: 12px 10px; border: none; outline: none; font-size: 16px; }
+        .search-btn { background: none; border: none; color: var(--grey-main); cursor: pointer; font-size: 18px; padding: 0;}
+
+        /* Category Grid (working) */
+        .category-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; background: white; padding: 20px 15px; border-bottom: 1px solid #ddd; }
+        .category-item { text-align: center; text-decoration: none; color: #555; font-size: 12px; cursor: pointer; transition: transform 0.2s;}
+        .category-item:active {transform: scale(0.95);}
+        .category-icon-box { display: inline-flex; align-items: center; justify-content: center; height: 50px; width: 50px; border-radius: 50%; background: #eef2f7; margin-bottom: 8px; border: 1px solid transparent; transition: background 0.3s;}
+        .category-item:hover .category-icon-box { background: rgba(0,74,173,0.1); border-color: var(--primary); }
+        .category-item .icon { font-size: 24px; color: var(--primary); }
+        .category-item span { display: block; font-weight: 500;}
+
+        /* Sale Banner */
+        .sale-banner { background: white; padding: 10px 15px; border-bottom: 1px solid #ddd; text-align: center;}
+        .sale-banner img { max-width: 100%; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+
+        /* Product Section */
+        .product-section { padding: 15px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; color: var(--primary); font-size: 16px; font-weight: bold; }
+        .p-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
         
+        .p-card { background: white; border-radius: 12px; padding: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; text-align: center; transition: 0.3s; }
+        .p-card img { width: 100%; height: 140px; object-fit: contain; border-radius: 8px; margin-bottom: 10px; }
+        .p-name { font-weight: bold; font-size: 15px; margin-bottom: 5px; text-decoration: none; color: var(--text-main); height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
+        .p-rating { color: #ffbf00; font-size: 12px; margin-bottom: 8px;}
+        .p-price-box { margin-bottom: 10px; display: flex; justify-content: center; align-items: baseline; gap: 5px;}
+        .p-price { font-size: 18px; color: #d32f2f; font-weight: bold; }
+        .p-old-price { font-size: 12px; color: #888; text-decoration: line-through; }
+        .action-btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 14px; }
+        .action-btn:active { background: #e08e00; }
+
+        /* Footer Tab Navigation */
+        .footer-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: grid; grid-template-columns: repeat(5, 1fr); padding: 10px; border-top: 1px solid #ddd; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 999; }
+        .nav-item { text-align: center; text-decoration: none; color: #555; font-size: 11px; font-weight: 500;}
+        .nav-item.active { color: var(--primary); }
+        .nav-icon { font-size: 20px; display: block; margin-bottom: 5px; }
+
+        /* Checkout Modal */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 25px; width: 90%; max-width: 400px; border-radius: 20px; position: relative; animation: slideIn 0.3s; }
+        .close { position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer; color: #888; }
         .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-        .confirm-btn { background: #28a745; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        .confirm-btn { background: var(--whatsapp); color: white; border: none; padding: 14px; width: 100%; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+
+        @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        /* Font Icons simulation */
+        .icon-star:before { content: "★"; }
+        .icon-user:before { content: "👤"; }
+        .icon-category:before { content: "☰"; }
+        .icon-play:before { content: "▶"; }
+        .icon-home:before { content: "🏠"; }
+        .icon-search:before { content: "🔍"; }
+        .icon-cart:before { content: "🛒"; }
+        .icon-wa:before { content: "💬"; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">
-        <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png">
-        <span style="font-size: 22px; font-weight: bold; margin-left: 10px;">Bharat Mart</span>
+    <div class="header-top">
+        <span>Bharat Mart</span>
+        <div style="font-size: 14px; font-weight: normal; color: #ffeb3b; border: 1px solid #ffeb3b; padding: 2px 8px; border-radius: 20px;">PLUS BLACK</div>
+    </div>
+    <div class="search-area">
+        <input type="text" class="search-input" id="searchField" onkeyup="liveSearch()" placeholder="Samaan dhoondein (Mobiles, TV)...">
+        <button class="search-btn"><span class="icon-search icon"></span></button>
     </div>
 </header>
 
-<div class="container">
-    <div class="card">
-        <img src="https://via.placeholder.com/300x200?text=Smartphone">
-        <h3>Premium Smartphone</h3>
-        <p style="color: #ff9f00;">★★★★☆ (4.2)</p>
-        <p style="font-size: 20px; font-weight: bold;">₹14,999</p>
-        <button class="buy-btn" onclick="openOrder('Premium Smartphone', '₹14,999')">Order Karein</button>
-    </div>
-
-    <div class="card">
-        <img src="https://via.placeholder.com/300x200?text=Headphones">
-        <h3>Wireless Headphones</h3>
-        <p style="color: #ff9f00;">★★★★★ (5.0)</p>
-        <p style="font-size: 20px; font-weight: bold;">₹1,999</p>
-        <button class="buy-btn" onclick="openOrder('Wireless Headphones', '₹1,999')">Order Karein</button>
-    </div>
+<div class="category-grid">
+    <a href="#" class="category-item" onclick="filterByCategory('all')">
+        <div class="category-icon-box"><span class="icon-star icon"></span></div>
+        <span>Sabhi</span>
+    </a>
+    <a href="#" class="category-item" onclick="filterByCategory('Mobiles')">
+        <div class="category-icon-box"><span class="icon-play icon" style="font-size: 20px; color: #4caf50;">▶</span></div>
+        <span>Mobiles</span>
+    </a>
+    <a href="#" class="category-item" onclick="filterByCategory('Fashion')">
+        <div class="category-icon-box"><span class="icon">👕</span></div>
+        <span>Fashion</span>
+    </a>
+    <a href="#" class="category-item" onclick="filterByCategory('Electronics')">
+        <div class="category-icon-box"><span class="icon">📺</span></div>
+        <span>TV & Appliances</span>
+    </a>
+    <a href="#" class="category-item" onclick="filterByCategory('Home')">
+        <div class="category-icon-box"><span class="icon">🏠</span></div>
+        <span>Home</span>
+    </a>
 </div>
 
-<div id="orderModal" class="modal">
+<div class="sale-banner">
+    <img src="https://via.placeholder.com/600x120?text=BharatMart+MEGA+SALE+Starts+May+9th" alt="Sale Banner">
+</div>
+
+<section class="product-section">
+    <div class="section-header">
+        <span id="categoryTitle">Top Picks For You</span>
+    </div>
+    <div class="p-grid" id="productContainer">
+        </div>
+</section>
+
+<div id="checkoutModal" class="modal" style="display: none;">
     <div class="modal-content">
-        <span class="close" onclick="closeOrder()">&times;</span>
-        <h2 style="color: var(--primary);">Checkout</h2>
-        <hr><br>
-        <p id="selectedItem" style="font-weight: bold;"></p>
-        <br>
-        <div class="form-group">
-            <label>Aapka Naam:</label>
-            <input type="text" id="custName" placeholder="Pura naam likhein">
+        <span class="close" onclick="closeCheckout()">&times;</span>
+        <h2 style="color: var(--primary); margin-top: 0; font-size: 20px; border-bottom: 2px solid var(--grey-light); padding-bottom: 10px;">Order Details</h2>
+        <div style="background: #eef2f7; padding: 12px; border-radius: 8px; margin: 15px 0; font-weight: 500;">
+            Order Item: <span id="checkoutItemName" style="color: var(--primary);"></span><br>
+            Price: <span id="checkoutItemPrice" style="color: #d32f2f;"></span>
         </div>
         <div class="form-group">
-            <label>Mobile Number:</label>
-            <input type="tel" id="custPhone" placeholder="10 digit number">
+            <label>Aapka Pura Naam:</label>
+            <input type="text" id="custName" placeholder="Apna naam likhein">
+        </div>
+        <div class="form-group">
+            <label>WhatsApp Number:</label>
+            <input type="tel" id="custPhone" placeholder="10 digit contact number">
         </div>
         <div class="form-group">
             <label>Delivery Address:</label>
-            <textarea id="custAddress" rows="3" placeholder="Pura pata likhein (City, Pincode ke sath)"></textarea>
+            <textarea id="custAddress" rows="3" placeholder="Pura pata (City, Pincode ke sath) likhein"></textarea>
         </div>
-        <button class="confirm-btn" onclick="confirmOrder()">Order Confirm Karein</button>
+        <button class="confirm-btn" onclick="sendWhatsAppOrder()">
+            <span class="icon-wa">💬</span> Confirm & Order
+        </button>
     </div>
 </div>
 
+<nav class="footer-nav">
+    <a href="#" class="nav-item active"><span class="nav-icon icon-home">🏠</span>Home</a>
+    <a href="#" class="nav-item"><span class="nav-icon icon-play">▶</span>Play</a>
+    <a href="#" class="nav-item"><span class="nav-icon icon-category">☰</span>Categories</a>
+    <a href="#" class="nav-item"><span class="nav-icon icon-user">👤</span>Account</a>
+    <a href="#" class="nav-item" style="position: relative;"><span class="nav-icon icon-cart">🛒</span>Cart <span style="position: absolute; top: -5px; right: 2px; background: red; color: white; border-radius: 50%; width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; font-size: 10px;">1</span></a>
+</nav>
+
 <script>
-    let currentProduct = "";
-    let currentPrice = "";
+    // Product Database (5 items per category as requested)
+    const productData = [
+        // Mobiles
+        {id: 1, name: 'Realme narzo N55 (6GB, 128GB)', cat: 'Mobiles', price: 10999, old: 14999, rating: 4.3, img: 'https://via.placeholder.com/300x300?text=Realme+N55'},
+        {id: 2, name: 'Google Pixel 8 Pro (12GB, 256GB)', cat: 'Mobiles', price: 110999, old: 121999, rating: 4.8, img: 'https://via.placeholder.com/300x300?text=Pixel+8+Pro'},
+        {id: 3, name: 'Samsung Galaxy F15 5G (4GB, 128GB)', cat: 'Mobiles', price: 11999, old: 15999, rating: 4.2, img: 'https://via.placeholder.com/300x300?text=Samsung+F15'},
+        {id: 4, name: 'Xiaomi Redmi 12 5G (8GB, 256GB)', cat: 'Mobiles', price: 14499, old: 19999, rating: 4.4, img: 'https://via.placeholder.com/300x300?text=Redmi+12'},
+        {id: 5, name: 'Apple iPhone 15 (128GB, Blue)', cat: 'Mobiles', price: 69999, old: 79999, rating: 4.7, img: 'https://via.placeholder.com/300x300?text=iPhone+15'},
+        // Fashion
+        {id: 6, name: 'Mens Casual Cotton Shirt (Blue)', cat: 'Fashion', price: 899, old: 1999, rating: 4.5, img: 'https://via.placeholder.com/300x300?text=Casual+Shirt'},
+        {id: 7, name: 'Womens Ethnic Wear Saree', cat: 'Fashion', price: 1499, old: 4999, rating: 4.2, img: 'https://via.placeholder.com/300x300?text=Ethnic+Saree'},
+        {id: 8, name: 'Puma Sports Shoes (Mens)', cat: 'Fashion', price: 2999, old: 5999, rating: 4.6, img: 'https://via.placeholder.com/300x300?text=Sports+Shoes'},
+        {id: 9, name: 'Levis Mens Jeans (Blue)', cat: 'Fashion', price: 1999, old: 3999, rating: 4.4, img: 'https://via.placeholder.com/300x300?text=Levis+Jeans'},
+        {id: 10, name: 'Titan Analog Watch (Unisex)', cat: 'Fashion', price: 2499, old: 3999, rating: 4.7, img: 'https://via.placeholder.com/300x300?text=Titan+Watch'},
+        // Electronics
+        {id: 11, name: 'Sony Bravia 55" 4K Smart TV', cat: 'Electronics', price: 54999, old: 79999, rating: 4.8, img: 'https://via.placeholder.com/300x300?text=Sony+Bravia'},
+        {id: 12, name: 'Mi 4K TV Stick (Android)', cat: 'Electronics', price: 3499, old: 4999, rating: 4.4, img: 'https://via.placeholder.com/300x300?text=Mi+TV+Stick'},
+        {id: 13, name: 'Logitech G213 Gaming Keyboard', cat: 'Electronics', price: 3999, old: 5999, rating: 4.6, img: 'https://via.placeholder.com/300x300?text=Gaming+KB'},
+        {id: 14, name: 'Lenovo IdeaPad Laptop (15.6", Ryzen 5)', cat: 'Electronics', price: 44999, old: 69999, rating: 4.3, img: 'https://via.placeholder.com/300x300?text=Lenovo+IdeaPad'},
+        {id: 15, name: 'BoAt Rockerz Bluetooth Headphones', cat: 'Electronics', price: 1199, old: 2999, rating: 4.5, img: 'https://via.placeholder.com/300x300?text=BoAt+Rockerz'},
+        // Home
+        {id: 16, name: 'Elica Filterless Auto-Clean Chimney', cat: 'Home', price: 11999, old: 24999, rating: 4.7, img: 'https://via.placeholder.com/300x300?text=Elica+Chimney'},
+        {id: 17, name: 'Prestige 3 Burner Gas Stove', cat: 'Home', price: 4499, old: 7999, rating: 4.3, img: 'https://via.placeholder.com/300x300?text=Prestige+Stove'},
+        {id: 18, name: 'Philips Garment Steamer (Vertical)', cat: 'Home', price: 5999, old: 8999, rating: 4.6, img: 'https://via.placeholder.com/300x300?text=Philips+Steamer'},
+        {id: 19, name: 'Godrej Godrej Aer Twist (Lemon)', cat: 'Home', price: 299, old: 499, rating: 4.2, img: 'https://via.placeholder.com/300x300?text=Godrej+Aer'},
+        {id: 20, name: 'Kuber Industries Plastic Bins (Pack of 3)', cat: 'Home', price: 699, old: 999, rating: 4.1, img: 'https://via.placeholder.com/300x300?text=Plastic+Bins'},
+    ];
 
-    function openOrder(name, price) {
-        currentProduct = name;
-        currentPrice = price;
-        document.getElementById('selectedItem').innerText = "Product: " + name + " (" + price + ")";
-        document.getElementById('orderModal').style.display = "block";
+    let currentOrder = {name: "", price: ""};
+
+    // Load products function
+    function loadProducts(products) {
+        const container = document.getElementById('productContainer');
+        container.innerHTML = "";
+        products.forEach(p => {
+            const card = `
+                <div class="p-card" data-category="${p.cat}">
+                    <img src="${p.img}" alt="${p.name}">
+                    <a href="#" class="p-name">${p.name}</a>
+                    <p class="p-rating">
+                        ★★★★☆ <span style="color: #666; font-size: 11px;">(${p.rating})</span>
+                    </p>
+                    <div class="p-price-box">
+                        <p class="p-price">₹${p.price.toLocaleString()}</p>
+                        <p class="p-old-price">₹${p.old.toLocaleString()}</p>
+                    </div>
+                    <button class="action-btn" onclick="openCheckout('${p.name}', '₹${p.price.toLocaleString()}')">Order Now</button>
+                </div>
+            `;
+            container.innerHTML += card;
+        });
     }
 
-    function closeOrder() {
-        document.getElementById('orderModal').style.display = "none";
+    // Initialize - load all products
+    window.onload = function() {
+        loadProducts(productData);
     }
 
-    function confirmOrder() {
-        let name = document.getElementById('custName').value;
-        let phone = document.getElementById('custPhone').value;
-        let address = document.getElementById('custAddress').value;
+    // 1. Live Search (Working)
+    function liveSearch() {
+        const input = document.getElementById('searchField').value.toLowerCase();
+        const results = productData.filter(p => p.name.toLowerCase().includes(input));
+        loadProducts(results);
+        document.getElementById('categoryTitle').innerText = results.length > 0 ? "Search Results" : "Samaan Nahi Mila";
+    }
 
-        if(name == "" || phone == "" || address == "") {
-            alert("Kripya saari details bharein!");
+    // 2. Category Filtering (Working)
+    function filterByCategory(cat) {
+        const filteredProducts = cat === 'all' ? productData : productData.filter(p => p.cat === cat);
+        loadProducts(filteredProducts);
+        
+        // Update Title & Style Category Item
+        document.getElementById('categoryTitle').innerText = cat === 'all' ? "sabse badhiya products" : `Top Products in ${cat}`;
+        
+        // Remove active class from other categories (simple logic)
+        document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active_category'));
+        event.currentTarget.classList.add('active_category');
+    }
+
+    // 3. Checkout Modal Handling
+    function openCheckout(name, price) {
+        currentOrder.name = name;
+        currentOrder.price = price;
+        document.getElementById('checkoutItemName').innerText = name;
+        document.getElementById('checkoutItemPrice').innerText = price;
+        document.getElementById('checkoutModal').style.display = "flex";
+        
+        // Prevent body scroll (important for mobile)
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeCheckout() {
+        document.getElementById('checkoutModal').style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+
+    // 4. Send Order to WhatsApp (Working)
+    function sendWhatsAppOrder() {
+        const name = document.getElementById('custName').value;
+        const phone = document.getElementById('custPhone').value;
+        const address = document.getElementById('custAddress').value;
+
+        if (name == "" || phone == "" || address == "") {
+            alert("Kripya details bharein taaki order deliver kiya ja sake!");
             return;
         }
 
-        // Final Message for WhatsApp
-        let message = `*Naya Order - Bharat Mart*%0A` +
-                      `--------------------------%0A` +
-                      `*Product:* ${currentProduct}%0A` +
-                      `*Price:* ${currentPrice}%0A%0A` +
-                      `*Customer Details:*%0A` +
-                      `Name: ${name}%0A` +
-                      `Phone: ${phone}%0A` +
-                      `Address: ${address}%0A` +
-                      `--------------------------%0A` +
-                      `Kripya jaldi deliver karein!`;
+        // Professional order message template
+        const orderMessage = `*NEW ORDER - BHARAT MART*%0A` +
+                             `-----------------------------%0A` +
+                             `*🛒 Product:* ${currentOrder.name}%0A` +
+                             `*💰 Final Price:* ${currentOrder.price}%0A%0A` +
+                             `*👤 Customer Details:*%0A` +
+                             `*Name:* ${name}%0A` +
+                             `*Phone:* ${phone}%0A` +
+                             `*Address:* ${address}%0A` +
+                             `-----------------------------%0A` +
+                             `Order finalize karne ke liye confirm karein. Shukriya!`;
 
-        // Send to your WhatsApp number 7348698707
-        window.open(`https://wa.me/917348698707?text=${message}`, '_blank');
-        closeOrder();
+        // Directs to your WhatsApp Business Number
+        const whatsappUrl = `https://wa.me/917348698707?text=${orderMessage}`;
+        window.open(whatsappUrl, '_blank');
+        closeCheckout();
     }
 </script>
 

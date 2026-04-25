@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mart | Your Store</title>
+    <title>Bharat Mart | Professional</title>
     <style>
         :root { --primary: #004aad; --accent: #ff9f00; --cart: #2874f0; --white: #fff; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f1f3f6; color: #333; padding-bottom: 50px; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f1f3f6; color: #333; }
         
         /* Header */
-        header { background: var(--primary); padding: 12px; position: sticky; top: 0; z-index: 1000; }
-        .logo-row { display: flex; justify-content: space-between; align-items: center; color: white; margin-bottom: 10px; }
-        .plus-tag { background: #ffeb3b; color: #000; font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: bold; }
+        header { background: var(--primary); padding: 12px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .header-top { display: flex; justify-content: space-between; align-items: center; color: white; margin-bottom: 10px; }
+        .menu-btn { font-size: 24px; cursor: pointer; padding: 0 5px; }
         
         .search-container { background: white; display: flex; border-radius: 4px; padding: 2px 10px; align-items: center; }
         .search-container input { width: 100%; border: none; padding: 10px; outline: none; }
@@ -19,46 +19,52 @@
         /* Categories */
         .cat-box { background: white; display: flex; overflow-x: auto; padding: 15px 5px; gap: 15px; border-bottom: 1px solid #ddd; }
         .cat-item { text-align: center; min-width: 70px; cursor: pointer; }
-        .cat-item img { width: 45px; height: 45px; margin-bottom: 5px; }
+        .cat-item img { width: 45px; height: 45px; margin-bottom: 5px; border-radius: 50%; background: #f9f9f9; }
         .cat-item span { font-size: 12px; font-weight: 500; display: block; }
 
         /* Product Grid */
         .container { padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .p-card { background: white; border-radius: 4px; padding: 10px; text-align: center; position: relative; }
+        .p-card { background: white; border-radius: 4px; padding: 10px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .p-card img { width: 100%; height: 130px; object-fit: contain; cursor: pointer; }
-        .p-name { font-size: 13px; height: 35px; overflow: hidden; margin: 8px 0; font-weight: 500; }
-        .p-rating { color: #388e3c; background: #e8f5e9; font-size: 11px; padding: 2px 5px; border-radius: 3px; display: inline-block; margin-bottom: 5px; }
-        .price { font-size: 16px; font-weight: bold; color: #212121; }
-        .old-price { font-size: 12px; color: #878787; text-decoration: line-through; }
+        .p-name { font-size: 13px; height: 35px; overflow: hidden; margin: 8px 0; font-weight: 500; text-align: left; }
+        .price-row { text-align: left; margin-bottom: 8px; }
+        .price { font-size: 16px; font-weight: bold; }
+        .old-price { font-size: 11px; color: #878787; text-decoration: line-through; margin-left: 5px; }
 
-        .btn-group { display: flex; gap: 5px; margin-top: 10px; }
-        .order-btn { background: var(--accent); color: white; border: none; padding: 8px 0; border-radius: 2px; flex: 1; cursor: pointer; font-size: 12px; font-weight: bold; }
-        .cart-btn { background: var(--cart); color: white; border: none; padding: 8px 0; border-radius: 2px; flex: 1; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .btn-group { display: flex; gap: 4px; }
+        .order-btn { background: var(--accent); color: white; border: none; padding: 8px 0; border-radius: 2px; flex: 1; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .cart-btn { background: var(--cart); color: white; border: none; padding: 8px 0; border-radius: 2px; flex: 1; cursor: pointer; font-size: 11px; font-weight: bold; }
 
         /* Modals (Popups) */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; }
-        .modal-content { background: white; width: 90%; max-width: 400px; padding: 20px; border-radius: 8px; position: relative; max-height: 80vh; overflow-y: auto; }
-        .close { position: absolute; right: 15px; top: 10px; font-size: 24px; cursor: pointer; }
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; }
+        .modal-content { background: white; width: 90%; max-width: 450px; padding: 20px; border-radius: 8px; position: relative; max-height: 85vh; overflow-y: auto; }
+        .close { position: absolute; right: 15px; top: 10px; font-size: 28px; cursor: pointer; color: #666; }
 
-        /* Customer Service Section */
-        .service-section { background: white; margin: 10px; padding: 15px; border-radius: 4px; }
-        .service-section h3 { font-size: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 0; }
-        textarea, input[type="text"] { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        .submit-btn { background: var(--primary); color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; cursor: pointer; }
+        /* Menu/Service Form styling */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        input[type="text"], input[type="tel"], textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .submit-btn { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-        .star-rating { color: #ccc; font-size: 25px; cursor: pointer; text-align: center; margin: 10px 0; }
-        .star-rating .active { color: #ffbf00; }
+        /* Cart Page specific */
+        .cart-item-row { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #eee; padding: 10px 0; }
+        .cart-item-row img { width: 50px; height: 50px; object-fit: contain; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo-row">
-        <div style="font-size: 20px; font-weight: bold;">Bharat Mart <span class="plus-tag">PLUS BLACK</span></div>
-        <div id="cartCount" style="background: white; color: var(--primary); padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: bold;">🛒 0</div>
+    <div class="header-top">
+        <div style="font-size: 20px; font-weight: bold;">Bharat Mart</div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div onclick="openCart()" style="cursor: pointer; position: relative;">
+                🛒 <span id="cartCount" style="background: red; color: white; font-size: 10px; padding: 1px 5px; border-radius: 10px; position: absolute; top: -8px; right: -8px;">0</span>
+            </div>
+            <div class="menu-btn" onclick="openMenu()">⋮</div>
+        </div>
     </div>
     <div class="search-container">
-        <input type="text" id="searchInput" onkeyup="searchFn()" placeholder="Mobiles, Fashion, Home dhoondein...">
+        <input type="text" id="searchInput" onkeyup="searchFn()" placeholder="Samaan dhoondein...">
         <span>🔍</span>
     </div>
 </header>
@@ -67,24 +73,42 @@
     <div class="cat-item" onclick="filter('all')"><img src="https://cdn-icons-png.flaticon.com/512/1041/1041888.png"><span>Sabhi</span></div>
     <div class="cat-item" onclick="filter('Mobiles')"><img src="https://cdn-icons-png.flaticon.com/512/644/644458.png"><span>Mobiles</span></div>
     <div class="cat-item" onclick="filter('Fashion')"><img src="https://cdn-icons-png.flaticon.com/512/3050/3050239.png"><span>Fashion</span></div>
-    <div class="cat-item" onclick="filter('Electronics')"><img src="https://cdn-icons-png.flaticon.com/512/3659/3659899.png"><span>TV</span></div>
+    <div class="cat-item" onclick="filter('Electronics')"><img src="https://cdn-icons-png.flaticon.com/512/3659/3659899.png"><span>Electronics</span></div>
     <div class="cat-item" onclick="filter('Home')"><img src="https://cdn-icons-png.flaticon.com/512/619/619153.png"><span>Home</span></div>
 </div>
 
 <div class="container" id="productGrid">
     </div>
 
-<div class="service-section">
-    <h3>Item Request & Complaint</h3>
-    <p style="font-size: 12px; color: #666;">Jo product nahi mil raha yahan likhein, hum mangwa denge!</p>
-    <input type="text" id="reqItem" placeholder="Product ka naam...">
-    <textarea id="complaint" rows="3" placeholder="Apni shikayat ya feedback likhein..."></textarea>
-    
-    <div class="star-rating" id="ratingStars">
-        <span onclick="setRating(1)">★</span><span onclick="setRating(2)">★</span><span onclick="setRating(3)">★</span><span onclick="setRating(4)">★</span><span onclick="setRating(5)">★</span>
+<div id="cartModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('cartModal')">&times;</span>
+        <h2 style="color: var(--primary); border-bottom: 1px solid #ddd; padding-bottom: 10px;">Aapka Cart</h2>
+        <div id="cartItemsList">
+            <p style="text-align: center; color: #888; padding: 20px;">Cart khali hai!</p>
+        </div>
+        <div id="cartFooter" style="display:none; margin-top: 20px;">
+            <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Total: ₹<span id="cartTotal">0</span></div>
+            <button class="submit-btn" style="background: #28a745;" onclick="checkoutCart()">Pura Order WhatsApp Pe Bhejein</button>
+        </div>
     </div>
-    
-    <button class="submit-btn" onclick="sendServiceReq()">Submit to Bharat Mart</button>
+</div>
+
+<div id="menuModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('menuModal')">&times;</span>
+        <h2 style="color: var(--primary);">Help & Support</h2>
+        <hr>
+        <div class="form-group">
+            <label>Product Request (Jo nahi mil raha):</label>
+            <input type="text" id="reqItem" placeholder="Item ka naam likhein...">
+        </div>
+        <div class="form-group">
+            <label>Shikayat (Complaint Box):</label>
+            <textarea id="complaint" rows="3" placeholder="Apni dikkat yahan batayein..."></textarea>
+        </div>
+        <button class="submit-btn" onclick="sendServiceReq()">Bharat Mart ko Bhejein</button>
+    </div>
 </div>
 
 <div id="detailsModal" class="modal">
@@ -97,41 +121,41 @@
 <div id="orderModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal('orderModal')">&times;</span>
-        <h3 style="color: var(--primary);">Checkout</h3>
-        <p id="orderItemTitle" style="font-weight: bold;"></p>
-        <input type="text" id="custName" placeholder="Aapka Naam">
-        <input type="tel" id="custPhone" placeholder="Mobile Number">
-        <textarea id="custAddress" placeholder="Pura Pata (Delivery Address)"></textarea>
-        <button class="submit-btn" style="background: #28a745;" onclick="finalOrder()">Confirm Order via WhatsApp</button>
+        <h3>Confirm Order</h3>
+        <p id="orderItemTitle" style="background:#f9f9f9; padding:10px; border-radius:4px;"></p>
+        <div class="form-group"><input type="text" id="custName" placeholder="Aapka Naam"></div>
+        <div class="form-group"><input type="tel" id="custPhone" placeholder="WhatsApp Number"></div>
+        <div class="form-group"><textarea id="custAddress" placeholder="Pura Delivery Address"></textarea></div>
+        <button class="submit-btn" style="background: #28a745;" onclick="finalOrder()">WhatsApp Pe Order Karein</button>
     </div>
 </div>
 
 <script>
-    // Product Database with Details
     const products = [
-        { name: "Realme Narzo N55", cat: "Mobiles", price: 10999, old: 14999, img: "https://m.media-amazon.com/images/I/41Sc4S9j-rL._SX300_SY300_QL70_FMwebp_.jpg", desc: "6.7 inch Display, 64MP Camera, 5000mAh Battery, Fast Charging." },
-        { name: "Cotton Casual Shirt", cat: "Fashion", price: 799, old: 1299, img: "https://m.media-amazon.com/images/I/719f+47v3LL._AC_UL320_.jpg", desc: "Pure Cotton, Slim Fit, All Sizes Available." },
-        { name: "Smart LED TV 32 inch", cat: "Electronics", price: 12499, old: 18000, img: "https://m.media-amazon.com/images/I/71YvRreH+pL._SX450_.jpg", desc: "HD Ready, Android TV, 20W Sound, Multiple Ports." },
-        { name: "Plastic Storage Bin", cat: "Home", price: 499, old: 899, img: "https://m.media-amazon.com/images/I/61NfXpM0HCL._SX450_.jpg", desc: "Strong Plastic, 20L Capacity, Blue Color." }
+        { name: "Realme Narzo N55 (64GB)", cat: "Mobiles", price: 10999, old: 14999, img: "https://m.media-amazon.com/images/I/41Sc4S9j-rL._SX300_SY300_QL70_FMwebp_.jpg", desc: "6.7' Display, 64MP Camera, 5000mAh Battery." },
+        { name: "Cotton Slim Fit Shirt", cat: "Fashion", price: 799, old: 1599, img: "https://m.media-amazon.com/images/I/719f+47v3LL._AC_UL320_.jpg", desc: "Premium Cotton, All Colors available." },
+        { name: "Sony Smart Android TV", cat: "Electronics", price: 24500, old: 32000, img: "https://m.media-amazon.com/images/I/71YvRreH+pL._SX450_.jpg", desc: "4K Ultra HD, Dolby Audio, Alexa Support." },
+        { name: "Modern Kitchen Set", cat: "Home", price: 1200, old: 2500, img: "https://m.media-amazon.com/images/I/61NfXpM0HCL._SX450_.jpg", desc: "Strong Plastic, BPA Free, Easy to clean." }
     ];
 
-    let cartCount = 0;
-    let selectedRating = 0;
+    let cart = [];
     let currentItem = {};
 
     function loadProducts(data) {
         const grid = document.getElementById('productGrid');
         grid.innerHTML = "";
-        data.forEach(p => {
+        data.forEach((p, index) => {
             grid.innerHTML += `
                 <div class="p-card">
                     <img src="${p.img}" onclick="showDetails('${p.name}')">
-                    <div class="p-rating">4.2 ★</div>
                     <div class="p-name">${p.name}</div>
-                    <div><span class="price">₹${p.price}</span> <span class="old-price">₹${p.old}</span></div>
+                    <div class="price-row">
+                        <span class="price">₹${p.price}</span>
+                        <span class="old-price">₹${p.old}</span>
+                    </div>
                     <div class="btn-group">
                         <button class="order-btn" onclick="openOrder('${p.name}', ${p.price})">Order</button>
-                        <button class="cart-btn" onclick="addToCart()">Add 🛒</button>
+                        <button class="cart-btn" onclick="addToCart(${index})">Add 🛒</button>
                     </div>
                 </div>
             `;
@@ -140,31 +164,84 @@
 
     window.onload = () => loadProducts(products);
 
+    // Cart Logic
+    function addToCart(index) {
+        cart.push(products[index]);
+        document.getElementById('cartCount').innerText = cart.length;
+        alert("Item Cart mein joda gaya!");
+    }
+
+    function openCart() {
+        const list = document.getElementById('cartItemsList');
+        const footer = document.getElementById('cartFooter');
+        if(cart.length === 0) {
+            list.innerHTML = "<p style='text-align:center; padding:20px;'>Cart khali hai!</p>";
+            footer.style.display = "none";
+        } else {
+            list.innerHTML = "";
+            let total = 0;
+            cart.forEach((item, i) => {
+                total += item.price;
+                list.innerHTML += `
+                    <div class="cart-item-row">
+                        <img src="${item.img}">
+                        <div style="flex:1">
+                            <div style="font-weight:bold; font-size:14px;">${item.name}</div>
+                            <div style="color:red">₹${item.price}</div>
+                        </div>
+                        <button onclick="removeItem(${i})" style="border:none; background:none; color:red; font-weight:bold;">X</button>
+                    </div>
+                `;
+            });
+            document.getElementById('cartTotal').innerText = total;
+            footer.style.display = "block";
+        }
+        document.getElementById('cartModal').style.display = 'flex';
+    }
+
+    function removeItem(i) {
+        cart.splice(i, 1);
+        document.getElementById('cartCount').innerText = cart.length;
+        openCart();
+    }
+
+    // Modal Control
+    function openMenu() { document.getElementById('menuModal').style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
     function showDetails(name) {
         const p = products.find(x => x.name === name);
         document.getElementById('detailsBody').innerHTML = `
-            <img src="${p.img}" style="width:100%; height:200px; object-fit:contain;">
+            <img src="${p.img}" style="width:100%; max-height:250px; object-fit:contain;">
             <h2>${p.name}</h2>
-            <p><b>Category:</b> ${p.cat}</p>
-            <p><b>Specifications:</b> ${p.desc}</p>
-            <p style="color:red; font-size:20px;"><b>Price: ₹${p.price}</b></p>
-            <button class="submit-btn" onclick="openOrder('${p.name}', ${p.price})">Abhi Order Karein</button>
+            <p style="background:#eef2f7; padding:10px; border-radius:5px;">${p.desc}</p>
+            <p style="font-size:22px; color:red; font-weight:bold;">₹${p.price}</p>
+            <button class="submit-btn" onclick="openOrder('${p.name}', ${p.price})">Order Karein</button>
         `;
         document.getElementById('detailsModal').style.display = 'flex';
     }
 
     function openOrder(name, price) {
         currentItem = { name, price };
-        document.getElementById('orderItemTitle').innerText = name + " - ₹" + price;
+        document.getElementById('orderItemTitle').innerText = name + " (₹" + price + ")";
         document.getElementById('orderModal').style.display = 'flex';
     }
 
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function finalOrder() {
+        const n = document.getElementById('custName').value;
+        const p = document.getElementById('custPhone').value;
+        const a = document.getElementById('custAddress').value;
+        if(!n || !p || !a) return alert("Puri details bharein!");
+        let msg = `*Bharat Mart Order*%0AProduct: ${currentItem.name}%0APrice: ${currentItem.price}%0AName: ${n}%0APhone: ${p}%0AAddr: ${a}`;
+        window.open(`https://wa.me/917348698707?text=${msg}`);
+    }
 
-    function addToCart() {
-        cartCount++;
-        document.getElementById('cartCount').innerText = "🛒 " + cartCount;
-        alert("Item Cart mein add ho gaya!");
+    function sendServiceReq() {
+        const req = document.getElementById('reqItem').value;
+        const comp = document.getElementById('complaint').value;
+        if(!req && !comp) return alert("Kuch toh likhein!");
+        let msg = `*Bharat Mart Service*%0ARequest: ${req}%0AComplaint: ${comp}`;
+        window.open(`https://wa.me/917348698707?text=${msg}`);
     }
 
     function searchFn() {
@@ -176,31 +253,6 @@
     function filter(cat) {
         let filtered = cat === 'all' ? products : products.filter(p => p.cat === cat);
         loadProducts(filtered);
-    }
-
-    function setRating(n) {
-        selectedRating = n;
-        let stars = document.getElementById('ratingStars').children;
-        for(let i=0; i<5; i++) {
-            stars[i].className = i < n ? "active" : "";
-        }
-    }
-
-    function finalOrder() {
-        const name = document.getElementById('custName').value;
-        const phone = document.getElementById('custPhone').value;
-        const addr = document.getElementById('custAddress').value;
-        if(!name || !phone || !addr) return alert("Details bharein!");
-        
-        let msg = `*Bharat Mart Order*%0AProduct: ${currentItem.name}%0APrice: ${currentItem.price}%0AName: ${name}%0AAddr: ${addr}`;
-        window.open(`https://wa.me/917348698707?text=${msg}`);
-    }
-
-    function sendServiceReq() {
-        const req = document.getElementById('reqItem').value;
-        const comp = document.getElementById('complaint').value;
-        let msg = `*Bharat Mart Service*%0ARequest: ${req}%0AComplaint: ${comp}%0ARating: ${selectedRating} Star`;
-        window.open(`https://wa.me/917348698707?text=${msg}`);
     }
 </script>
 

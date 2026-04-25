@@ -1,42 +1,61 @@
-<!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mart | Search & Order</title>
+    <title>Bharat Mart | Order Now</title>
     <style>
-        :root { --primary: #004aad; --whatsapp: #25D366; --white: #fff; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f4f4; padding-bottom: 50px; }
+        :root { --primary: #004aad; --dark: #333; --white: #fff; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f4f4; }
         
         header { background: var(--primary); color: white; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; }
         .logo img { height: 40px; vertical-align: middle; }
 
-        /* Search Bar Section */
-        .search-section { background: #fff; padding: 15px; text-align: center; border-bottom: 1px solid #ddd; }
-        .search-container { max-width: 600px; margin: auto; display: flex; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 25px; overflow: hidden; }
-        .search-container input { width: 100%; padding: 12px 20px; border: none; outline: none; font-size: 16px; }
-        .search-container button { background: var(--primary); color: white; border: none; padding: 0 20px; cursor: pointer; }
-
-        /* Categories Section */
-        .categories-bar { background: white; padding: 10px; display: flex; justify-content: center; gap: 10px; overflow-x: auto; border-bottom: 1px solid #ddd; }
-        .cat-btn { background: #eef2f7; border: 1px solid #ddd; padding: 8px 15px; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: 0.3s; }
-        .cat-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        /* --- Search Bar Styling --- */
+        .search-area {
+            background: white;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .search-container {
+            width: 90%;
+            max-width: 500px;
+            display: flex;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            overflow: hidden;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            outline: none;
+        }
+        .search-container button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 15px;
+            cursor: pointer;
+        }
 
         /* Product Grid */
         .container { max-width: 1200px; margin: 20px auto; padding: 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); }
-        .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; }
-        .buy-btn { background: #ff9f00; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        .card { background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; }
+        .buy-btn { background: #ff9f00; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
 
-        /* Modal / Checkout Form */
+        /* Order Modal (Popup) */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
-        .modal-content { background: white; margin: 5% auto; padding: 25px; width: 90%; max-width: 400px; border-radius: 15px; position: relative; }
+        .modal-content { background: white; margin: 10% auto; padding: 25px; width: 90%; max-width: 450px; border-radius: 15px; position: relative; }
         .close { position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer; }
-        .form-group { margin-bottom: 12px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
-        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        .confirm-btn { background: #28a745; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .confirm-btn { background: #28a745; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -48,50 +67,41 @@
     </div>
 </header>
 
-<div class="search-section">
+<div class="search-area">
     <div class="search-container">
-        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Samaan dhoondein (Smartphone, Fashion...)...">
+        <input type="text" id="myInput" onkeyup="searchFn()" placeholder="Samaan dhoondein...">
         <button>🔍</button>
     </div>
 </div>
 
-<div class="categories-bar">
-    <button class="cat-btn active" onclick="filterCat('all', this)">Sabhi</button>
-    <button class="cat-btn" onclick="filterCat('Mobiles', this)">Mobiles</button>
-    <button class="cat-btn" onclick="filterCat('Fashion', this)">Fashion</button>
-    <button class="cat-btn" onclick="filterCat('Electronics', this)">Electronics</button>
-    <button class="cat-btn" onclick="filterCat('Home', this)">Home</button>
-</div>
-
 <div class="container" id="productGrid">
-    
-    <div class="card" data-category="Mobiles">
+    <div class="card">
         <img src="https://via.placeholder.com/300x200?text=Smartphone">
-        <h3 class="p-name">Realme Smartphone</h3>
+        <h3 class="p-name">Premium Smartphone</h3>
         <p style="color: #ff9f00;">★★★★☆ (4.2)</p>
-        <p style="font-size: 20px; font-weight: bold;">₹12,999</p>
-        <button class="buy-btn" onclick="openOrder('Realme Smartphone', '₹12,999')">Order Karein</button>
+        <p style="font-size: 20px; font-weight: bold;">₹14,999</p>
+        <button class="buy-btn" onclick="openOrder('Premium Smartphone', '₹14,999')">Order Karein</button>
     </div>
 
-    <div class="card" data-category="Fashion">
-        <img src="https://via.placeholder.com/300x200?text=Shirt">
-        <h3 class="p-name">Cotton Shirt</h3>
+    <div class="card">
+        <img src="https://via.placeholder.com/300x200?text=Headphones">
+        <h3 class="p-name">Wireless Headphones</h3>
         <p style="color: #ff9f00;">★★★★★ (5.0)</p>
-        <p style="font-size: 20px; font-weight: bold;">₹899</p>
-        <button class="buy-btn" onclick="openOrder('Cotton Shirt', '₹899')">Order Karein</button>
+        <p style="font-size: 20px; font-weight: bold;">₹1,999</p>
+        <button class="buy-btn" onclick="openOrder('Wireless Headphones', '₹1,999')">Order Karein</button>
     </div>
-
 </div>
 
 <div id="orderModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeOrder()">&times;</span>
-        <h2 style="color: var(--primary); margin-top: 0;">Checkout</h2>
-        <p id="selectedItem" style="background: #eef2f7; padding: 10px; border-radius: 5px; font-weight: bold;"></p>
-        
+        <h2 style="color: var(--primary);">Checkout</h2>
+        <hr><br>
+        <p id="selectedItem" style="font-weight: bold;"></p>
+        <br>
         <div class="form-group">
-            <label>Pura Naam:</label>
-            <input type="text" id="custName" placeholder="Apna naam likhein">
+            <label>Aapka Naam:</label>
+            <input type="text" id="custName" placeholder="Pura naam likhein">
         </div>
         <div class="form-group">
             <label>Mobile Number:</label>
@@ -99,9 +109,9 @@
         </div>
         <div class="form-group">
             <label>Delivery Address:</label>
-            <textarea id="custAddress" rows="3" placeholder="Gali, Mohalla, City, Pincode..."></textarea>
+            <textarea id="custAddress" rows="3" placeholder="Pura pata likhein (City, Pincode ke sath)"></textarea>
         </div>
-        <button class="confirm-btn" onclick="confirmOrder()">Confirm & Order on WhatsApp</button>
+        <button class="confirm-btn" onclick="confirmOrder()">Order Confirm Karein</button>
     </div>
 </div>
 
@@ -109,42 +119,25 @@
     let currentProduct = "";
     let currentPrice = "";
 
-    // Search Functionality
-    function searchFunction() {
-        let input = document.getElementById('searchInput').value.toLowerCase();
-        let cards = document.querySelectorAll('.card');
-        
-        cards.forEach(card => {
-            let name = card.querySelector('.p-name').innerText.toLowerCase();
-            if(name.includes(input)) {
-                card.style.display = "block";
+    // Search function added
+    function searchFn() {
+        let input = document.getElementById("myInput").value.toLowerCase();
+        let cards = document.getElementsByClassName("card");
+
+        for (let i = 0; i < cards.length; i++) {
+            let name = cards[i].getElementsByClassName("p-name")[0].innerText.toLowerCase();
+            if (name.includes(input)) {
+                cards[i].style.display = "";
             } else {
-                card.style.display = "none";
+                cards[i].style.display = "none";
             }
-        });
+        }
     }
 
-    // Category Filter
-    function filterCat(cat, btn) {
-        let cards = document.querySelectorAll('.card');
-        let btns = document.querySelectorAll('.cat-btn');
-        btns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        cards.forEach(card => {
-            if(cat === 'all' || card.getAttribute('data-category') === cat) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
-        });
-    }
-
-    // Order Logic
     function openOrder(name, price) {
         currentProduct = name;
         currentPrice = price;
-        document.getElementById('selectedItem').innerText = "Item: " + name + " | Price: " + price;
+        document.getElementById('selectedItem').innerText = "Product: " + name + " (" + price + ")";
         document.getElementById('orderModal').style.display = "block";
     }
 
@@ -169,7 +162,9 @@
                       `*Customer Details:*%0A` +
                       `Name: ${name}%0A` +
                       `Phone: ${phone}%0A` +
-                      `Address: ${address}`;
+                      `Address: ${address}%0A` +
+                      `--------------------------%0A` +
+                      `Kripya jaldi deliver karein!`;
 
         window.open(`https://wa.me/917348698707?text=${message}`, '_blank');
         closeOrder();

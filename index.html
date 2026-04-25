@@ -3,165 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mart | Aapki Apni Dukaan</title>
+    <title>Bharat Mart | Order Now</title>
     <style>
-        :root {
-            --primary: #004aad;
-            --whatsapp: #25D366;
-            --light-bg: #f8f9fa;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: var(--light-bg); }
-
-        /* Header & Logo */
-        header { background: var(--primary); padding: 15px 5%; position: sticky; top: 0; z-index: 1000; color: white; }
-        .nav-container { max-width: 1200px; margin: auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .logo { display: flex; align-items: center; text-decoration: none; color: white; }
-        .logo img { height: 45px; margin-right: 10px; border-radius: 5px; }
-
-        /* Search Bar */
-        .search-box { flex-grow: 1; margin: 0 20px; display: flex; max-width: 500px; }
-        .search-box input { width: 100%; padding: 10px; border: none; border-radius: 5px 0 0 5px; outline: none; }
-        .search-box button { background: #ff9f00; border: none; padding: 10px 15px; color: white; border-radius: 0 5px 5px 0; cursor: pointer; }
-
-        /* Categories Bar */
-        .categories-bar { background: white; padding: 12px; display: flex; justify-content: center; gap: 10px; overflow-x: auto; border-bottom: 1px solid #ddd; }
-        .cat-btn { background: white; border: 1px solid var(--primary); color: var(--primary); padding: 6px 15px; border-radius: 20px; cursor: pointer; font-weight: 500; transition: 0.3s; white-space: nowrap; }
-        .cat-btn:hover, .cat-btn.active { background: var(--primary); color: white; }
+        :root { --primary: #004aad; --dark: #333; --white: #fff; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f4f4; }
+        
+        header { background: var(--primary); color: white; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; }
+        .logo img { height: 40px; vertical-align: middle; }
 
         /* Product Grid */
-        .container { max-width: 1200px; margin: 20px auto; padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; }
+        .buy-btn { background: #ff9f00; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
 
-        /* Product Card & Slider */
-        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: block; transition: 0.3s; }
-        .slider-box { position: relative; height: 220px; background: #eee; overflow: hidden; }
-        .slide { display: none; width: 100%; height: 100%; object-fit: cover; }
-        .slide.active { display: block; }
-        .s-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color: white; border: none; padding: 8px; cursor: pointer; }
-        .next { right: 0; } .prev { left: 0; }
-
-        /* Details */
-        .details { padding: 15px; text-align: center; }
-        .p-name { font-weight: bold; font-size: 18px; margin-bottom: 5px; }
-        .p-rating { color: #ff9f00; font-size: 14px; margin-bottom: 8px; }
-        .p-price { font-size: 20px; color: #d32f2f; font-weight: bold; margin-bottom: 15px; }
+        /* Order Modal (Popup) */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
+        .modal-content { background: white; margin: 10% auto; padding: 25px; width: 90%; max-width: 450px; border-radius: 15px; position: relative; }
+        .close { position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer; }
         
-        .order-btn { display: flex; align-items: center; justify-content: center; background: var(--whatsapp); color: white; text-decoration: none; padding: 10px; border-radius: 5px; font-weight: bold; gap: 8px; }
-        
-        footer { background: #333; color: white; text-align: center; padding: 20px; margin-top: 40px; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .confirm-btn { background: #28a745; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="nav-container">
-        <a href="#" class="logo">
-            <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png" alt="Logo">
-            <h2>Bharat Mart</h2>
-        </a>
-        <div class="search-box">
-            <input type="text" id="searchInput" onkeyup="searchProduct()" placeholder="Products search karein...">
-            <button>Search</button>
-        </div>
+    <div class="logo">
+        <img src="https://i.supaimg.com/9c514b60-d26f-438e-a1bd-d40d94621afc/24240f0b-de22-4ed1-af65-b9a7a612159b.png">
+        <span style="font-size: 22px; font-weight: bold; margin-left: 10px;">Bharat Mart</span>
     </div>
 </header>
 
-<div class="categories-bar">
-    <button class="cat-btn active" onclick="filterCat('all', this)">All</button>
-    <button class="cat-btn" onclick="filterCat('Mobiles', this)">Mobiles</button>
-    <button class="cat-btn" onclick="filterCat('Fashion', this)">Fashion</button>
-    <button class="cat-btn" onclick="filterCat('Electronics', this)">Electronics</button>
-    <button class="cat-btn" onclick="filterCat('Home', this)">Home</button>
-</div>
-
 <div class="container">
-    <div class="grid" id="productGrid">
-        
-        <div class="card" data-category="Mobiles">
-            <div class="slider-box" id="s1">
-                <img src="https://via.placeholder.com/300x220?text=Mobile+Front" class="slide active">
-                <img src="https://via.placeholder.com/300x220?text=Mobile+Back" class="slide">
-                <img src="https://via.placeholder.com/300x220?text=Mobile+Box" class="slide">
-                <button class="s-btn prev" onclick="moveSlide(-1, 's1')">&#10094;</button>
-                <button class="s-btn next" onclick="moveSlide(1, 's1')">&#10095;</button>
-            </div>
-            <div class="details">
-                <p class="p-name">Realme Narzo</p>
-                <p class="p-rating">★★★★☆ (4.2)</p>
-                <p class="p-price">₹12,499</p>
-                <a href="https://wa.me/917348698707?text=Order: Realme Narzo" class="order-btn">Order on WhatsApp</a>
-            </div>
-        </div>
+    <div class="card">
+        <img src="https://via.placeholder.com/300x200?text=Smartphone">
+        <h3>Premium Smartphone</h3>
+        <p style="color: #ff9f00;">★★★★☆ (4.2)</p>
+        <p style="font-size: 20px; font-weight: bold;">₹14,999</p>
+        <button class="buy-btn" onclick="openOrder('Premium Smartphone', '₹14,999')">Order Karein</button>
+    </div>
 
-        <div class="card" data-category="Fashion">
-            <div class="slider-box" id="s2">
-                <img src="https://via.placeholder.com/300x220?text=Shirt+Blue" class="slide active">
-                <img src="https://via.placeholder.com/300x220?text=Shirt+Red" class="slide">
-                <button class="s-btn prev" onclick="moveSlide(-1, 's2')">&#10094;</button>
-                <button class="s-btn next" onclick="moveSlide(1, 's2')">&#10095;</button>
-            </div>
-            <div class="details">
-                <p class="p-name">Cotton Casual Shirt</p>
-                <p class="p-rating">★★★★★ (5.0)</p>
-                <p class="p-price">₹899</p>
-                <a href="https://wa.me/917348698707?text=Order: Cotton Shirt" class="order-btn">Order on WhatsApp</a>
-            </div>
-        </div>
-
+    <div class="card">
+        <img src="https://via.placeholder.com/300x200?text=Headphones">
+        <h3>Wireless Headphones</h3>
+        <p style="color: #ff9f00;">★★★★★ (5.0)</p>
+        <p style="font-size: 20px; font-weight: bold;">₹1,999</p>
+        <button class="buy-btn" onclick="openOrder('Wireless Headphones', '₹1,999')">Order Karein</button>
     </div>
 </div>
 
-<footer>
-    <p>&copy; 2026 Bharat Mart | WhatsApp: 7348698707</p>
-</footer>
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeOrder()">&times;</span>
+        <h2 style="color: var(--primary);">Checkout</h2>
+        <hr><br>
+        <p id="selectedItem" style="font-weight: bold;"></p>
+        <br>
+        <div class="form-group">
+            <label>Aapka Naam:</label>
+            <input type="text" id="custName" placeholder="Pura naam likhein">
+        </div>
+        <div class="form-group">
+            <label>Mobile Number:</label>
+            <input type="tel" id="custPhone" placeholder="10 digit number">
+        </div>
+        <div class="form-group">
+            <label>Delivery Address:</label>
+            <textarea id="custAddress" rows="3" placeholder="Pura pata likhein (City, Pincode ke sath)"></textarea>
+        </div>
+        <button class="confirm-btn" onclick="confirmOrder()">Order Confirm Karein</button>
+    </div>
+</div>
 
 <script>
-    // Slider Logic
-    function moveSlide(step, id) {
-        let box = document.getElementById(id);
-        let slides = box.getElementsByClassName('slide');
-        let activeIdx = 0;
-        for(let i=0; i<slides.length; i++) {
-            if(slides[i].classList.contains('active')) {
-                activeIdx = i;
-                slides[i].classList.remove('active');
-            }
+    let currentProduct = "";
+    let currentPrice = "";
+
+    function openOrder(name, price) {
+        currentProduct = name;
+        currentPrice = price;
+        document.getElementById('selectedItem').innerText = "Product: " + name + " (" + price + ")";
+        document.getElementById('orderModal').style.display = "block";
+    }
+
+    function closeOrder() {
+        document.getElementById('orderModal').style.display = "none";
+    }
+
+    function confirmOrder() {
+        let name = document.getElementById('custName').value;
+        let phone = document.getElementById('custPhone').value;
+        let address = document.getElementById('custAddress').value;
+
+        if(name == "" || phone == "" || address == "") {
+            alert("Kripya saari details bharein!");
+            return;
         }
-        let nextIdx = (activeIdx + step + slides.length) % slides.length;
-        slides[nextIdx].classList.add('active');
-    }
 
-    // Category Filter Logic
-    function filterCat(cat, btn) {
-        let cards = document.querySelectorAll('.card');
-        let btns = document.querySelectorAll('.cat-btn');
-        
-        btns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        // Final Message for WhatsApp
+        let message = `*Naya Order - Bharat Mart*%0A` +
+                      `--------------------------%0A` +
+                      `*Product:* ${currentProduct}%0A` +
+                      `*Price:* ${currentPrice}%0A%0A` +
+                      `*Customer Details:*%0A` +
+                      `Name: ${name}%0A` +
+                      `Phone: ${phone}%0A` +
+                      `Address: ${address}%0A` +
+                      `--------------------------%0A` +
+                      `Kripya jaldi deliver karein!`;
 
-        cards.forEach(card => {
-            if(cat === 'all' || card.getAttribute('data-category') === cat) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    }
-
-    // Search Logic
-    function searchProduct() {
-        let input = document.getElementById('searchInput').value.toLowerCase();
-        let cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            let name = card.querySelector('.p-name').innerText.toLowerCase();
-            if(name.includes(input)) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
+        // Send to your WhatsApp number 7348698707
+        window.open(`https://wa.me/917348698707?text=${message}`, '_blank');
+        closeOrder();
     }
 </script>
 

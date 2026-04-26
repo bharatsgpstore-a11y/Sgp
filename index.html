@@ -1,56 +1,53 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mart | Advanced Store</title>
+    <title>Bharat Mart | Flipkart Style</title>
     <style>
-        :root { --primary: #004aad; --accent: #ff9f00; --cart: #2874f0; --white: #fff; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f1f3f6; color: #333; }
+        :root { --primary: #2874f0; --accent: #ff9f00; --text-light: #878787; }
+        body { font-family: 'Roboto', Arial, sans-serif; margin: 0; background: #f1f3f6; color: #212121; }
         
-        /* Header & Search */
+        /* Header */
         header { background: var(--primary); padding: 12px; position: sticky; top: 0; z-index: 1000; color: white; }
-        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .search-box { background: white; border-radius: 4px; padding: 10px; display: flex; align-items: center; }
-        .search-box input { border: none; outline: none; width: 100%; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .search-container { background: white; border-radius: 2px; padding: 8px; display: flex; align-items: center; }
+        .search-container input { width: 100%; border: none; outline: none; font-size: 14px; }
 
         /* Categories */
-        .cat-scroll { display: flex; overflow-x: auto; background: white; padding: 10px; gap: 15px; border-bottom: 1px solid #ddd; }
-        .cat-item { text-align: center; min-width: 65px; cursor: pointer; }
-        .cat-item img { width: 40px; height: 40px; border-radius: 50%; }
-        .cat-item span { font-size: 11px; display: block; font-weight: 500; }
+        .cat-box { background: white; display: flex; overflow-x: auto; padding: 10px 0; border-bottom: 1px solid #ddd; }
+        .cat-item { text-align: center; min-width: 80px; font-size: 12px; font-weight: 500; cursor: pointer; }
+        .cat-item img { width: 40px; height: 40px; margin-bottom: 4px; }
 
         /* Product Grid */
-        .grid { padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .card { background: white; padding: 10px; border-radius: 4px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .card img { width: 100%; height: 120px; object-fit: contain; cursor: pointer; }
-        .p-name { font-size: 12px; font-weight: 500; text-align: left; height: 32px; overflow: hidden; margin: 5px 0; }
-        .p-price { font-size: 14px; font-weight: bold; text-align: left; }
-        .p-old { font-size: 10px; color: #878787; text-decoration: line-through; }
+        .container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px; }
+        .p-card { background: white; padding: 10px; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        .p-card img { width: 100%; height: 140px; object-fit: contain; cursor: pointer; }
+        .p-name { font-size: 13px; height: 32px; overflow: hidden; margin: 8px 0; line-height: 1.3; }
+        .price-row { margin-bottom: 10px; }
+        .price { font-size: 16px; font-weight: bold; }
+        .old-price { font-size: 12px; color: var(--text-light); text-decoration: line-through; margin-left: 4px; }
 
-        /* Buttons */
-        .btn-row { display: flex; gap: 4px; margin-top: 8px; }
-        .btn-order { background: var(--accent); color: white; border: none; padding: 8px; flex: 1; border-radius: 2px; font-weight: bold; font-size: 11px; cursor: pointer; }
-        .btn-cart { background: var(--cart); color: white; border: none; padding: 8px; flex: 1; border-radius: 2px; font-weight: bold; font-size: 11px; cursor: pointer; }
+        .btn-group { display: flex; gap: 4px; }
+        .order-btn, .cart-btn { flex: 1; border: none; padding: 8px 0; font-size: 12px; font-weight: bold; color: white; border-radius: 2px; cursor: pointer; }
+        .order-btn { background: var(--accent); }
+        .cart-btn { background: #ff6417; }
 
-        /* Details Modal Styles */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-        .modal-content { background: white; width: 100%; height: 100%; overflow-y: auto; position: relative; }
-        .close-btn { position: fixed; top: 15px; right: 15px; font-size: 30px; color: #333; z-index: 2001; cursor: pointer; }
-        .details-container { padding: 20px; }
-        .details-img { width: 100%; height: 300px; object-fit: contain; }
-        
-        /* Table Styling Like Video */
-        .highlights-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .highlights-table tr { border-bottom: 1px solid #eee; }
-        .highlights-table td { padding: 10px 0; font-size: 13px; }
-        .label { color: #878787; width: 40%; }
-        .value { color: #212121; font-weight: 500; }
+        /* Modals */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: flex-end; }
+        .modal-content { background: white; width: 100%; border-radius: 12px 12px 0 0; max-height: 85vh; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        .close-btn { float: right; font-size: 24px; cursor: pointer; color: #666; }
 
-        .similar-section { margin-top: 25px; }
-        .similar-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; }
-        .similar-card { min-width: 120px; background: #fff; padding: 8px; border: 1px solid #eee; }
-        .similar-card img { width: 100px; height: 100px; object-fit: contain; }
+        /* Detail Styling */
+        .detail-section { margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
+        .detail-title { font-weight: bold; font-size: 16px; margin-bottom: 10px; }
+        .highlight-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f9f9f9; font-size: 14px; }
+        .highlight-label { color: var(--text-light); width: 40%; }
+        .highlight-value { width: 55%; font-weight: 500; }
+
+        /* Menu Modal Styling */
+        .menu-modal { align-items: center; }
+        .menu-content { width: 90%; max-width: 400px; border-radius: 8px; }
     </style>
 </head>
 <body>
@@ -58,24 +55,26 @@
 <header>
     <div class="header-top">
         <div style="font-size: 18px; font-weight: bold;">Bharat Mart</div>
-        <div style="display: flex; gap: 15px;">
-            <span onclick="openCart()" style="cursor:pointer;">🛒 <span id="cartCount">0</span></span>
-            <span onclick="openMenu()" style="cursor:pointer; font-size: 20px;">⋮</span>
+        <div style="display: flex; gap: 18px; align-items: center;">
+            <div onclick="openCart()" style="position: relative; cursor: pointer;">
+                🛒 <span id="cartCount" style="background: #ff1212; color: white; font-size: 10px; padding: 1px 4px; border-radius: 50%; position: absolute; top: -10px; right: -10px;">0</span>
+            </div>
+            <div style="font-size: 22px; cursor: pointer;" onclick="openMenu()">⋮</div>
         </div>
     </div>
-    <div class="search-box">
-        <input type="text" onkeyup="searchProduct()" id="searchInput" placeholder="Search for products...">
-        <span>🔍</span>
+    <div class="search-container">
+        <input type="text" id="searchInput" onkeyup="searchFn()" placeholder="Mobiles, Fashion, Electronics...">
     </div>
 </header>
 
-<div class="cat-scroll">
+<div class="cat-box">
     <div class="cat-item" onclick="filter('all')"><img src="https://cdn-icons-png.flaticon.com/512/1041/1041888.png"><span>Sabhi</span></div>
     <div class="cat-item" onclick="filter('Mobiles')"><img src="https://cdn-icons-png.flaticon.com/512/644/644458.png"><span>Mobiles</span></div>
-    <div class="cat-item" onclick="filter('Home')"><img src="https://cdn-icons-png.flaticon.com/512/619/619153.png"><span>Home</span></div>
+    <div class="cat-item" onclick="filter('Fashion')"><img src="https://cdn-icons-png.flaticon.com/512/3050/3050239.png"><span>Fashion</span></div>
+    <div class="cat-item" onclick="filter('Electronics')"><img src="https://cdn-icons-png.flaticon.com/512/3659/3659899.png"><span>Electronics</span></div>
 </div>
 
-<div class="grid" id="productGrid"></div>
+<div class="container" id="productGrid"></div>
 
 <div id="detailsModal" class="modal">
     <div class="modal-content">
@@ -84,52 +83,74 @@
     </div>
 </div>
 
+<div id="menuModal" class="modal menu-modal">
+    <div class="modal-content menu-content">
+        <span class="close-btn" onclick="closeModal('menuModal')">&times;</span>
+        <h3 style="color: var(--primary);">Help & Requests</h3>
+        <p style="font-size: 12px; color: #666;">Jo item nahi mil raha yahan btaiye:</p>
+        <input type="text" id="reqItem" placeholder="Product ka naam...">
+        <textarea id="complaint" rows="3" style="width:100%; margin-top:10px; padding:10px;" placeholder="Shikayat ya Feedback..."></textarea>
+        <button class="order-btn" style="width:100%; margin-top:15px; padding:12px;" onclick="sendServiceReq()">Submit to Bharat Mart</button>
+    </div>
+</div>
+
 <script>
     const sheetDB_URL = 'https://sheetdb.io/api/v1/wk3op4cmzg9hu';
 
+    // Advanced Product Data for Details List
     const products = [
         { 
-            name: "High Pressure Water Gun Nozzle", 
-            cat: "Home", 
-            price: 139, 
-            old: 699, 
-            img: "https://m.media-amazon.com/images/I/61NfXpM0HCL._SX450_.jpg",
-            highlights: {
-                "Sales Package": "1 Washing Water Gun, 2 Connectors",
-                "Built-in filter": "Yes",
-                "Adjustable Nozzle": "Yes",
-                "Color": "Black",
-                "Model Number": "HP-990"
-            }
+            name: "Realme Narzo N55 (6GB RAM, 128GB)", 
+            cat: "Mobiles", price: 10999, old: 14999, 
+            img: "https://m.media-amazon.com/images/I/41Sc4S9j-rL._SX300_SY300_QL70_FMwebp_.jpg",
+            details: [
+                {label: "Display", value: "6.72 inch Full HD+"},
+                {label: "Camera", value: "64MP + 2MP | 8MP Front"},
+                {label: "Processor", value: "MediaTek Helio G88"},
+                {label: "Battery", value: "5000 mAh"}
+            ]
         },
         { 
-            name: "Google Pixel 8 Pro (256GB)", 
-            cat: "Mobiles", 
-            price: 110999, 
-            old: 121999, 
-            img: "https://m.media-amazon.com/images/I/41Sc4S9j-rL._SX300_SY300_QL70_FMwebp_.jpg",
-            highlights: {
-                "RAM": "12 GB",
-                "Storage": "256 GB",
-                "Battery": "5050 mAh",
-                "Camera": "50MP + 48MP",
-                "Display": "6.7 inch"
-            }
+            name: "Sony Bravia 4K Ultra HD LED TV", 
+            cat: "Electronics", price: 42990, old: 59990, 
+            img: "https://m.media-amazon.com/images/I/71YvRreH+pL._SX450_.jpg",
+            details: [
+                {label: "Resolution", value: "Ultra HD (4K) 3840 x 2160"},
+                {label: "Sound Output", value: "20 W"},
+                {label: "Refresh Rate", value: "60 Hz"},
+                {label: "Operating System", value: "Google TV"}
+            ]
+        },
+        { 
+            name: "Cotton Formal Slim Fit Shirt", 
+            cat: "Fashion", price: 899, old: 1999, 
+            img: "https://m.media-amazon.com/images/I/719f+47v3LL._AC_UL320_.jpg",
+            details: [
+                {label: "Fabric", value: "Pure Cotton"},
+                {label: "Fit", value: "Slim Fit"},
+                {label: "Sleeve", value: "Full Sleeve"},
+                {label: "Pattern", value: "Solid Color"}
+            ]
         }
     ];
+
+    let cartCount = 0;
 
     function loadProducts(data) {
         const grid = document.getElementById('productGrid');
         grid.innerHTML = "";
         data.forEach((p, index) => {
             grid.innerHTML += `
-                <div class="card">
+                <div class="p-card">
                     <img src="${p.img}" onclick="showFullDetails(${index})">
                     <div class="p-name">${p.name}</div>
-                    <div class="p-price">₹${p.price} <span class="p-old">₹${p.old}</span></div>
-                    <div class="btn-row">
-                        <button class="btn-order" onclick="openOrderModal(${index})">Order</button>
-                        <button class="btn-cart" onclick="addToCart(${index})">Add 🛒</button>
+                    <div class="price-row">
+                        <span class="price">₹${p.price.toLocaleString()}</span>
+                        <span class="old-price">₹${p.old.toLocaleString()}</span>
+                    </div>
+                    <div class="btn-group">
+                        <button class="order-btn" onclick="openOrder('${p.name}', ${p.price})">Order</button>
+                        <button class="cart-btn" onclick="addToCart()">Add 🛒</button>
                     </div>
                 </div>`;
         });
@@ -137,37 +158,45 @@
 
     function showFullDetails(index) {
         const p = products[index];
-        let tableRows = "";
-        for (let key in p.highlights) {
-            tableRows += `<tr><td class="label">${key}</td><td class="value">${p.highlights[key]}</td></tr>`;
-        }
+        let detailHtml = `
+            <img src="${p.img}" style="width:100%; height:250px; object-fit:contain; margin-bottom:15px;">
+            <div style="font-size: 18px; font-weight: bold;">${p.name}</div>
+            <div style="margin: 10px 0;">
+                <span style="font-size: 22px; font-weight: bold;">₹${p.price.toLocaleString()}</span>
+                <span style="color:#878787; text-decoration:line-through; margin-left:8px;">₹${p.old.toLocaleString()}</span>
+                <span style="color:#388e3c; font-size:14px; font-weight:bold; margin-left:8px;">${Math.round((p.old-p.price)/p.old*100)}% off</span>
+            </div>
+            
+            <div class="detail-section">
+                <div class="detail-title">Product Highlights</div>`;
+        
+        p.details.forEach(d => {
+            detailHtml += `
+                <div class="highlight-item">
+                    <div class="highlight-label">${d.label}</div>
+                    <div class="highlight-value">${d.value}</div>
+                </div>`;
+        });
 
-        document.getElementById('detailsBody').innerHTML = `
-            <div class="details-container">
-                <img src="${p.img}" class="details-img">
-                <h2 style="font-size:18px;">${p.name}</h2>
-                <div style="font-size:22px; font-weight:bold; color:#388e3c;">₹${p.price}</div>
-                
-                <h3 style="margin-top:20px; border-bottom:2px solid var(--primary); padding-bottom:5px;">Product Highlights</h3>
-                <table class="highlights-table">${tableRows}</table>
-
-                <div class="similar-section">
-                    <h3>Similar Products</h3>
-                    <div class="similar-scroll">
-                        ${products.map(s => `<div class="similar-card"><img src="${s.img}"><div style="font-size:11px;">${s.name}</div></div>`).join("")}
-                    </div>
-                </div>
-
-                <button class="btn-order" style="width:100%; margin-top:20px; padding:15px; font-size:16px;" onclick="openOrderModal(${index})">Confirm Order</button>
-            </div>`;
-        document.getElementById('detailsModal').style.display = 'block';
+        detailHtml += `</div>
+            <button class="order-btn" style="width:100%; padding:15px; margin-top:20px; font-size:16px;" 
+                    onclick="openOrder('${p.name}', ${p.price})">Abhi Order Karein</button>`;
+        
+        document.getElementById('detailsBody').innerHTML = detailHtml;
+        document.getElementById('detailsModal').style.display = 'flex';
     }
 
-    // Modal & Utility Functions
+    function addToCart() {
+        cartCount++;
+        document.getElementById('cartCount').innerText = cartCount;
+    }
+
+    function openMenu() { document.getElementById('menuModal').style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    // ... (Old order logic and search logic will go here - same as before)
     window.onload = () => loadProducts(products);
-    
-    // ... (Old search and cart functions can be added here)
 </script>
+
 </body>
 </html>

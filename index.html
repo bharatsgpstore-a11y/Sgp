@@ -236,4 +236,56 @@
         fetch(sheetDB_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-    
+            body: JSON.stringify(orderData)
+        })
+        .then(() => {
+            alert("Order Successful! Google Sheet mein check karein.");
+            location.reload();
+        })
+        .catch(() => alert("Error in sending data!"));
+    }
+
+    function sendServiceToSheet() {
+        const r = document.getElementById('reqItem').value;
+        const c = document.getElementById('complaint').value;
+        const data = { "data": [{ "Timestamp": new Date().toLocaleString(), "ProductName": "REQ: "+r, "CustomerName": "COMPLAINT: "+c }]};
+        fetch(sheetDB_URL, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) })
+        .then(() => { alert("Thank you! Feedback sent."); closeModal('menuModal'); });
+    }
+
+    // Modal & Other functions
+    function openOrder(name, price) {
+        currentItem = { name, price };
+        document.getElementById('orderItemTitle').innerText = name + " (₹" + price + ")";
+        document.getElementById('orderModal').style.display = 'flex';
+    }
+    function checkoutFromCart() {
+        let total = cart.reduce((sum, item) => sum + item.price, 0);
+        let names = cart.map(i => i.name).join(", ");
+        openOrder("Cart: " + names, total);
+        closeModal('cartModal');
+    }
+    function openCart() {
+        const list = document.getElementById('cartItemsList');
+        const footer = document.getElementById('cartFooter');
+        list.innerHTML = cart.length === 0 ? "<p>Cart Khali Hai</p>" : "";
+        let total = 0;
+        cart.forEach((item, i) => {
+            total += item.price;
+            list.innerHTML += `<div class="cart-item-row"><img src="${item.img}"><div><b>${item.name}</b><br>₹${item.price}</div></div>`;
+        });
+        document.getElementById('cartTotal').innerText = total;
+        footer.style.display = cart.length > 0 ? "block" : "none";
+        document.getElementById('cartModal').style.display = 'flex';
+    }
+    function openMenu() { document.getElementById('menuModal').style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function filter(cat) { loadProducts(cat === 'all' ? products : products.filter(p => p.cat === cat)); }
+    function searchFn() {
+        let v = document.getElementById('searchInput').value.toLowerCase();
+        loadProducts(products.filter(p => p.name.toLowerCase().includes(v)));
+    }
+    window.onload = () => loadProducts(products);
+</script>
+</body>
+</html>

@@ -1,65 +1,69 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mart | Flipkart Style</title>
+    <title>Bharat Mart | Professional Store</title>
     <style>
-        :root { --primary: #2874f0; --accent: #ff9f00; --text-light: #878787; }
-        body { font-family: 'Roboto', Arial, sans-serif; margin: 0; background: #f1f3f6; color: #212121; }
+        :root { --primary: #2874f0; --accent: #ff9f00; --cart: #fb641b; --white: #fff; --text-gray: #878787; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; background: #f1f3f6; color: #212121; }
         
         /* Header */
-        header { background: var(--primary); padding: 12px; position: sticky; top: 0; z-index: 1000; color: white; }
-        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .search-container { background: white; border-radius: 2px; padding: 8px; display: flex; align-items: center; }
-        .search-container input { width: 100%; border: none; outline: none; font-size: 14px; }
+        header { background: var(--primary); padding: 12px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header-top { display: flex; justify-content: space-between; align-items: center; color: white; margin-bottom: 10px; }
+        .menu-btn { font-size: 24px; cursor: pointer; }
+        .search-container { background: white; display: flex; border-radius: 2px; padding: 2px 10px; align-items: center; }
+        .search-container input { width: 100%; border: none; padding: 8px; outline: none; font-size: 14px; }
 
         /* Categories */
-        .cat-box { background: white; display: flex; overflow-x: auto; padding: 10px 0; border-bottom: 1px solid #ddd; }
-        .cat-item { text-align: center; min-width: 80px; font-size: 12px; font-weight: 500; cursor: pointer; }
-        .cat-item img { width: 40px; height: 40px; margin-bottom: 4px; }
+        .cat-box { background: white; display: flex; overflow-x: auto; padding: 12px 5px; gap: 15px; border-bottom: 1px solid #ddd; }
+        .cat-item { text-align: center; min-width: 70px; cursor: pointer; }
+        .cat-item img { width: 45px; height: 45px; margin-bottom: 5px; }
+        .cat-item span { font-size: 12px; font-weight: 500; display: block; }
 
         /* Product Grid */
-        .container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px; }
-        .p-card { background: white; padding: 10px; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        .container { padding: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .p-card { background: white; border-radius: 2px; padding: 10px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
         .p-card img { width: 100%; height: 140px; object-fit: contain; cursor: pointer; }
-        .p-name { font-size: 13px; height: 32px; overflow: hidden; margin: 8px 0; line-height: 1.3; }
-        .price-row { margin-bottom: 10px; }
+        .p-name { font-size: 13px; height: 34px; overflow: hidden; margin: 8px 0; text-align: left; line-height: 1.3; }
+        .price-row { text-align: left; margin-bottom: 10px; }
         .price { font-size: 16px; font-weight: bold; }
-        .old-price { font-size: 12px; color: var(--text-light); text-decoration: line-through; margin-left: 4px; }
+        .old-price { font-size: 12px; color: var(--text-gray); text-decoration: line-through; margin-left: 5px; }
 
         .btn-group { display: flex; gap: 4px; }
-        .order-btn, .cart-btn { flex: 1; border: none; padding: 8px 0; font-size: 12px; font-weight: bold; color: white; border-radius: 2px; cursor: pointer; }
-        .order-btn { background: var(--accent); }
-        .cart-btn { background: #ff6417; }
+        .order-btn { background: var(--accent); color: white; border: none; padding: 8px 0; border-radius: 2px; flex: 1; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .cart-btn { background: var(--cart); color: white; border: none; padding: 8px 0; border-radius: 2px; flex: 1; cursor: pointer; font-size: 11px; font-weight: bold; }
 
-        /* Modals */
+        /* Professional Details Modal */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: flex-end; }
-        .modal-content { background: white; width: 100%; border-radius: 12px 12px 0 0; max-height: 85vh; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .close-btn { float: right; font-size: 24px; cursor: pointer; color: #666; }
+        .modal-content { background: white; width: 100%; border-radius: 12px 12px 0 0; padding: 20px; box-sizing: border-box; max-height: 90vh; overflow-y: auto; position: relative; }
+        .close { position: absolute; right: 15px; top: 10px; font-size: 28px; cursor: pointer; color: #666; }
 
-        /* Detail Styling */
-        .detail-section { margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
-        .detail-title { font-weight: bold; font-size: 16px; margin-bottom: 10px; }
-        .highlight-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f9f9f9; font-size: 14px; }
-        .highlight-label { color: var(--text-light); width: 40%; }
-        .highlight-value { width: 55%; font-weight: 500; }
+        .detail-header { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        .detail-price { font-size: 22px; font-weight: bold; color: #000; margin: 10px 0; }
+        .section-title { font-size: 16px; font-weight: bold; margin: 20px 0 10px 0; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .highlight-row { display: flex; padding: 8px 0; border-bottom: 1px solid #f9f9f9; font-size: 14px; }
+        .h-label { color: var(--text-gray); width: 40%; }
+        .h-value { width: 60%; font-weight: 500; }
+        
+        /* Inputs & Buttons */
+        input[type="text"], input[type="tel"], textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; margin-top: 10px; }
+        .submit-btn { background: var(--primary); color: white; border: none; padding: 14px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 16px; }
 
-        /* Menu Modal Styling */
-        .menu-modal { align-items: center; }
-        .menu-content { width: 90%; max-width: 400px; border-radius: 8px; }
+        .cart-item-row { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #eee; padding: 10px 0; }
+        .cart-item-row img { width: 60px; height: 60px; object-fit: contain; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="header-top">
-        <div style="font-size: 18px; font-weight: bold;">Bharat Mart</div>
-        <div style="display: flex; gap: 18px; align-items: center;">
-            <div onclick="openCart()" style="position: relative; cursor: pointer;">
-                🛒 <span id="cartCount" style="background: #ff1212; color: white; font-size: 10px; padding: 1px 4px; border-radius: 50%; position: absolute; top: -10px; right: -10px;">0</span>
+        <div style="font-size: 20px; font-weight: bold;">Bharat Mart</div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <div onclick="openCart()" style="cursor: pointer; position: relative;">
+                🛒 <span id="cartCount" style="background: #ff1212; color: white; font-size: 10px; padding: 1px 5px; border-radius: 10px; position: absolute; top: -10px; right: -10px;">0</span>
             </div>
-            <div style="font-size: 22px; cursor: pointer;" onclick="openMenu()">⋮</div>
+            <div class="menu-btn" onclick="openMenu()">⋮</div>
         </div>
     </div>
     <div class="search-container">
@@ -78,63 +82,90 @@
 
 <div id="detailsModal" class="modal">
     <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('detailsModal')">&times;</span>
+        <span class="close" onclick="closeModal('detailsModal')">&times;</span>
         <div id="detailsBody"></div>
     </div>
 </div>
 
-<div id="menuModal" class="modal menu-modal">
-    <div class="modal-content menu-content">
-        <span class="close-btn" onclick="closeModal('menuModal')">&times;</span>
-        <h3 style="color: var(--primary);">Help & Requests</h3>
-        <p style="font-size: 12px; color: #666;">Jo item nahi mil raha yahan btaiye:</p>
-        <input type="text" id="reqItem" placeholder="Product ka naam...">
-        <textarea id="complaint" rows="3" style="width:100%; margin-top:10px; padding:10px;" placeholder="Shikayat ya Feedback..."></textarea>
-        <button class="order-btn" style="width:100%; margin-top:15px; padding:12px;" onclick="sendServiceReq()">Submit to Bharat Mart</button>
+<div id="cartModal" class="modal">
+    <div class="modal-content" style="border-radius: 0; height: 100vh;">
+        <span class="close" onclick="closeModal('cartModal')">&times;</span>
+        <h2 style="color: var(--primary);">My Cart</h2>
+        <div id="cartItemsList"></div>
+        <div id="cartFooter" style="display:none; margin-top: 20px;">
+            <div style="font-size: 20px; font-weight: bold;">Total: ₹<span id="cartTotal">0</span></div>
+            <button class="submit-btn" style="background: var(--accent);" onclick="checkoutFromCart()">Place Order</button>
+        </div>
+    </div>
+</div>
+
+<div id="menuModal" class="modal" style="align-items: center;">
+    <div class="modal-content" style="width: 90%; border-radius: 8px;">
+        <span class="close" onclick="closeModal('menuModal')">&times;</span>
+        <h3>Support & Feedback</h3>
+        <input type="text" id="reqItem" placeholder="Product jo aapko chahiye...">
+        <textarea id="complaint" rows="3" placeholder="Apni shikayat likhein..."></textarea>
+        <button class="submit-btn" onclick="sendServiceToSheet()">Submit to Bharat Mart</button>
+    </div>
+</div>
+
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('orderModal')">&times;</span>
+        <h3>Delivery Details</h3>
+        <p id="orderItemTitle" style="background:#f9f9f9; padding:10px; font-weight:bold;"></p>
+        <input type="text" id="custName" placeholder="Pura Naam">
+        <input type="tel" id="custPhone" placeholder="Mobile Number">
+        <textarea id="custAddress" placeholder="Pura Address (Gali, Shehar, Pincode)"></textarea>
+        <button class="submit-btn" style="background: #28a745;" id="finalBtn" onclick="finalOrderToSheet()">Confirm Order</button>
     </div>
 </div>
 
 <script>
+    // Aapka SheetDB API Link
     const sheetDB_URL = 'https://sheetdb.io/api/v1/wk3op4cmzg9hu';
 
-    // Advanced Product Data for Details List
     const products = [
         { 
             name: "Realme Narzo N55 (6GB RAM, 128GB)", 
             cat: "Mobiles", price: 10999, old: 14999, 
             img: "https://m.media-amazon.com/images/I/41Sc4S9j-rL._SX300_SY300_QL70_FMwebp_.jpg",
-            details: [
-                {label: "Display", value: "6.72 inch Full HD+"},
-                {label: "Camera", value: "64MP + 2MP | 8MP Front"},
-                {label: "Processor", value: "MediaTek Helio G88"},
-                {label: "Battery", value: "5000 mAh"}
+            desc: "The Realme Narzo N55 features a stunning 6.72-inch 90Hz display and a powerful 64MP AI camera.",
+            highlights: [
+                {l: "RAM | ROM", v: "6 GB | 128 GB"},
+                {l: "Display", v: "17.07 cm (6.72 inch) FHD+"},
+                {l: "Camera", v: "64MP Rear | 8MP Front"},
+                {l: "Battery", v: "5000 mAh"}
             ]
         },
         { 
-            name: "Sony Bravia 4K Ultra HD LED TV", 
-            cat: "Electronics", price: 42990, old: 59990, 
+            name: "Sony Bravia Smart TV (32 inch)", 
+            cat: "Electronics", price: 24500, old: 32000, 
             img: "https://m.media-amazon.com/images/I/71YvRreH+pL._SX450_.jpg",
-            details: [
-                {label: "Resolution", value: "Ultra HD (4K) 3840 x 2160"},
-                {label: "Sound Output", value: "20 W"},
-                {label: "Refresh Rate", value: "60 Hz"},
-                {label: "Operating System", value: "Google TV"}
+            desc: "Experience true-to-life colors and clear sound with the Sony Bravia Google TV.",
+            highlights: [
+                {l: "Resolution", v: "HD Ready 1366 x 768"},
+                {l: "Sound", v: "20W Output | Dolby Audio"},
+                {l: "Smart TV", v: "Google TV | Netflix | Prime"},
+                {l: "Warranty", v: "1 Year Manufacturer Warranty"}
             ]
         },
         { 
-            name: "Cotton Formal Slim Fit Shirt", 
-            cat: "Fashion", price: 899, old: 1999, 
+            name: "Men Slim Fit Cotton Shirt", 
+            cat: "Fashion", price: 799, old: 1599, 
             img: "https://m.media-amazon.com/images/I/719f+47v3LL._AC_UL320_.jpg",
-            details: [
-                {label: "Fabric", value: "Pure Cotton"},
-                {label: "Fit", value: "Slim Fit"},
-                {label: "Sleeve", value: "Full Sleeve"},
-                {label: "Pattern", value: "Solid Color"}
+            desc: "Premium cotton formal shirt for a sharp look. Breathable fabric and perfect fit.",
+            highlights: [
+                {l: "Fabric", v: "100% Cotton"},
+                {l: "Fit", v: "Slim Fit"},
+                {l: "Sleeve", v: "Full Sleeves"},
+                {l: "Care", v: "Machine Wash"}
             ]
         }
     ];
 
-    let cartCount = 0;
+    let cart = [];
+    let currentItem = {};
 
     function loadProducts(data) {
         const grid = document.getElementById('productGrid');
@@ -142,7 +173,7 @@
         data.forEach((p, index) => {
             grid.innerHTML += `
                 <div class="p-card">
-                    <img src="${p.img}" onclick="showFullDetails(${index})">
+                    <img src="${p.img}" onclick="showProfessionalDetails(${index})">
                     <div class="p-name">${p.name}</div>
                     <div class="price-row">
                         <span class="price">₹${p.price.toLocaleString()}</span>
@@ -150,53 +181,59 @@
                     </div>
                     <div class="btn-group">
                         <button class="order-btn" onclick="openOrder('${p.name}', ${p.price})">Order</button>
-                        <button class="cart-btn" onclick="addToCart()">Add 🛒</button>
+                        <button class="cart-btn" onclick="addToCart(${index})">Add 🛒</button>
                     </div>
                 </div>`;
         });
     }
 
-    function showFullDetails(index) {
+    function showProfessionalDetails(index) {
         const p = products[index];
-        let detailHtml = `
-            <img src="${p.img}" style="width:100%; height:250px; object-fit:contain; margin-bottom:15px;">
-            <div style="font-size: 18px; font-weight: bold;">${p.name}</div>
-            <div style="margin: 10px 0;">
-                <span style="font-size: 22px; font-weight: bold;">₹${p.price.toLocaleString()}</span>
-                <span style="color:#878787; text-decoration:line-through; margin-left:8px;">₹${p.old.toLocaleString()}</span>
-                <span style="color:#388e3c; font-size:14px; font-weight:bold; margin-left:8px;">${Math.round((p.old-p.price)/p.old*100)}% off</span>
-            </div>
-            
-            <div class="detail-section">
-                <div class="detail-title">Product Highlights</div>`;
-        
-        p.details.forEach(d => {
-            detailHtml += `
-                <div class="highlight-item">
-                    <div class="highlight-label">${d.label}</div>
-                    <div class="highlight-value">${d.value}</div>
-                </div>`;
+        let h_html = "";
+        p.highlights.forEach(h => {
+            h_html += `<div class="highlight-row"><div class="h-label">${h.l}</div><div class="h-value">${h.v}</div></div>`;
         });
 
-        detailHtml += `</div>
-            <button class="order-btn" style="width:100%; padding:15px; margin-top:20px; font-size:16px;" 
-                    onclick="openOrder('${p.name}', ${p.price})">Abhi Order Karein</button>`;
-        
-        document.getElementById('detailsBody').innerHTML = detailHtml;
+        document.getElementById('detailsBody').innerHTML = `
+            <img src="${p.img}" style="width:100%; height:250px; object-fit:contain;">
+            <div class="detail-header">${p.name}</div>
+            <div class="detail-price">₹${p.price.toLocaleString()} <span style="color:#388e3c; font-size:14px;">${Math.round((p.old-p.price)/p.old*100)}% off</span></div>
+            <div class="section-title">Product Description</div>
+            <p style="font-size:14px; color:#555; line-height:1.5;">${p.desc}</p>
+            <div class="section-title">Product Highlights</div>
+            ${h_html}
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button class="cart-btn" style="padding:15px; font-size:16px;" onclick="addToCart(${index})">ADD TO CART</button>
+                <button class="order-btn" style="padding:15px; font-size:16px;" onclick="openOrder('${p.name}', ${p.price})">BUY NOW</button>
+            </div>
+        `;
         document.getElementById('detailsModal').style.display = 'flex';
     }
 
-    function addToCart() {
-        cartCount++;
-        document.getElementById('cartCount').innerText = cartCount;
+    function addToCart(index) {
+        cart.push(products[index]);
+        document.getElementById('cartCount').innerText = cart.length;
+        alert("Samaan cart mein joda gaya!");
     }
 
-    function openMenu() { document.getElementById('menuModal').style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function finalOrderToSheet() {
+        const n = document.getElementById('custName').value;
+        const p = document.getElementById('custPhone').value;
+        const a = document.getElementById('custAddress').value;
+        if(!n || !p || !a) return alert("Puri details bharein!");
 
-    // ... (Old order logic and search logic will go here - same as before)
-    window.onload = () => loadProducts(products);
-</script>
+        document.getElementById('finalBtn').innerText = "Processing...";
 
-</body>
-</html>
+        const orderData = { "data": [{
+            "Timestamp": new Date().toLocaleString(),
+            "ProductName": currentItem.name,
+            "Price": currentItem.price,
+            "CustomerName": n,
+            "Phone": p,
+            "Address": a
+        }]};
+
+        fetch(sheetDB_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+    

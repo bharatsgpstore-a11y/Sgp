@@ -3,224 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Bharat Mall | Professional Store</title>
+    <title>Bharat Mall | Final Pro</title>
     <style>
-        :root { --blue: #2874f0; --orange: #fb641b; --yellow: #ff9f00; --light: #f1f3f6; --text: #212121; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: var(--light); color: var(--text); -webkit-tap-highlight-color: transparent; }
+        :root { --blue: #2874f0; --orange: #fb641b; --yellow: #ff9f00; --bg: #f1f3f6; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: var(--bg); overflow-x: hidden; }
         
-        /* Utility Classes */
-        .hide { display: none !important; }
-        .btn { border: none; font-weight: bold; cursor: pointer; border-radius: 2px; }
+        /* Login Screen */
+        #loginPage { position: fixed; inset: 0; background: var(--blue); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-box { background: white; width: 100%; max-width: 350px; border-radius: 8px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; }
         
-        /* 1. Login Screen */
-        #loginScreen { position: fixed; inset: 0; background: var(--blue); z-index: 5000; display: flex; align-items: flex-end; }
-        .login-panel { background: white; width: 100%; height: 70%; border-radius: 15px 15px 0 0; padding: 25px; box-sizing: border-box; transition: 0.3s; }
-        .login-panel h2 { color: var(--blue); font-size: 24px; margin-bottom: 5px; }
-        .login-input { width: 100%; border: none; border-bottom: 2px solid #ddd; padding: 12px 0; font-size: 16px; margin: 20px 0; outline: none; }
-        .login-input:focus { border-bottom-color: var(--blue); }
-
-        /* 2. Header & Search */
+        /* App Layout */
         header { background: var(--blue); color: white; padding: 12px; position: sticky; top: 0; z-index: 1000; }
-        .search-row { background: white; border-radius: 4px; display: flex; padding: 0 10px; margin-top: 10px; align-items: center; }
-        .search-row input { width: 100%; border: none; padding: 10px; outline: none; font-size: 14px; }
+        .search-container { background: white; border-radius: 2px; display: flex; margin-top: 10px; padding: 5px 10px; }
+        .search-container input { border: none; width: 100%; outline: none; padding: 5px; font-size: 14px; }
 
-        /* 3. Categories */
-        .cat-bar { background: white; display: flex; overflow-x: auto; padding: 12px; gap: 15px; border-bottom: 1px solid #ddd; }
-        .cat-item { text-align: center; min-width: 65px; font-size: 11px; font-weight: 500; }
-        .cat-item img { width: 45px; height: 45px; border-radius: 50%; margin-bottom: 4px; background: #f9f9f9; }
+        /* Products */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 5px; }
+        .card { background: white; padding: 10px; display: flex; flex-direction: column; cursor: pointer; }
+        .card img { width: 100%; height: 140px; object-fit: contain; background: #f9f9f9; }
+        .card .title { font-size: 13px; font-weight: 500; margin: 8px 0; height: 32px; overflow: hidden; }
+        .card .price { font-weight: bold; font-size: 16px; color: #212121; }
 
-        /* 4. Product List */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; }
-        .card { background: white; padding: 10px; display: flex; flex-direction: column; }
-        .card img { width: 100%; height: 150px; object-fit: contain; }
-        .card .title { font-size: 13px; margin: 8px 0; height: 32px; overflow: hidden; font-weight: 500; }
-        .card .price { font-weight: bold; font-size: 16px; }
-
-        /* 5. Screens (Pages) */
-        .screen { display: none; position: fixed; inset: 0; background: white; z-index: 2000; overflow-y: auto; padding-bottom: 80px; }
-        .screen-active { display: block; }
-        .nav-header { background: var(--blue); color: white; padding: 15px; font-weight: bold; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; z-index: 2100; }
-
-        /* Details & Slider */
-        .slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; height: 350px; background: #fff; }
-        .slider img { width: 100%; height: 350px; object-fit: contain; flex-shrink: 0; scroll-snap-align: center; }
+        /* Full Detail Page */
+        .page { display: none; position: fixed; inset: 0; background: white; z-index: 5000; overflow-y: auto; padding-bottom: 70px; }
+        .active-page { display: block !important; }
+        .nav-bar { background: var(--blue); color: white; padding: 15px; font-weight: bold; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; }
         
-        /* Footer Buttons */
-        .footer-nav { position: fixed; bottom: 0; width: 100%; display: flex; height: 55px; z-index: 3000; background: white; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); }
-        .f-btn { flex: 1; border: none; font-weight: bold; font-size: 15px; cursor: pointer; }
+        .image-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; height: 300px; border-bottom: 1px solid #eee; }
+        .image-slider img { width: 100%; flex-shrink: 0; scroll-snap-align: center; object-fit: contain; }
 
-        /* Success Screen */
-        .success-box { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
-        .tick-circle { width: 80px; height: 80px; background: #28a745; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 50px; margin-bottom: 20px; }
+        .details-content { padding: 15px; }
+        .price-big { font-size: 24px; font-weight: bold; color: #388e3c; }
+        
+        /* Footer */
+        .bottom-bar { position: fixed; bottom: 0; width: 100%; display: flex; height: 55px; z-index: 6000; border-top: 1px solid #ddd; }
+        .bar-btn { flex: 1; border: none; font-weight: bold; font-size: 15px; cursor: pointer; }
 
-        /* Form Controls */
-        .form-box { padding: 20px; }
-        .form-box input, .form-box textarea, .form-box select { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        input.form-ctrl, textarea.form-ctrl { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .btn-main { background: var(--orange); color: white; border: none; padding: 15px; width: 100%; font-weight: bold; border-radius: 4px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div id="loginScreen">
-    <div class="login-panel">
-        <h2>Welcome to Bharat Mall</h2>
-        <p style="color:#666">Sign in to get started</p>
-        <input type="tel" id="mobInput" class="login-input" placeholder="Enter Mobile Number">
-        <div id="otpBox" class="hide">
-            <input type="number" id="otpInput" class="login-input" placeholder="Enter 4 Digit OTP (1234)">
-            <button class="btn" style="width:100%; background:var(--orange); color:white; padding:15px;" onclick="verify()">VERIFY</button>
-        </div>
-        <button id="contBtn" class="btn" style="width:100%; background:var(--orange); color:white; padding:15px;" onclick="getOTP()">CONTINUE</button>
+<div id="loginPage">
+    <div class="login-box">
+        <h2 style="color:var(--blue)">Bharat Mall</h2>
+        <input type="tel" id="userMob" class="form-ctrl" placeholder="Enter Mobile Number">
+        <input type="password" id="userOtp" class="form-ctrl" placeholder="Enter OTP (1234)">
+        <button class="btn-main" onclick="verifyLogin()">LOGIN</button>
     </div>
 </div>
 
-<div id="mainApp" class="hide">
+<div id="homeScreen" style="display:none">
     <header>
         <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:20px; font-weight:bold; letter-spacing:1px;">Bharat Mall</span>
-            <span>🛒</span>
+            <span style="font-size:20px; font-weight:bold;">Bharat Mall</span>
+            <div style="position:relative">🛒<span id="cartBadg" style="position:absolute; top:-8px; right:-8px; background:red; color:white; border-radius:50%; padding:2px 5px; font-size:10px;">0</span></div>
         </div>
-        <div class="search-row">
-            <input type="text" placeholder="Search for Products..." oninput="search(this.value)">
+        <div class="search-container">
+            <input type="text" placeholder="Search for Products..." oninput="appSearch(this.value)">
         </div>
     </header>
-
-    <div class="cat-bar">
-        <div class="cat-item" onclick="filter('all')"><img src="https://cdn-icons-png.flaticon.com/512/1041/1041888.png"><div>All</div></div>
-        <div class="cat-item" onclick="filter('Mobiles')"><img src="https://cdn-icons-png.flaticon.com/512/644/644458.png"><div>Mobiles</div></div>
-        <div class="cat-item" onclick="filter('Fashion')"><img src="https://cdn-icons-png.flaticon.com/512/3050/3050239.png"><div>Fashion</div></div>
-        <div class="cat-item" onclick="filter('Electronics')"><img src="https://cdn-icons-png.flaticon.com/512/3659/3659899.png"><div>Electronics</div></div>
-    </div>
-
     <div class="grid" id="productGrid"></div>
 </div>
 
-<div id="pPage" class="screen">
-    <div class="nav-header"><span onclick="closeScr('pPage')">←</span> Bharat Mall Item</div>
-    <div id="pContent"></div>
-    <div class="footer-nav">
-        <button class="f-btn" style="background:#fff; color:#000;" onclick="alert('Added to Cart')">ADD TO CART</button>
-        <button class="f-btn" style="background:var(--yellow); color:#000;" onclick="openScr('addrPage')">BUY NOW</button>
+<div id="detailPage" class="page">
+    <div class="nav-bar"><span onclick="closeScr('detailPage')">←</span> Product Details</div>
+    <div id="pView"></div>
+    <div class="bottom-bar">
+        <button class="bar-btn" style="background:white;" onclick="updateCart()">ADD TO CART</button>
+        <button class="bar-btn" style="background:var(--yellow);" onclick="openScr('addrPage')">BUY NOW</button>
     </div>
 </div>
 
-<div id="addrPage" class="screen">
-    <div class="nav-header"><span onclick="closeScr('addrPage')">←</span> Add Delivery Address</div>
-    <div class="form-box">
-        <input type="text" id="name" placeholder="Full Name (Required)*">
-        <input type="tel" id="phone" placeholder="10-digit Mobile Number*">
-        <input type="text" id="pin" placeholder="Pincode*">
-        <textarea id="area" rows="3" placeholder="Area, Colony, Road Name*"></textarea>
-        <button class="btn" style="width:100%; background:var(--orange); color:white; padding:18px;" onclick="openScr('payPage')">DELIVER HERE</button>
+<div id="addrPage" class="page">
+    <div class="nav-bar"><span onclick="closeScr('addrPage')">←</span> Delivery Address</div>
+    <div style="padding:20px">
+        <input type="text" id="cName" class="form-ctrl" placeholder="Full Name">
+        <input type="tel" id="cMob" class="form-ctrl" placeholder="Mobile Number">
+        <textarea id="cAddr" class="form-ctrl" rows="4" placeholder="Full Address with Pincode"></textarea>
+        <button class="btn-main" onclick="openScr('payPage')">CONTINUE</button>
     </div>
 </div>
 
-<div id="payPage" class="screen">
-    <div class="nav-header"><span onclick="closeScr('payPage')">←</span> Payment Options</div>
-    <div class="form-box">
-        <h3>Choose Payment Method</h3>
-        <select id="method">
-            <option value="COD">Cash on Delivery</option>
-            <option value="UPI">UPI / Google Pay / PhonePe</option>
-            <option value="Card">Debit / Credit Card</option>
-        </select>
-        <div id="finalAmt" style="font-size:20px; font-weight:bold; margin:30px 0;"></div>
-        <button id="orderBtn" class="btn" style="width:100%; background:var(--orange); color:white; padding:18px;" onclick="placeOrder()">PLACE ORDER</button>
-    </div>
-</div>
-
-<div id="successPage" class="screen">
-    <div class="success-box">
-        <div class="tick-circle">✓</div>
-        <h2>Order Placed Successfully!</h2>
-        <p style="color:#666">Your order for <b id="placedName"></b> has been confirmed. Tracking details sent to WhatsApp.</p>
-        <button class="btn" style="margin-top:30px; background:var(--blue); color:white; padding:15px 40px;" onclick="location.reload()">Continue Shopping</button>
+<div id="payPage" class="page">
+    <div class="nav-bar"><span onclick="closeScr('payPage')">←</span> Select Payment</div>
+    <div style="padding:20px">
+        <div style="padding:15px; border:1px solid #ddd; border-radius:4px; margin-bottom:10px;">
+            <input type="radio" checked> Cash on Delivery (COD)
+        </div>
+        <div style="padding:15px; border:1px solid #ddd; border-radius:4px;">
+            <input type="radio" disabled> UPI / Wallet (Coming Soon)
+        </div>
+        <button class="btn-main" style="margin-top:30px" onclick="confirmFinalOrder()">PLACE ORDER</button>
     </div>
 </div>
 
 <script>
-    const SHEET_API = 'https://sheetdb.io/api/v1/wk3op4cmzg9hu';
-
-    // Data: 20 Items
-    const products = [
-        { id: 1, name: "Realme Narzo N55 (6GB RAM)", cat: "Mobiles", price: 10999, imgs: ["https://m.media-amazon.com/images/I/41Sc4S9j-rL._SX300_SY300_QL70_FMwebp_.jpg","https://m.media-amazon.com/images/I/81ogvU1j6SL._SL1500_.jpg","https://m.media-amazon.com/images/I/718ReZ9P80L._SL1500_.jpg"] },
-        { id: 2, name: "Samsung Galaxy M14 5G", cat: "Mobiles", price: 12490, imgs: ["https://m.media-amazon.com/images/I/817WWpaGyVL._SL1500_.jpg","https://m.media-amazon.com/images/I/81+GFF9V6JL._SL1500_.jpg"] },
-        { id: 3, name: "Casual Slim Fit Blue Shirt", cat: "Fashion", price: 799, imgs: ["https://m.media-amazon.com/images/I/719f+47v3LL._AC_UL320_.jpg"] }
+    // Product Data with Reliable Image Fallbacks
+    const items = [
+        { id: 1, name: "Realme Narzo N55 (6GB RAM)", price: 10999, imgs: ["https://m.media-amazon.com/images/I/41Sc4S9j-rL._SX300_SY300_QL70_FMwebp_.jpg", "https://m.media-amazon.com/images/I/81ogvU1j6SL._SL1500_.jpg"] },
+        { id: 2, name: "High Pressure Water Gun Nozzle", price: 139, imgs: ["https://m.media-amazon.com/images/I/61r59n9Yf+L._SL1100_.jpg", "https://m.media-amazon.com/images/I/61M-J4m5FfL._SL1100_.jpg"] },
+        { id: 3, name: "Samsung Galaxy M14 5G", price: 12490, imgs: ["https://m.media-amazon.com/images/I/817WWpaGyVL._SL1500_.jpg"] }
     ];
-    for(let i=4; i<=20; i++) { products.push({...products[i%3], id:i, name: products[i%3].name + " Version " + i}); }
+    for(let i=4; i<=20; i++) { items.push({...items[i%3], id:i, name: items[i%3].name + " Series " + i}); }
 
-    let currentProduct = null;
+    let activeP = null;
+    let cartNum = 0;
 
-    // Login Logic
-    function getOTP() {
-        if(document.getElementById('mobInput').value.length != 10) return alert("Valid Mobile Number daalein");
-        document.getElementById('contBtn').classList.add('hide');
-        document.getElementById('otpBox').classList.remove('hide');
-    }
-    function verify() {
-        if(document.getElementById('otpInput').value == "1234") {
-            document.getElementById('loginScreen').classList.add('hide');
-            document.getElementById('mainApp').classList.remove('hide');
-            loadGrid(products);
-        } else { alert("Galat OTP! 1234 use karein."); }
+    function verifyLogin() {
+        if(document.getElementById('userOtp').value === "1234") {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('homeScreen').style.display = 'block';
+            drawGrid(items);
+        } else { alert("Use OTP: 1234"); }
     }
 
-    // UI Logic
-    function loadGrid(arr) {
-        document.getElementById('productGrid').innerHTML = arr.map(p => `
-            <div class="card" onclick="showP(${p.id})">
-                <img src="${p.imgs[0]}">
+    function drawGrid(list) {
+        document.getElementById('productGrid').innerHTML = list.map(p => `
+            <div class="card" onclick="openDetails(${p.id})">
+                <img src="${p.imgs[0]}" onerror="this.src='https://via.placeholder.com/150?text=Bharat+Mall'">
                 <div class="title">${p.name}</div>
                 <div class="price">₹${p.price.toLocaleString()}</div>
             </div>
         `).join('');
     }
 
-    function showP(id) {
-        currentProduct = products.find(x => x.id == id);
-        let slides = currentProduct.imgs.map(i => `<img src="${i}">`).join('');
-        document.getElementById('pContent').innerHTML = `
-            <div class="slider">${slides}</div>
-            <div style="padding:15px">
-                <h2 style="font-size:18px; margin:0">${currentProduct.name}</h2>
-                <h1 style="color:#388e3c">₹${currentProduct.price.toLocaleString()}</h1>
-                <p style="color:#666">Bank Offer: 10% Off on Axis Bank Card</p>
-                <div style="border-top:1px solid #eee; margin-top:15px; padding-top:15px">
-                    <b>Product Specifications</b><br><p style="color:#555">High quality material and top-rated performance by Bharat Mall customers.</p>
+    function openDetails(id) {
+        activeP = items.find(x => x.id == id);
+        let slides = activeP.imgs.map(img => `<img src="${img}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">`).join('');
+        document.getElementById('pView').innerHTML = `
+            <div class="image-slider">${slides}</div>
+            <div class="details-content">
+                <h2 style="margin:0">${activeP.name}</h2>
+                <div class="price-big">₹${activeP.price.toLocaleString()}</div>
+                <p style="color:#666">7 Days Replacement Policy | Free Delivery</p>
+                <div style="background:#fff9e6; padding:10px; border:1px solid #ffeeba; font-size:13px;">
+                    <b>Offer:</b> Get 5% Unlimited Cashback on Bharat Mall Axis Bank Credit Card.
                 </div>
-            </div>`;
-        document.getElementById('finalAmt').innerText = "Total: ₹" + currentProduct.price.toLocaleString();
-        openScr('pPage');
+            </div>
+        `;
+        openScr('detailPage');
     }
 
-    function placeOrder() {
-        const n = document.getElementById('name').value;
-        const p = document.getElementById('phone').value;
-        if(!n || !p) return alert("Pura address bharein!");
-        
-        document.getElementById('orderBtn').innerText = "Placing Order...";
-        
-        const data = { "data": [{
-            "Timestamp": new Date().toLocaleString(),
-            "Product": currentProduct.name,
-            "Price": currentProduct.price,
-            "Customer": n,
-            "Phone": p,
-            "Address": document.getElementById('area').value,
-            "Method": document.getElementById('method').value
-        }]};
-
-        fetch(SHEET_API, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) })
-        .then(() => {
-            document.getElementById('placedName').innerText = currentProduct.name;
-            openScr('successPage');
-        }).catch(() => alert("Error!"));
+    function updateCart() {
+        cartNum++;
+        document.getElementById('cartBadg').innerText = cartNum;
+        alert("Item added to cart successfully!");
     }
 
-    // Helpers
-    function openScr(id) { document.getElementById(id).classList.add('screen-active'); }
-    function closeScr(id) { document.getElementById(id).classList.remove('screen-active'); }
-    function filter(c) { loadGrid(c=='all' ? products : products.filter(x=>x.cat==c)); }
-    function search(v) { loadGrid(products.filter(x=>x.name.toLowerCase().includes(v.toLowerCase()))); }
+    function confirmFinalOrder() {
+        const n = document.getElementById('cName').value;
+        const p = document.getElementById('cMob').value;
+        const a = document.getElementById('cAddr').value;
+        if(!n || !p || !a) return alert("Puri details bharein!");
+
+        const order = { "data": [{ "Date": new Date().toLocaleString(), "Item": activeP.name, "Price": activeP.price, "Name": n, "Phone": p, "Address": a }]};
+
+        fetch('https://sheetdb.io/api/v1/wk3op4cmzg9hu', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(order)
+        }).then(() => {
+            alert("Order Success! Hum aapse jald contact karenge.");
+            location.reload();
+        }).catch(() => alert("Network Error!"));
+    }
+
+    function openScr(id) { document.getElementById(id).classList.add('active-page'); }
+    function closeScr(id) { document.getElementById(id).classList.remove('active-page'); }
+    function appSearch(v) { drawGrid(items.filter(x => x.name.toLowerCase().includes(v.toLowerCase()))); }
 </script>
 </body>
 </html>

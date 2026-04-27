@@ -1,178 +1,124 @@
 <!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Bharat Mall | Final Pro</title>
-    <style>
-        :root { --blue: #2874f0; --orange: #fb641b; --yellow: #ff9f00; --bg: #f1f3f6; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: var(--bg); overflow-x: hidden; }
-        
-        /* Login Screen */
-        #loginPage { position: fixed; inset: 0; background: var(--blue); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-box { background: white; width: 100%; max-width: 350px; border-radius: 8px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; }
-        
-        /* App Layout */
-        header { background: var(--blue); color: white; padding: 12px; position: sticky; top: 0; z-index: 1000; }
-        .search-container { background: white; border-radius: 2px; display: flex; margin-top: 10px; padding: 5px 10px; }
-        .search-container input { border: none; width: 100%; outline: none; padding: 5px; font-size: 14px; }
+<header>
+  <h2>Mini Flipkart</h2>
+  <div>🛒 Cart: <span id="cartCount">0</span></div>
+</header>
 
-        /* Products */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 5px; }
-        .card { background: white; padding: 10px; display: flex; flex-direction: column; cursor: pointer; }
-        .card img { width: 100%; height: 140px; object-fit: contain; background: #f9f9f9; }
-        .card .title { font-size: 13px; font-weight: 500; margin: 8px 0; height: 32px; overflow: hidden; }
-        .card .price { font-weight: bold; font-size: 16px; color: #212121; }
+<div class="container">
 
-        /* Full Detail Page */
-        .page { display: none; position: fixed; inset: 0; background: white; z-index: 5000; overflow-y: auto; padding-bottom: 70px; }
-        .active-page { display: block !important; }
-        .nav-bar { background: var(--blue); color: white; padding: 15px; font-weight: bold; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; }
-        
-        .image-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; height: 300px; border-bottom: 1px solid #eee; }
-        .image-slider img { width: 100%; flex-shrink: 0; scroll-snap-align: center; object-fit: contain; }
+  <!-- Categories -->
+  <div class="categories">
+    <h3>Categories</h3>
+    <button onclick="loadProducts('Mobiles')">Mobiles</button>
+    <button onclick="loadProducts('Fashion')">Fashion</button>
+    <button onclick="loadProducts('Electronics')">Electronics</button>
+  </div>
 
-        .details-content { padding: 15px; }
-        .price-big { font-size: 24px; font-weight: bold; color: #388e3c; }
-        
-        /* Footer */
-        .bottom-bar { position: fixed; bottom: 0; width: 100%; display: flex; height: 55px; z-index: 6000; border-top: 1px solid #ddd; }
-        .bar-btn { flex: 1; border: none; font-weight: bold; font-size: 15px; cursor: pointer; }
+  <!-- Products -->
+  <div class="products hidden" id="products">
+    <h3 id="productTitle"></h3>
+    <div id="productList"></div>
+  </div>
 
-        input.form-ctrl, textarea.form-ctrl { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .btn-main { background: var(--orange); color: white; border: none; padding: 15px; width: 100%; font-weight: bold; border-radius: 4px; cursor: pointer; }
-    </style>
-</head>
-<body>
+  <!-- Cart -->
+  <div class="cart hidden" id="cart">
+    <h3>Cart</h3>
+    <div id="cartItems"></div>
+    <p><b>Total:</b> ₹<span id="totalPrice">0</span></p>
+    <button onclick="showAddress()">Continue</button>
+  </div>
 
-<div id="loginPage">
-    <div class="login-box">
-        <h2 style="color:var(--blue)">Bharat Mall</h2>
-        <input type="tel" id="userMob" class="form-ctrl" placeholder="Enter Mobile Number">
-        <input type="password" id="userOtp" class="form-ctrl" placeholder="Enter OTP (1234)">
-        <button class="btn-main" onclick="verifyLogin()">LOGIN</button>
-    </div>
-</div>
+  <!-- Address -->
+  <div class="address hidden" id="address">
+    <h3>Delivery Address</h3>
+    <input id="name" placeholder="Full Name" />
+    <input id="mobile" placeholder="Mobile Number" />
+    <input id="house" placeholder="House / Building" />
+    <input id="city" placeholder="City" />
+    <input id="state" placeholder="State" />
+    <input id="pincode" placeholder="Pincode" />
+    <button onclick="showPayment()">Save & Continue</button>
+  </div>
 
-<div id="homeScreen" style="display:none">
-    <header>
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:20px; font-weight:bold;">Bharat Mall</span>
-            <div style="position:relative">🛒<span id="cartBadg" style="position:absolute; top:-8px; right:-8px; background:red; color:white; border-radius:50%; padding:2px 5px; font-size:10px;">0</span></div>
-        </div>
-        <div class="search-container">
-            <input type="text" placeholder="Search for Products..." oninput="appSearch(this.value)">
-        </div>
-    </header>
-    <div class="grid" id="productGrid"></div>
-</div>
+  <!-- Payment -->
+  <div class="payment hidden" id="payment">
+    <h3>Payment Method</h3>
+    <select id="paymentMode">
+      <option>Cash on Delivery</option>
+      <option>UPI</option>
+      <option>Debit Card</option>
+    </select>
+    <button onclick="placeOrder()">Place Order</button>
+  </div>
 
-<div id="detailPage" class="page">
-    <div class="nav-bar"><span onclick="closeScr('detailPage')">←</span> Product Details</div>
-    <div id="pView"></div>
-    <div class="bottom-bar">
-        <button class="bar-btn" style="background:white;" onclick="updateCart()">ADD TO CART</button>
-        <button class="bar-btn" style="background:var(--yellow);" onclick="openScr('addrPage')">BUY NOW</button>
-    </div>
-</div>
+  <!-- Order Success -->
+  <div class="orders hidden" id="orders">
+    <h3>Order Placed ✅</h3>
+    <p>Your order has been placed successfully.</p>
+  </div>
 
-<div id="addrPage" class="page">
-    <div class="nav-bar"><span onclick="closeScr('addrPage')">←</span> Delivery Address</div>
-    <div style="padding:20px">
-        <input type="text" id="cName" class="form-ctrl" placeholder="Full Name">
-        <input type="tel" id="cMob" class="form-ctrl" placeholder="Mobile Number">
-        <textarea id="cAddr" class="form-ctrl" rows="4" placeholder="Full Address with Pincode"></textarea>
-        <button class="btn-main" onclick="openScr('payPage')">CONTINUE</button>
-    </div>
-</div>
-
-<div id="payPage" class="page">
-    <div class="nav-bar"><span onclick="closeScr('payPage')">←</span> Select Payment</div>
-    <div style="padding:20px">
-        <div style="padding:15px; border:1px solid #ddd; border-radius:4px; margin-bottom:10px;">
-            <input type="radio" checked> Cash on Delivery (COD)
-        </div>
-        <div style="padding:15px; border:1px solid #ddd; border-radius:4px;">
-            <input type="radio" disabled> UPI / Wallet (Coming Soon)
-        </div>
-        <button class="btn-main" style="margin-top:30px" onclick="confirmFinalOrder()">PLACE ORDER</button>
-    </div>
 </div>
 
 <script>
-    // Product Data with Reliable Image Fallbacks
-    const items = [
-        { id: 1, name: "Realme Narzo N55 (6GB RAM)", price: 10999, imgs: ["https://m.media-amazon.com/images/I/41Sc4S9j-rL._SX300_SY300_QL70_FMwebp_.jpg", "https://m.media-amazon.com/images/I/81ogvU1j6SL._SL1500_.jpg"] },
-        { id: 2, name: "High Pressure Water Gun Nozzle", price: 139, imgs: ["https://m.media-amazon.com/images/I/61r59n9Yf+L._SL1100_.jpg", "https://m.media-amazon.com/images/I/61M-J4m5FfL._SL1100_.jpg"] },
-        { id: 3, name: "Samsung Galaxy M14 5G", price: 12490, imgs: ["https://m.media-amazon.com/images/I/817WWpaGyVL._SL1500_.jpg"] }
-    ];
-    for(let i=4; i<=20; i++) { items.push({...items[i%3], id:i, name: items[i%3].name + " Series " + i}); }
+  const data = {
+    Mobiles: [
+      { name: 'Realme Phone', price: 12000 },
+      { name: 'Samsung Phone', price: 15000 }
+    ],
+    Fashion: [
+      { name: 'T-Shirt', price: 500 },
+      { name: 'Jeans', price: 1200 }
+    ],
+    Electronics: [
+      { name: 'Laptop', price: 45000 },
+      { name: 'Headphones', price: 2000 }
+    ]
+  };
 
-    let activeP = null;
-    let cartNum = 0;
+  let cart = [];
 
-    function verifyLogin() {
-        if(document.getElementById('userOtp').value === "1234") {
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('homeScreen').style.display = 'block';
-            drawGrid(items);
-        } else { alert("Use OTP: 1234"); }
-    }
+  function loadProducts(category) {
+    document.getElementById('products').classList.remove('hidden');
+    document.getElementById('productTitle').innerText = category;
+    const list = document.getElementById('productList');
+    list.innerHTML = '';
+    data[category].forEach((item, index) => {
+      list.innerHTML += `<div class="item">${item.name} - ₹${item.price} <button onclick="addToCart('${category}', ${index})">Add</button></div>`;
+    });
+  }
 
-    function drawGrid(list) {
-        document.getElementById('productGrid').innerHTML = list.map(p => `
-            <div class="card" onclick="openDetails(${p.id})">
-                <img src="${p.imgs[0]}" onerror="this.src='https://via.placeholder.com/150?text=Bharat+Mall'">
-                <div class="title">${p.name}</div>
-                <div class="price">₹${p.price.toLocaleString()}</div>
-            </div>
-        `).join('');
-    }
+  function addToCart(category, index) {
+    cart.push(data[category][index]);
+    document.getElementById('cart').classList.remove('hidden');
+    document.getElementById('cartCount').innerText = cart.length;
+    renderCart();
+  }
 
-    function openDetails(id) {
-        activeP = items.find(x => x.id == id);
-        let slides = activeP.imgs.map(img => `<img src="${img}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">`).join('');
-        document.getElementById('pView').innerHTML = `
-            <div class="image-slider">${slides}</div>
-            <div class="details-content">
-                <h2 style="margin:0">${activeP.name}</h2>
-                <div class="price-big">₹${activeP.price.toLocaleString()}</div>
-                <p style="color:#666">7 Days Replacement Policy | Free Delivery</p>
-                <div style="background:#fff9e6; padding:10px; border:1px solid #ffeeba; font-size:13px;">
-                    <b>Offer:</b> Get 5% Unlimited Cashback on Bharat Mall Axis Bank Credit Card.
-                </div>
-            </div>
-        `;
-        openScr('detailPage');
-    }
+  function renderCart() {
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '';
+    let total = 0;
+    cart.forEach(item => {
+      total += item.price;
+      cartItems.innerHTML += `<div>${item.name} - ₹${item.price}</div>`;
+    });
+    document.getElementById('totalPrice').innerText = total;
+  }
 
-    function updateCart() {
-        cartNum++;
-        document.getElementById('cartBadg').innerText = cartNum;
-        alert("Item added to cart successfully!");
-    }
+  function showAddress() {
+    document.getElementById('address').classList.remove
+('hidden');
+  }
 
-    function confirmFinalOrder() {
-        const n = document.getElementById('cName').value;
-        const p = document.getElementById('cMob').value;
-        const a = document.getElementById('cAddr').value;
-        if(!n || !p || !a) return alert("Puri details bharein!");
+  function showPayment() {
+    document.getElementById('payment').classList.remove('hidden');
+  }
 
-        const order = { "data": [{ "Date": new Date().toLocaleString(), "Item": activeP.name, "Price": activeP.price, "Name": n, "Phone": p, "Address": a }]};
-
-        fetch('https://sheetdb.io/api/v1/wk3op4cmzg9hu', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(order)
-        }).then(() => {
-            alert("Order Success! Hum aapse jald contact karenge.");
-            location.reload();
-        }).catch(() => alert("Network Error!"));
-    }
-
-    function openScr(id) { document.getElementById(id).classList.add('active-page'); }
-    function closeScr(id) { document.getElementById(id).classList.remove('active-page'); }
-    function appSearch(v) { drawGrid(items.filter(x => x.name.toLowerCase().includes(v.toLowerCase()))); }
+  function placeOrder() {
+    document.getElementById('orders').classList.remove('hidden');
+    document.getElementById('payment').classList.add('hidden');
+  }
 </script>
+
 </body>
 </html>

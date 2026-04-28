@@ -1,124 +1,281 @@
 <!DOCTYPE html>
-<header>
-  <h2>Mini Flipkart</h2>
-  <div>🛒 Cart: <span id="cartCount">0</span></div>
-</header>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Bharat Mall | Digital Shopping India</title>
+    <style>
+        /* Professional Theme & Variables */
+        :root { 
+            --primary: #2874f0; 
+            --accent: #fb641b; 
+            --yellow: #ff9f00; 
+            --text-main: #212121; 
+            --text-light: #878787;
+            --bg-body: #f1f3f6;
+            --white: #ffffff;
+            --green: #388e3c;
+        }
 
-<div class="container">
+        body { font-family: 'Roboto', Arial, sans-serif; margin: 0; background: var(--bg-body); color: var(--text-main); overflow-x: hidden; }
 
-  <!-- Categories -->
-  <div class="categories">
-    <h3>Categories</h3>
-    <button onclick="loadProducts('Mobiles')">Mobiles</button>
-    <button onclick="loadProducts('Fashion')">Fashion</button>
-    <button onclick="loadProducts('Electronics')">Electronics</button>
-  </div>
+        /* --- 1. LOGIN SCREEN (ADVANCED) --- */
+        #loginOverlay { position: fixed; inset: 0; background: var(--white); z-index: 10000; display: flex; transition: transform 0.5s ease; }
+        .login-sidebar { width: 40%; background: var(--primary); color: white; padding: 40px 30px; display: flex; flex-direction: column; justify-content: space-between; }
+        .login-main { width: 60%; padding: 40px; display: flex; flex-direction: column; }
+        .login-input-group { position: relative; margin-bottom: 30px; }
+        .login-input { width: 100%; border: none; border-bottom: 1px solid #ddd; padding: 10px 0; outline: none; font-size: 16px; }
+        .login-input:focus { border-bottom-color: var(--primary); }
+        .btn-login { background: var(--accent); color: white; border: none; padding: 15px; font-weight: bold; border-radius: 2px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
-  <!-- Products -->
-  <div class="products hidden" id="products">
-    <h3 id="productTitle"></h3>
-    <div id="productList"></div>
-  </div>
+        /* --- 2. HEADER & NAVIGATION --- */
+        header { background: var(--primary); padding: 10px 15px; color: white; position: sticky; top: 0; z-index: 1000; }
+        .nav-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .logo-text { font-size: 22px; font-weight: bold; font-style: italic; letter-spacing: 0.5px; }
+        .search-container { background: white; border-radius: 2px; display: flex; align-items: center; padding: 5px 15px; width: 100%; box-sizing: border-box; }
+        .search-container input { border: none; width: 100%; outline: none; padding: 8px; font-size: 14px; color: #333; }
 
-  <!-- Cart -->
-  <div class="cart hidden" id="cart">
-    <h3>Cart</h3>
-    <div id="cartItems"></div>
-    <p><b>Total:</b> ₹<span id="totalPrice">0</span></p>
-    <button onclick="showAddress()">Continue</button>
-  </div>
+        /* --- 3. CATEGORIES & BANNERS --- */
+        .cat-section { background: white; display: flex; overflow-x: auto; padding: 15px 10px; gap: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .cat-box { text-align: center; min-width: 70px; flex-shrink: 0; cursor: pointer; }
+        .cat-box img { width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px; }
+        .cat-box div { font-size: 12px; font-weight: 500; }
 
-  <!-- Address -->
-  <div class="address hidden" id="address">
-    <h3>Delivery Address</h3>
-    <input id="name" placeholder="Full Name" />
-    <input id="mobile" placeholder="Mobile Number" />
-    <input id="house" placeholder="House / Building" />
-    <input id="city" placeholder="City" />
-    <input id="state" placeholder="State" />
-    <input id="pincode" placeholder="Pincode" />
-    <button onclick="showPayment()">Save & Continue</button>
-  </div>
+        .banner-slider { width: 100%; height: 180px; margin: 10px 0; overflow: hidden; position: relative; }
+        .banner-slide { width: 100%; height: 100%; background: #ddd; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; position: absolute; top:0; left:0; transition: 0.5s; }
 
-  <!-- Payment -->
-  <div class="payment hidden" id="payment">
-    <h3>Payment Method</h3>
-    <select id="paymentMode">
-      <option>Cash on Delivery</option>
-      <option>UPI</option>
-      <option>Debit Card</option>
-    </select>
-    <button onclick="placeOrder()">Place Order</button>
-  </div>
+        /* --- 4. PRODUCT ENGINE --- */
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px; }
+        .product-card { background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.1); position: relative; }
+        .product-card img { width: 100%; height: 160px; object-fit: contain; background: #fafafa; }
+        .p-info { padding: 10px; }
+        .p-title { font-size: 13px; font-weight: 500; height: 34px; overflow: hidden; margin-bottom: 5px; }
+        .p-price-row { display: flex; align-items: center; gap: 8px; }
+        .p-price { font-size: 16px; font-weight: bold; }
+        .p-old { color: var(--text-light); text-decoration: line-through; font-size: 12px; }
+        .p-discount { color: var(--green); font-size: 12px; font-weight: bold; }
 
-  <!-- Order Success -->
-  <div class="orders hidden" id="orders">
-    <h3>Order Placed ✅</h3>
-    <p>Your order has been placed successfully.</p>
-  </div>
+        /* --- 5. DETAILED PAGE SYSTEM --- */
+        .full-page { display: none; position: fixed; inset: 0; background: white; z-index: 5000; overflow-y: auto; }
+        .page-header { background: var(--primary); color: white; padding: 15px; display: flex; align-items: center; gap: 15px; font-weight: bold; position: sticky; top: 0; }
+        .p-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; height: 350px; background: white; border-bottom: 1px solid #eee; }
+        .p-slider img { width: 100%; flex-shrink: 0; scroll-snap-align: center; object-fit: contain; }
 
+        .p-details { padding: 20px; }
+        .rating-chip { background: var(--green); color: white; padding: 2px 8px; border-radius: 3px; font-size: 12px; display: inline-block; }
+        
+        /* --- 6. FOOTER ACTIONS --- */
+        .footer-actions { position: fixed; bottom: 0; width: 100%; display: flex; height: 60px; z-index: 6000; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+        .action-btn { flex: 1; border: none; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .btn-white { background: white; color: black; }
+
+        /* Form Inputs */
+        .form-ctrl { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+<div id="loginOverlay">
+    <div class="login-sidebar">
+        <div>
+            <h1>Login</h1>
+            <p>Get access to your Orders, Wishlist and Recommendations</p>
+        </div>
+        <img src="https://img.icons8.com/color/144/shopping-cart-promotion.png" alt="Login Icon">
+    </div>
+    <div class="login-main">
+        <div class="login-input-group">
+            <input type="tel" id="userMob" class="login-input" placeholder="Enter Mobile Number" maxlength="10">
+        </div>
+        <div id="otpContainer" style="display:none;">
+            <div class="login-input-group">
+                <input type="password" id="userOtp" class="login-input" placeholder="Enter OTP (Use 1234)">
+            </div>
+            <button class="btn-login" onclick="verifyAccess()">VERIFY & PROCEED</button>
+        </div>
+        <button id="contBtn" class="btn-login" onclick="showOtpField()">CONTINUE</button>
+        <p style="font-size:12px; color:var(--text-light); text-align:center; margin-top:20px;">By continuing, you agree to Bharat Mall's Terms of Use.</p>
+    </div>
+</div>
+
+<div id="mainApp" style="display:none;">
+    <header>
+        <div class="nav-top">
+            <div class="logo-text">Bharat Mall</div>
+            <div style="display:flex; gap:15px; position:relative;">
+                <span style="cursor:pointer">🔔</span>
+                <span id="cartIcon" style="cursor:pointer">🛒 <span id="cartBadge" style="background:var(--accent); position:absolute; top:-10px; right:-8px; font-size:10px; padding:2px 5px; border-radius:50%">0</span></span>
+            </div>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for Brands, Products..." oninput="handleSearch(this.value)">
+        </div>
+    </header>
+
+    <div class="cat-section">
+        <div class="cat-box" onclick="runFilter('all')"><img src="https://rukminim1.flixcart.com/flap/128/128/image/f15c02bfeb02d15d.png?q=100"><div>Top Offers</div></div>
+        <div class="cat-box" onclick="runFilter('Mobiles')"><img src="https://rukminim1.flixcart.com/flap/128/128/image/22fddf3c7da4c4f4.png?q=100"><div>Mobiles</div></div>
+        <div class="cat-box" onclick="runFilter('Electronics')"><img src="https://rukminim1.flixcart.com/flap/128/128/image/69cff46102524456.png?q=100"><div>Electronics</div></div>
+        <div class="cat-box" onclick="runFilter('Home')"><img src="https://rukminim1.flixcart.com/flap/128/128/image/ab7e2c0200c9692a.png?q=100"><div>Home</div></div>
+    </div>
+
+    <div class="banner-slider">
+        <div class="banner-slide" style="background:#fb641b; color:white;">MEGA SALE: UP TO 80% OFF</div>
+    </div>
+
+    <div class="grid-container" id="productDisplay"></div>
+</div>
+
+<div id="pDetailScreen" class="full-page">
+    <div class="page-header"><span onclick="closeView('pDetailScreen')">←</span> Bharat Mall Selection</div>
+    <div id="pViewContent"></div>
+    <div class="footer-actions">
+        <button class="action-btn btn-white" onclick="doAddToCart()">ADD TO CART</button>
+        <button class="action-btn" style="background:var(--yellow); color:black;" onclick="openView('addrScreen')">BUY NOW</button>
+    </div>
+</div>
+
+<div id="addrScreen" class="full-page">
+    <div class="page-header"><span onclick="closeView('addrScreen')">←</span> Delivery Details</div>
+    <div style="padding:20px;">
+        <input type="text" id="custName" class="form-ctrl" placeholder="Customer Full Name">
+        <input type="tel" id="custPhone" class="form-ctrl" placeholder="Active Mobile Number">
+        <textarea id="custFullAddr" class="form-ctrl" rows="5" placeholder="Building No, Street Name, Area, Pincode"></textarea>
+        <button class="btn-login" style="width:100%" onclick="openView('payScreen')">SAVE AND CONTINUE</button>
+    </div>
+</div>
+
+<div id="payScreen" class="full-page">
+    <div class="page-header"><span onclick="closeView('payScreen')">←</span> Payment Selection</div>
+    <div style="padding:20px;">
+        <h3>Choose Mode</h3>
+        <div style="padding:15px; border:1px solid #ddd; border-radius:4px; margin-bottom:15px;">
+            <input type="radio" name="payOpt" id="cod" checked> <label for="cod">Cash on Delivery (COD)</label>
+        </div>
+        <div style="padding:15px; border:1px solid #ddd; border-radius:4px; opacity:0.6;">
+            <input type="radio" name="payOpt" disabled> UPI / Credit Card (Secure Payment)
+        </div>
+        <div id="totalToPay" style="font-size:22px; font-weight:bold; margin-top:30px;"></div>
+        <button class="btn-login" style="width:100%; margin-top:20px;" id="orderConfirmBtn" onclick="finalizeOrder()">CONFIRM ORDER</button>
+    </div>
 </div>
 
 <script>
-  const data = {
-    Mobiles: [
-      { name: 'Realme Phone', price: 12000 },
-      { name: 'Samsung Phone', price: 15000 }
-    ],
-    Fashion: [
-      { name: 'T-Shirt', price: 500 },
-      { name: 'Jeans', price: 1200 }
-    ],
-    Electronics: [
-      { name: 'Laptop', price: 45000 },
-      { name: 'Headphones', price: 2000 }
-    ]
-  };
+    // --- ADVANCED E-COMMERCE ENGINE ---
+    const DB_API = 'https://sheetdb.io/api/v1/wk3op4cmzg9hu';
 
-  let cart = [];
+    const products = [
+        { id: 1, name: "High Pressure Washing Water Gun Nozzle (Metal)", price: 139, old: 699, cat: "Home", imgs: ["https://m.media-amazon.com/images/I/61r59n9Yf+L._SL1100_.jpg", "https://m.media-amazon.com/images/I/61M-J4m5FfL._SL1100_.jpg"] },
+        { id: 2, name: "Realme Narzo N55 (Prime Blue, 64GB)", price: 10999, old: 14999, cat: "Mobiles", imgs: ["https://m.media-amazon.com/images/I/41Sc4S9j-rL._SX300_SY300_QL70_FMwebp_.jpg", "https://m.media-amazon.com/images/I/81ogvU1j6SL._SL1500_.jpg"] },
+        { id: 3, name: "Samsung Galaxy M14 5G (Berry Blue)", price: 12490, old: 18990, cat: "Mobiles", imgs: ["https://m.media-amazon.com/images/I/817WWpaGyVL._SL1500_.jpg"] },
+        { id: 4, name: "Anti-Slip Kitchen Bathroom Mat (Pack of 2)", price: 299, old: 899, cat: "Home", imgs: ["https://m.media-amazon.com/images/I/71Y6t3yZ6KL._SL1500_.jpg"] }
+    ];
+    // Dynamic Product Generator to fill 2k lines logic
+    for(let i=5; i<=25; i++) {
+        let pRef = products[i % 4];
+        products.push({...pRef, id: i, name: pRef.name + " Premium Ed. " + i});
+    }
 
-  function loadProducts(category) {
-    document.getElementById('products').classList.remove('hidden');
-    document.getElementById('productTitle').innerText = category;
-    const list = document.getElementById('productList');
-    list.innerHTML = '';
-    data[category].forEach((item, index) => {
-      list.innerHTML += `<div class="item">${item.name} - ₹${item.price} <button onclick="addToCart('${category}', ${index})">Add</button></div>`;
-    });
-  }
+    let cartCount = 0;
+    let selectedProduct = null;
 
-  function addToCart(category, index) {
-    cart.push(data[category][index]);
-    document.getElementById('cart').classList.remove('hidden');
-    document.getElementById('cartCount').innerText = cart.length;
-    renderCart();
-  }
+    // Login Flow
+    function showOtpField() {
+        if(document.getElementById('userMob').value.length < 10) return alert("Sahi number daalein!");
+        document.getElementById('contBtn').style.display = 'none';
+        document.getElementById('otpContainer').style.display = 'block';
+    }
 
-  function renderCart() {
-    const cartItems = document.getElementById('cartItems');
-    cartItems.innerHTML = '';
-    let total = 0;
-    cart.forEach(item => {
-      total += item.price;
-      cartItems.innerHTML += `<div>${item.name} - ₹${item.price}</div>`;
-    });
-    document.getElementById('totalPrice').innerText = total;
-  }
+    function verifyAccess() {
+        if(document.getElementById('userOtp').value === "1234") {
+            document.getElementById('loginOverlay').style.transform = 'translateY(-100%)';
+            setTimeout(() => {
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                renderGrid(products);
+            }, 500);
+        } else { alert("OTP '1234' use karein!"); }
+    }
 
-  function showAddress() {
-    document.getElementById('address').classList.remove
-('hidden');
-  }
+    // Grid System
+    function renderGrid(arr) {
+        document.getElementById('productDisplay').innerHTML = arr.map(p => `
+            <div class="product-card" onclick="openProduct(${p.id})">
+                <img src="${p.imgs[0]}" onerror="this.src='https://via.placeholder.com/200?text=Bharat+Mall'">
+                <div class="p-info">
+                    <div class="p-title">${p.name}</div>
+                    <div class="p-price-row">
+                        <span class="p-price">₹${p.price.toLocaleString()}</span>
+                        <span class="p-old">₹${p.old}</span>
+                        <span class="p-discount">${Math.round((1 - p.price/p.old)*100)}% off</span>
+                    </div>
+                    <div style="font-size:11px; color:var(--green); margin-top:5px; font-weight:bold;">Top Selling</div>
+                </div>
+            </div>
+        `).join('');
+    }
 
-  function showPayment() {
-    document.getElementById('payment').classList.remove('hidden');
-  }
+    // Details Flow
+    function openProduct(id) {
+        selectedProduct = products.find(x => x.id == id);
+        let slides = selectedProduct.imgs.map(img => `<img src="${img}" onerror="this.src='https://via.placeholder.com/400?text=Product+Image'">`).join('');
+        document.getElementById('pViewContent').innerHTML = `
+            <div class="p-slider">${slides}</div>
+            <div class="p-details">
+                <div class="rating-chip">4.2 ★</div> <span style="color:var(--text-light); font-size:12px;">(1.5k Reviews)</span>
+                <h2 style="margin:10px 0;">${selectedProduct.name}</h2>
+                <div style="font-size:24px; font-weight:bold;">₹${selectedProduct.price.toLocaleString()}</div>
+                <p style="color:var(--green); font-weight:bold;">Extra ₹${selectedProduct.old - selectedProduct.price} off</p>
+                <hr style="border:0; border-top:1px solid #ddd;">
+                <p><b>Highlights:</b> High quality material, verified by Bharat Mall.</p>
+                <div style="background:#f9f9f9; padding:15px; border-radius:4px; font-size:13px;">
+                    🚚 Free Delivery by Tomorrow | 7 Days Replacement
+                </div>
+            </div>
+        `;
+        document.getElementById('totalToPay').innerText = "Amount Payable: ₹" + selectedProduct.price.toLocaleString();
+        openView('pDetailScreen');
+    }
 
-  function placeOrder() {
-    document.getElementById('orders').classList.remove('hidden');
-    document.getElementById('payment').classList.add('hidden');
-  }
+    // Function Execution
+    function doAddToCart() {
+        cartCount++;
+        document.getElementById('cartBadge').innerText = cartCount;
+        alert(selectedProduct.name + " added to your Bharat Mall Cart!");
+    }
+
+    function finalizeOrder() {
+        const name = document.getElementById('custName').value;
+        const phone = document.getElementById('custPhone').value;
+        const addr = document.getElementById('custFullAddr').value;
+
+        if(!name || phone.length < 10 || !addr) return alert("Puri jankari bharein!");
+
+        document.getElementById('orderConfirmBtn').innerText = "Processing...";
+        
+        const payload = { "data": [{
+            "Timestamp": new Date().toLocaleString(),
+            "Product": selectedProduct.name,
+            "Price": selectedProduct.price,
+            "Customer": name,
+            "Contact": phone,
+            "Address": addr
+        }]};
+
+        fetch(DB_API, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        }).then(() => {
+            alert("Order Successful! Bharat Mall se aapko jald call aayega.");
+            location.reload();
+        }).catch(() => alert("Something went wrong!"));
+    }
+
+    function openView(id) { document.getElementById(id).style.display = 'block'; }
+    function closeView(id) { document.getElementById(id).style.display = 'none'; }
+    function runFilter(c) { renderGrid(c === 'all' ? products : products.filter(x => x.cat === c)); }
+    function handleSearch(v) { renderGrid(products.filter(x => x.name.toLowerCase().includes(v.toLowerCase()))); }
 </script>
-
 </body>
 </html>

@@ -3,238 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Bharat Mall | Professional E-Commerce</title>
+    <title>Bharat Mall | Digital Shopping Revolution</title>
     <style>
         :root {
-            --flip-blue: #2874f0;
-            --flip-yellow: #ff9f00;
-            --flip-orange: #fb641b;
-            --bg: #f1f3f6;
-            --text: #212121;
-            --white: #ffffff;
+            --flip-blue: #2874f0; --flip-yellow: #ff9f00; --flip-orange: #fb641b;
+            --white: #ffffff; --bg: #f1f3f6; --text: #212121; --light-text: #878787;
+            --sale-red: #ff4343; --green: #388e3c;
         }
 
-        * { box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         body { margin: 0; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-        /* --- PROFESSIONAL LOGIN INTERFACE --- */
-        #loginScreen {
-            position: fixed; inset: 0; background: var(--flip-blue);
-            z-index: 10000; display: flex; align-items: center; justify-content: center;
+        /* --- 1. PRO LOGIN (SLIDE ANIMATION) --- */
+        #loginPortal {
+            position: fixed; inset: 0; background: var(--white); z-index: 10000;
+            display: flex; flex-direction: column; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .login-container {
-            background: var(--white); width: 90%; max-width: 450px;
-            display: flex; flex-direction: column; border-radius: 8px; overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-        }
-        .login-header { background: var(--flip-blue); color: white; padding: 30px; text-align: left; }
-        .login-header h2 { margin: 0; font-size: 28px; }
-        .login-header p { opacity: 0.8; margin-top: 10px; }
-        .login-body { padding: 30px; display: flex; flex-direction: column; gap: 20px; }
-        .input-group { border-bottom: 1px solid #ddd; padding: 5px 0; }
-        .input-group input { border: none; width: 100%; padding: 10px 0; outline: none; font-size: 16px; }
-        .btn-login { background: var(--flip-orange); color: white; border: none; padding: 15px; font-weight: bold; border-radius: 2px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .login-top { background: var(--flip-blue); color: white; padding: 40px 25px; height: 35%; }
+        .login-form { padding: 30px; margin-top: -50px; background: white; border-radius: 20px 20px 0 0; flex-grow: 1; box-shadow: 0 -10px 20px rgba(0,0,0,0.1); }
+        .input-box { width: 100%; border: none; border-bottom: 2px solid #ddd; padding: 15px 0; font-size: 16px; margin-bottom: 25px; outline: none; }
+        .input-box:focus { border-bottom-color: var(--flip-blue); }
+        .btn-pro { width: 100%; background: var(--flip-orange); color: white; border: none; padding: 18px; font-weight: bold; font-size: 16px; border-radius: 4px; cursor: pointer; }
 
-        /* --- MAIN APP HEADER --- */
-        header { background: var(--flip-blue); color: white; padding: 10px 15px; position: sticky; top: 0; z-index: 1000; }
-        .top-nav { display: flex; justify-content: space-between; align-items: center; }
-        .search-row { background: white; border-radius: 2px; display: flex; align-items: center; margin-top: 10px; padding: 2px 10px; }
-        .search-row input { border: none; width: 100%; padding: 8px; outline: none; color: #333; }
-        
-        .cart-box { position: relative; cursor: pointer; }
-        .cart-count { position: absolute; top: -10px; right: -10px; background: #ff0000; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; }
+        /* --- 2. HEADER & SEARCH --- */
+        header { background: var(--flip-blue); padding: 10px 15px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; color: white; }
+        .search-container { background: white; border-radius: 4px; display: flex; padding: 5px 12px; margin-top: 10px; }
+        .search-container input { border: none; width: 100%; padding: 8px; outline: none; font-size: 14px; }
 
-        /* --- PRODUCT ENGINE & IMAGES --- */
+        /* --- 3. DYNAMIC CATEGORIES (7 CATEGORIES) --- */
+        .cat-tray { background: white; display: flex; overflow-x: auto; padding: 15px 10px; gap: 20px; border-bottom: 1px solid #ddd; }
+        .cat-item { text-align: center; min-width: 70px; flex-shrink: 0; cursor: pointer; }
+        .cat-item img { width: 55px; height: 55px; border-radius: 50%; background: #f9f9f9; padding: 5px; margin-bottom: 5px; }
+        .cat-item div { font-size: 11px; font-weight: 600; color: #444; }
+
+        /* --- 4. TOP DEALS BANNER & FLASH SALE --- */
+        .flash-sale { background: var(--sale-red); color: white; padding: 10px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+        .banner-deal { width: 100%; height: 160px; background: linear-gradient(45deg, #2874f0, #047bd5); color: white; display: flex; align-items: center; padding: 20px; margin: 10px 0; position: relative; overflow: hidden; }
+        .banner-deal::after { content: '80% OFF'; position: absolute; right: -20px; top: 20px; background: var(--flip-yellow); color: black; padding: 5px 30px; transform: rotate(45deg); font-weight: bold; }
+
+        /* --- 5. PRODUCT ENGINE --- */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px; }
-        .p-card { background: white; border-radius: 4px; padding: 10px; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgba(0,0,0,0.1); cursor: pointer; }
-        .p-card img { width: 100%; height: 160px; object-fit: contain; margin-bottom: 10px; background: #f9f9f9; }
-        .p-name { font-size: 13px; font-weight: 500; height: 32px; overflow: hidden; margin-bottom: 5px; }
-        .p-price { font-weight: bold; font-size: 16px; }
-        .p-tag { color: green; font-size: 12px; font-weight: bold; margin-top: 4px; }
+        .p-card { background: white; border-radius: 4px; overflow: hidden; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        .p-img-box { width: 100%; height: 160px; background: #fff; padding: 10px; }
+        .p-img-box img { width: 100%; height: 100%; object-fit: contain; }
+        .p-content { padding: 10px; flex-grow: 1; }
+        .p-title { font-size: 13px; font-weight: 500; height: 32px; overflow: hidden; line-height: 1.3; }
+        .p-price-row { margin-top: 8px; display: flex; align-items: center; gap: 6px; }
+        .p-curr { font-size: 16px; font-weight: bold; }
+        .p-old { font-size: 12px; color: var(--light-text); text-decoration: line-through; }
+        .p-off { color: var(--green); font-size: 12px; font-weight: bold; }
 
-        /* --- FULL SCREEN PAGES --- */
-        .screen { display: none; position: fixed; inset: 0; background: var(--white); z-index: 5000; overflow-y: auto; padding-bottom: 70px; }
-        .active-screen { display: block !important; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        /* --- 6. FULL DETAIL VIEW (ENTERPRISE STYLE) --- */
+        .screen { display: none; position: fixed; inset: 0; background: white; z-index: 5000; overflow-y: auto; }
+        .scr-active { display: block !important; animation: slideIn 0.4s ease-out; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
 
-        .scr-header { background: var(--flip-blue); color: white; padding: 15px; display: flex; align-items: center; gap: 15px; font-weight: bold; }
-        .p-slider { width: 100%; height: 350px; background: white; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; }
-        .p-slider img { width: 100%; flex-shrink: 0; scroll-snap-align: center; object-fit: contain; }
-
-        .details-pad { padding: 20px; }
-        .rating { background: #388e3c; color: white; padding: 2px 8px; border-radius: 3px; font-size: 12px; }
+        .scr-nav { background: var(--flip-blue); color: white; padding: 15px; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; z-index: 5100; }
+        .p-main-img { width: 100%; height: 350px; object-fit: contain; background: white; border-bottom: 1px solid #eee; }
+        .p-info-sec { padding: 20px; }
+        .p-specs { margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; }
+        .spec-row { display: flex; padding: 8px 0; border-bottom: 1px solid #f9f9f9; font-size: 14px; }
+        .spec-label { width: 40%; color: var(--light-text); }
+        .spec-val { width: 60%; font-weight: 500; }
 
         /* --- FOOTER BUTTONS --- */
-        .footer-bar { position: fixed; bottom: 0; width: 100%; display: flex; height: 55px; z-index: 6000; border-top: 1px solid #ddd; }
-        .footer-btn { flex: 1; border: none; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .footer-action { position: fixed; bottom: 0; width: 100%; height: 60px; display: flex; z-index: 6000; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+        .act-btn { flex: 1; border: none; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .badge { background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -5px; right: -5px; }
 
-        .form-input { width: 100%; padding: 15px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 15px; }
+        /* Form Controls */
+        .form-group { padding: 20px; }
+        .form-input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 15px; outline: none; }
     </style>
 </head>
 <body>
 
-<div id="loginScreen">
-    <div class="login-container">
-        <div class="login-header">
-            <h2>Bharat Mall</h2>
-            <p>India's Favorite Digital Store</p>
+<div id="loginPortal">
+    <div class="login-top">
+        <h1 style="margin:0; font-size:32px; font-style:italic;">Bharat Mall</h1>
+        <p style="opacity:0.9">Join India's Digital Marketplace</p>
+    </div>
+    <div class="login-form">
+        <input type="tel" id="uMob" class="input-box" placeholder="Mobile Number (10 Digits)" maxlength="10">
+        <div id="otpSec" style="display:none">
+            <input type="password" id="uOtp" class="input-box" placeholder="OTP (Default: 1234)">
+            <button class="btn-pro" onclick="accessApp()">VERIFY & START SHOPPING</button>
         </div>
-        <div class="login-body">
-            <div class="input-group">
-                <input type="tel" id="userMob" placeholder="Enter Mobile Number" maxlength="10">
-            </div>
-            <div id="otpBox" style="display:none;">
-                <div class="input-group">
-                    <input type="password" id="userOtp" placeholder="Enter 4 Digit OTP (1234)">
-                </div>
-                <button class="btn-login" style="width:100%" onclick="finalVerify()">VERIFY LOGIN</button>
-            </div>
-            <button id="contBtn" class="btn-login" onclick="showOtp()">CONTINUE</button>
-            <p style="font-size:12px; color:#878787; text-align:center;">By continuing, you agree to our Terms of Service.</p>
-        </div>
+        <button id="preBtn" class="btn-pro" onclick="triggerOtp()">CONTINUE</button>
+        <p style="text-align:center; font-size:12px; color:var(--light-text); margin-top:30px">Safe & Secure Payments | Easy Returns</p>
     </div>
 </div>
 
-<div id="homeScreen" style="display:none;">
+<div id="mainHub" style="display:none">
     <header>
-        <div class="top-nav">
-            <div style="font-size:22px; font-weight:bold; font-style:italic;">Bharat Mall</div>
-            <div class="cart-box" onclick="openCart()">🛒<span id="cartCount" class="cart-count">0</span></div>
+        <div class="top-bar">
+            <div style="font-size:20px; font-weight:bold; font-style:italic;">Bharat Mall</div>
+            <div style="position:relative; cursor:pointer" onclick="openCart()">
+                🛒<span id="cCount" class="badge">0</span>
+            </div>
         </div>
-        <div class="search-row">
-            <input type="text" placeholder="Search for Products, Brands..." oninput="searchApp(this.value)">
+        <div class="search-container">
+            <input type="text" id="sInput" placeholder="Search for Gadgets, Home & Kitchen..." oninput="appSearch(this.value)">
         </div>
     </header>
 
-    <div style="background:white; display:flex; overflow-x:auto; padding:15px; gap:15px; border-bottom:1px solid #ddd;">
-        <div style="text-align:center; min-width:60px;" onclick="render(products)"><img src="https://rukminim1.flixcart.com/flap/128/128/image/f15c02bfeb02d15d.png?q=100" width="40"><div style="font-size:10px">All</div></div>
-        <div style="text-align:center; min-width:60px;" onclick="filter('Mobiles')"><img src="https://rukminim1.flixcart.com/flap/128/128/image/22fddf3c7da4c4f4.png?q=100" width="40"><div style="font-size:10px">Mobiles</div></div>
-        <div style="text-align:center; min-width:60px;" onclick="filter('Electronics')"><img src="https://rukminim1.flixcart.com/flap/128/128/image/69cff46102524456.png?q=100" width="40"><div style="font-size:10px">Electronics</div></div>
+    <div class="cat-tray">
+        <div class="cat-item" onclick="filterCat('all')"><img src="https://cdn-icons-png.flaticon.com/512/3703/3703259.png"><div>Offers</div></div>
+        <div class="cat-item" onclick="filterCat('Mobiles')"><img src="https://cdn-icons-png.flaticon.com/512/644/644458.png"><div>Mobiles</div></div>
+        <div class="cat-item" onclick="filterCat('Electronics')"><img src="https://cdn-icons-png.flaticon.com/512/3659/3659899.png"><div>Gadgets</div></div>
+        <div class="cat-item" onclick="filterCat('Kitchen')"><img src="https://cdn-icons-png.flaticon.com/512/1041/1041888.png"><div>Kitchen</div></div>
+        <div class="cat-item" onclick="filterCat('Home')"><img src="https://cdn-icons-png.flaticon.com/512/2633/2633935.png"><div>Home</div></div>
+        <div class="cat-item" onclick="filterCat('Fashion')"><img src="https://cdn-icons-png.flaticon.com/512/3050/3050239.png"><div>Fashion</div></div>
+        <div class="cat-item" onclick="filterCat('Toys')"><img src="https://cdn-icons-png.flaticon.com/512/3082/3082060.png"><div>Toys</div></div>
     </div>
 
-    <div class="grid" id="mainGrid"></div>
+    <div class="banner-deal">
+        <div>
+            <h2 style="margin:0">Dhamaka Sale!</h2>
+            <p style="margin:5px 0">Up to 80% Off on Home Accessories</p>
+            <button style="background:white; border:none; padding:8px 15px; border-radius:2px; font-weight:bold;">Shop Now</button>
+        </div>
+    </div>
+
+    <div class="flash-sale">
+        <b>🔥 Flash Sale Starting In:</b>
+        <span id="timer">00:59:59</span>
+    </div>
+
+    <div class="grid" id="productGrid"></div>
 </div>
 
-<div id="detailPage" class="screen">
-    <div class="scr-header"><span onclick="closeScr('detailPage')">←</span> Product Details</div>
-    <div id="detailView"></div>
-    <div class="footer-bar">
-        <button class="footer-btn" style="background:white; color:black;" onclick="addToCartLogic()">ADD TO CART</button>
-        <button class="footer-btn" style="background:var(--flip-yellow); color:black;" onclick="openScr('checkoutPage')">BUY NOW</button>
+<div id="detailScr" class="screen">
+    <div class="scr-nav"><span onclick="closeView('detailScr')">←</span> Item Details</div>
+    <div id="pFullView"></div>
+    <div class="footer-action">
+        <button class="act-btn" style="background:white; color:black;" onclick="addToCart()">ADD TO CART</button>
+        <button class="act-btn" style="background:var(--flip-yellow); color:black;" onclick="openView('addrScr')">BUY NOW</button>
     </div>
 </div>
 
-<div id="checkoutPage" class="screen">
-    <div class="scr-header"><span onclick="closeScr('checkoutPage')">←</span> Delivery Address</div>
-    <div style="padding:20px">
-        <input type="text" id="custName" class="form-input" placeholder="Full Name">
-        <input type="tel" id="custPhone" class="form-input" placeholder="Phone Number">
-        <textarea id="custAddress" class="form-input" rows="4" placeholder="Full Address with Pincode"></textarea>
-        <button class="btn-login" style="width:100%; margin-top:20px;" onclick="placeOrderFinal()">PLACE ORDER</button>
+<div id="addrScr" class="screen">
+    <div class="scr-nav"><span onclick="closeView('addrScr')">←</span> Delivery Address</div>
+    <div class="form-group">
+        <input type="text" id="custName" class="form-input" placeholder="Full Name (Required)">
+        <input type="tel" id="custMob" class="form-input" placeholder="10-Digit Mobile Number">
+        <textarea id="custFull" class="form-input" rows="4" placeholder="House No, Area, City, Pincode"></textarea>
+        <button class="btn-pro" onclick="openView('payScr')">SAVE & CONTINUE</button>
+    </div>
+</div>
+
+<div id="payScr" class="screen">
+    <div class="scr-nav"><span onclick="closeView('payScr')">←</span> Payment</div>
+    <div class="form-group">
+        <h3>Payable Amount: <span id="finalPrice" style="color:var(--green)"></span></h3>
+        <div style="padding:15px; border:1px solid #ddd; margin-bottom:15px; border-radius:4px;">
+            <input type="radio" checked> Cash on Delivery (COD)
+        </div>
+        <div style="padding:15px; border:1px solid #ddd; border-radius:4px; opacity:0.5;">
+            <input type="radio" disabled> PhonePe / UPI (Coming Soon)
+        </div>
+        <button class="btn-pro" style="margin-top:30px" onclick="finalizeOrder()">PLACE ORDER</button>
     </div>
 </div>
 
 <script>
-    // --- ADVANCED PRODUCT DATABASE (Real Images) ---
-    const products = [
-        { id: 1, cat: "Mobiles", name: "Realme Narzo N55 (6GB RAM)", price: 10999, old: 14999, imgs: ["https://m.media-amazon.com/images/I/41Sc4S9j-rL._SX300_SY300_QL70_FMwebp_.jpg", "https://m.media-amazon.com/images/I/81ogvU1j6SL._SL1500_.jpg"] },
-        { id: 2, cat: "Electronics", name: "Boat Rockerz Wireless Headphones", price: 1499, old: 3999, imgs: ["https://m.media-amazon.com/images/I/510uTHyDqGL._SL1500_.jpg"] },
-        { id: 3, cat: "Home", name: "Metal High Pressure Water Spray Gun", price: 139, old: 699, imgs: ["https://m.media-amazon.com/images/I/61r59n9Yf+L._SL1100_.jpg"] },
-        { id: 4, cat: "Mobiles", name: "Samsung Galaxy M14 5G", price: 12490, old: 18990, imgs: ["https://m.media-amazon.com/images/I/817WWpaGyVL._SL1500_.jpg"] }
+    // --- 3000 LINES LOGIC SIMULATION (Data Engine) ---
+    const DB_URL = 'https://sheetdb.io/api/v1/wk3op4cmzg9hu';
+
+    const items = [
+        { id: 1, cat: "Home", name: "High Pressure Metal Water Gun", price: 139, old: 699, img: "https://m.media-amazon.com/images/I/61r59n9Yf+L._SL1100_.jpg", specs: { Material: "Aluminum Alloy", Use: "Car/Garden Wash", Feature: "Adjustable Nozzle" } },
+        { id: 2, cat: "Mobiles", name: "Realme Narzo N55 (64GB)", price: 10999, old: 14999, img: "https://m.media-amazon.com/images/I/41Sc4S9j-rL._SX300_SY300_QL70_FMwebp_.jpg", specs: { RAM: "6GB", Camera: "64MP AI", Battery: "5000mAh" } },
+        { id: 3, cat: "Electronics", name: "Boat Rockerz 450", price: 1499, old: 3999, img: "https://m.media-amazon.com/images/I/510uTHyDqGL._SL1500_.jpg", specs: { Type: "On-Ear", Playtime: "15 Hours", Bluetooth: "v5.0" } },
+        { id: 4, cat: "Kitchen", name: "Electric Chopper for Veggies", price: 499, old: 1299, img: "https://m.media-amazon.com/images/I/51qB-2Hn0+L._SL1000_.jpg", specs: { Capacity: "250ml", Power: "Rechargeable", Blades: "Stainless Steel" } },
+        { id: 5, cat: "Fashion", name: "Men's Casual Slim Fit Shirt", price: 699, old: 1999, img: "https://m.media-amazon.com/images/I/719f+47v3LL._AC_UL320_.jpg", specs: { Fabric: "Cotton", Pattern: "Solid", Fit: "Slim Fit" } }
     ];
-    // Generating more items to show a heavy website
-    for(let i=5; i<=25; i++){ products.push({...products[i%4], id:i, name: products[i%4].name + " Ed. " + i}); }
+    // Heavy Data Expansion
+    for(let i=6; i<=30; i++) { items.push({...items[i%5], id: i, name: items[i%5].name + " " + i}); }
 
-    let cart = [];
-    let activeP = null;
+    let cartCount = 0;
+    let selectedItem = null;
 
-    // --- LOGIN LOGIC (Fixed) ---
-    function showOtp() {
-        if(document.getElementById('userMob').value.length != 10) return alert("Valid Mobile Number daalein!");
-        document.getElementById('contBtn').style.display = 'none';
-        document.getElementById('otpBox').style.display = 'block';
+    // Login logic
+    function triggerOtp() {
+        if(document.getElementById('uMob').value.length != 10) return alert("Sahi number daalein!");
+        document.getElementById('preBtn').style.display = 'none';
+        document.getElementById('otpSec').style.display = 'block';
     }
 
-    function finalVerify() {
-        if(document.getElementById('userOtp').value === "1234") {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('homeScreen').style.display = 'block';
-            render(products);
-        } else { alert("Sahi OTP (1234) daalein!"); }
+    function accessApp() {
+        if(document.getElementById('uOtp').value === "1234") {
+            document.getElementById('loginPortal').style.transform = 'translateY(-100%)';
+            document.getElementById('mainHub').style.display = 'block';
+            drawProducts(items);
+        } else { alert("OTP '1234' try karein!"); }
     }
 
-    // --- RENDERING ENGINE ---
-    function render(list) {
-        document.getElementById('mainGrid').innerHTML = list.map(p => `
-            <div class="p-card" onclick="showDetails(${p.id})">
-                <img src="${p.imgs[0]}" onerror="this.src='https://via.placeholder.com/200?text=Bharat+Mall'">
-                <div class="p-name">${p.name}</div>
-                <div class="p-price">₹${p.price.toLocaleString()} <span style="font-size:11px; color:#878787; text-decoration:line-through">₹${p.old}</span></div>
-                <div class="p-tag">Free Delivery</div>
+    function drawProducts(list) {
+        document.getElementById('productGrid').innerHTML = list.map(p => `
+            <div class="p-card" onclick="showFullDetails(${p.id})">
+                <div class="p-img-box"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/150'"></div>
+                <div class="p-content">
+                    <div class="p-title">${p.name}</div>
+                    <div class="p-price-row">
+                        <span class="p-curr">₹${p.price.toLocaleString()}</span>
+                        <span class="p-old">₹${p.old}</span>
+                        <span class="p-off">${Math.round((1-p.price/p.old)*100)}% Off</span>
+                    </div>
+                    <div style="font-size:11px; color:var(--green); font-weight:bold; margin-top:5px;">Free Delivery</div>
+                </div>
             </div>
         `).join('');
     }
 
-    // --- ADD TO CART (FIXED & WORKING) ---
-    function showDetails(id) {
-        activeP = products.find(x => x.id == id);
-        let slides = activeP.imgs.map(img => `<img src="${img}" onerror="this.src='https://via.placeholder.com/400?text=Bharat+Mall'">`).join('');
-        document.getElementById('detailView').innerHTML = `
-            <div class="p-slider">${slides}</div>
-            <div class="details-pad">
-                <span class="rating">4.2 ★</span> <span style="color:#878787; font-size:12px;">(2,450 Ratings)</span>
-                <h2 style="margin:10px 0;">${activeP.name}</h2>
-                <div style="font-size:24px; font-weight:bold; color:#388e3c;">₹${activeP.price.toLocaleString()}</div>
-                <p style="color:#878787; text-decoration:line-through">M.R.P: ₹${activeP.old}</p>
-                <hr style="border:0; border-top:1px solid #eee;">
-                <p><b>Product Highlights:</b> High quality tested by Bharat Mall team. 10 Days replacement policy available.</p>
-                <div style="background:#f1f3f6; padding:15px; border-radius:4px; font-size:13px; margin-top:15px;">
-                    🚚 Delivery by Tomorrow, 11:00 AM | <span style="color:green; font-weight:bold;">FREE</span>
+    function showFullDetails(id) {
+        selectedItem = items.find(x => x.id == id);
+        let specHtml = "";
+        for (let key in selectedItem.specs) {
+            specHtml += `<div class="spec-row"><div class="spec-label">${key}</div><div class="spec-val">${selectedItem.specs[key]}</div></div>`;
+        }
+
+        document.getElementById('pFullView').innerHTML = `
+            <img src="${selectedItem.img}" class="p-main-img">
+            <div class="p-info-sec">
+                <div style="display:flex; justify-content:space-between">
+                    <span style="background:var(--green); color:white; padding:2px 8px; border-radius:3px; font-size:12px;">4.5 ★</span>
+                    <span style="color:var(--flip-orange); font-weight:bold;">Hurry, Only few left!</span>
+                </div>
+                <h2 style="margin:10px 0;">${selectedItem.name}</h2>
+                <div style="font-size:26px; font-weight:bold;">₹${selectedItem.price.toLocaleString()}</div>
+                <p style="color:var(--light-text); text-decoration:line-through; margin:0">MRP: ₹${selectedItem.old}</p>
+                
+                <div class="p-specs">
+                    <b>Product Description & Details:</b>
+                    <p style="font-size:14px; color:#555">Bharat Mall quality assured product with full warranty support.</p>
+                    ${specHtml}
                 </div>
             </div>
         `;
-        openScr('detailPage');
+        document.getElementById('finalPrice').innerText = "₹" + selectedItem.price.toLocaleString();
+        openView('detailScr');
     }
 
-    function addToCartLogic() {
-        cart.push(activeP);
-        document.getElementById('cartCount').innerText = cart.length;
-        alert("🎉 " + activeP.name + " Cart me add ho gaya hai!");
+    function addToCart() {
+        cartCount++;
+        document.getElementById('cCount').innerText = cartCount;
+        alert(selectedItem.name + " added to Bharat Mall Cart!");
     }
 
-    // --- ORDER PLACEMENT ---
-    function placeOrderFinal() {
-        const name = document.getElementById('custName').value;
-        const phone = document.getElementById('custPhone').value;
-        const addr = document.getElementById('custAddress').value;
+    function finalizeOrder() {
+        const n = document.getElementById('custName').value;
+        const m = document.getElementById('custMob').value;
+        const a = document.getElementById('custFull').value;
+        if(!n || !m || !a) return alert("Details bharna zaroori hai!");
 
-        if(!name || phone.length < 10 || !addr) return alert("Puri details sahi se bharein!");
-
-        const order = { "data": [{
-            "Date": new Date().toLocaleString(),
-            "Item": activeP.name,
-            "Price": activeP.price,
-            "Customer": name,
-            "Phone": phone,
-            "Address": addr
-        }]};
-
-        fetch('https://sheetdb.io/api/v1/wk3op4cmzg9hu', {
+        fetch(DB_URL, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(order)
+            body: JSON.stringify({ "data": [{
+                "Date": new Date().toLocaleString(),
+                "Product": selectedItem.name,
+                "Price": selectedItem.price,
+                "Customer": n, "Phone": m, "Address": a
+            }]})
         }).then(() => {
-            alert("Order Success! Hum aapse jald call par baat karenge.");
+            alert("Order Success! Hum aapse jald sampark karenge.");
             location.reload();
-        }).catch(() => alert("Something went wrong!"));
+        });
     }
 
-    // --- HELPERS ---
-    function openScr(id) { document.getElementById(id).classList.add('active-screen'); }
-    function closeScr(id) { document.getElementById(id).classList.remove('active-screen'); }
-    function filter(c) { render(products.filter(p => p.cat === c)); }
-    function searchApp(v) { render(products.filter(p => p.name.toLowerCase().includes(v.toLowerCase()))); }
-    function openCart() { alert("Aapne cart me " + cart.length + " products rakhe hain!"); }
+    // Timer Logic
+    setInterval(() => {
+        let t = document.getElementById('timer').innerText.split(':');
+        let sec = parseInt(t[2]) - 1;
+        if(sec < 0) sec = 59;
+        document.getElementById('timer').innerText = `00:59:${sec < 10 ? '0'+sec : sec}`;
+    }, 1000);
+
+    // Helpers
+    function openView(id) { document.getElementById(id).classList.add('scr-active'); }
+    function closeView(id) { document.getElementById(id).classList.remove('scr-active'); }
+    function filterCat(c) { drawProducts(c==='all' ? items : items.filter(x => x.cat === c)); }
+    function appSearch(v) { drawProducts(items.filter(x => x.name.toLowerCase().includes(v.toLowerCase()))); }
+    function openCart() { alert("Cart me " + cartCount + " items hain!"); }
 </script>
 </body>
 </html>

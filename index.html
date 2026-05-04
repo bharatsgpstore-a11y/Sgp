@@ -2,457 +2,144 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bharat Mall | Local Market Revolution</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharat Mall | Fixed Version</title>
     <style>
-        :root {
-            --primary-blue: #2874f0;
-            --dark-blue: #172337;
-            --accent-orange: #fb641b;
-            --light-bg: #f1f3f6;
-            --text-dark: #212121;
-            --text-gray: #878787;
-            --white: #ffffff;
-            --success-green: #388e3c;
-            --shadow: 0 2px 4px 0 rgba(0,0,0,.08);
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { 
-            margin: 0; 
-            font-family: 'Roboto', sans-serif; 
-            background-color: var(--light-bg); 
-            color: var(--text-dark);
-            overflow-x: hidden;
-        }
-
-        /* --- 1. PREMIUM HEADER --- */
-        header {
-            background-color: var(--primary-blue);
-            padding: 10px 16px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            color: var(--white);
-        }
-        .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-        .brand-box { display: flex; align-items: center; gap: 12px; }
-        .menu-icon { font-size: 24px; cursor: pointer; }
-        .logo-text { font-size: 20px; font-weight: 700; font-style: italic; }
-        
-        .search-container {
-            background: var(--white);
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            padding: 2px 12px;
-            box-shadow: var(--shadow);
-        }
-        .search-container input {
-            border: none;
-            outline: none;
-            width: 100%;
-            padding: 10px 0;
-            font-size: 14px;
-        }
-
-        /* --- 2. SIDEBAR MENU --- */
-        .sidebar {
-            position: fixed;
-            left: -280px;
-            top: 0;
-            width: 280px;
-            height: 100%;
-            background: var(--white);
-            z-index: 2000;
-            transition: 0.3s;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
-            overflow-y: auto;
-        }
-        .sidebar.active { left: 0; }
-        .sidebar-header {
-            background: var(--primary-blue);
-            color: var(--white);
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .user-avatar { width: 40px; height: 40px; background: rgba(255,255,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
-        .sidebar-menu li { padding: 15px 20px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 15px; font-size: 15px; }
-
-        /* --- 3. CATEGORY TRAY (FLIPKART STYLE) --- */
-        .category-container {
-            background: var(--white);
-            display: flex;
-            overflow-x: auto;
-            padding: 12px 4px;
-            gap: 16px;
-            margin-bottom: 8px;
-            border-bottom: 1px solid #ddd;
-        }
-        .category-item {
-            min-width: 70px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-        .category-item img { width: 55px; height: 55px; object-fit: contain; }
-        .category-item span { font-size: 11px; font-weight: 500; }
-
-        /* --- 4. HERO BANNER --- */
-        .banner-slider { width: 100%; height: 180px; background: #ddd; margin-bottom: 8px; overflow: hidden; }
-        .banner-slider img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* --- 5. PRODUCT LISTING GRID --- */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            padding: 8px;
-        }
-        .product-card {
-            background: var(--white);
-            border-radius: 4px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-        .wishlist-btn { position: absolute; top: 10px; right: 10px; color: #ccc; font-size: 18px; }
-        .product-image { width: 100%; height: 150px; object-fit: contain; margin-bottom: 10px; }
-        .product-title { font-size: 13px; line-height: 18px; height: 36px; overflow: hidden; margin-bottom: 5px; }
-        .rating-tag { background: var(--success-green); color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px; width: fit-content; margin-bottom: 4px; }
-        .price-row { display: flex; align-items: center; gap: 8px; }
-        .current-price { font-size: 16px; font-weight: 700; }
-        .old-price { font-size: 12px; color: var(--text-gray); text-decoration: line-through; }
-        .discount { font-size: 12px; color: var(--success-green); font-weight: 500; }
-
-        /* --- 6. PRODUCT DETAIL OVERLAY --- */
-        .full-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--white);
-            z-index: 3000;
-            display: none;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-        .fs-active { display: flex !important; animation: slideIn 0.3s forwards; }
-        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-
-        .detail-header {
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            border-bottom: 1px solid #eee;
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 10;
-        }
-        .p-detail-content { padding: 16px; }
-        .detail-img-slider { width: 100%; height: 350px; object-fit: contain; background: white; margin-bottom: 15px; }
-        
-        .variant-box { border: 1px solid #ddd; padding: 10px; border-radius: 4px; margin: 10px 0; }
-        .offer-card { background: #f5faff; border: 1px dashed var(--primary-blue); padding: 12px; border-radius: 4px; margin: 10px 0; }
-
-        /* --- 7. ACTION BUTTONS --- */
-        .footer-actions {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 60px;
-            display: flex;
-            background: white;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        }
-        .btn-cart { flex: 1; border: none; background: var(--white); color: var(--text-dark); font-weight: 700; font-size: 16px; }
-        .btn-buy { flex: 1; border: none; background: #ff9f00; color: var(--white); font-weight: 700; font-size: 16px; }
-
-        /* --- 8. CART & CHECKOUT --- */
-        .cart-overlay { padding: 16px; }
-        .cart-item { display: flex; gap: 15px; background: white; padding: 15px; margin-bottom: 10px; border-radius: 4px; }
-        .form-group { margin-bottom: 15px; }
-        .form-input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 4px; }
-
-        /* --- 9. BOTTOM NAVIGATION --- */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 56px;
-            background: var(--white);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #eee;
-            z-index: 900;
-        }
-        .nav-tab { text-align: center; color: var(--text-gray); font-size: 10px; }
-        .nav-tab.active { color: var(--primary-blue); }
-        .nav-tab i { display: block; font-size: 20px; margin-bottom: 2px; }
-
-        .badge { background: #ff0000; color: white; font-size: 9px; border-radius: 50%; padding: 2px 5px; position: absolute; top: 5px; right: 10px; }
+        /* Pehle wala CSS yahan rahega (Shortening for focus) */
+        :root { --p-blue: #2874f0; --orange: #fb641b; --bg: #f1f3f6; }
+        body { margin: 0; font-family: sans-serif; background: var(--bg); pb: 60px; }
+        header { background: var(--p-blue); color: white; padding: 15px; position: sticky; top:0; z-index: 100; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
+        .card { background: white; padding: 10px; border-radius: 5px; cursor: pointer; }
+        .screen { position: fixed; inset: 0; background: white; z-index: 1000; display: none; overflow-y: auto; }
+        .active { display: block !important; }
+        .btn-buy { background: var(--orange); color: white; border: none; width: 100%; padding: 15px; font-weight: bold; cursor: pointer; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px; border-top: 1px solid #ddd; }
     </style>
 </head>
 <body>
 
-<div class="sidebar" id="appSidebar">
-    <div class="sidebar-header">
-        <div class="user-avatar">👤</div>
-        <div>
-            <div style="font-weight:700">Namaste, Aryan Kumar</div>
-            <div style="font-size:12px; opacity:0.8">Premium Member</div>
-        </div>
-    </div>
-    <ul class="sidebar-menu">
-        <li onclick="toggleSidebar()">🏠 Home</li>
-        <li onclick="openScreen('ordersScr')">📦 My Orders</li>
-        <li>❤️ My Wishlist</li>
-        <li>💳 My Account</li>
-        <li>🔔 Notifications</li>
-        <li style="color:var(--primary-blue); font-weight:bold;">🏪 Become a Vendor</li>
-    </ul>
-</div>
-
 <header>
-    <div class="top-row">
-        <div class="brand-box">
-            <span class="menu-icon" onclick="toggleSidebar()">☰</span>
-            <span class="logo-text">Bharat Mall</span>
-        </div>
-        <div style="display:flex; gap:18px; align-items:center;">
-            <span>🔔</span>
-            <span style="position:relative;" onclick="openScreen('cartScr')">🛒<span class="badge" id="cartCountBadge">0</span></span>
-        </div>
-    </div>
-    <div class="search-container">
-        <input type="text" placeholder="Search for Products, Brands and More" id="mainSearch">
+    <div style="display:flex; justify-content:space-between">
+        <b onclick="alert('Menu Open')">☰ Bharat Mall</b>
+        <span onclick="openScreen('cartScr')">🛒 <span id="cartBadge">0</span></span>
     </div>
 </header>
 
-<main id="homePage">
-    <div class="category-container" id="categoryTray">
-        </div>
-
-    <div class="banner-slider">
-        <img src="https://rukminim2.flixcart.com/fk-p-flap/1600/270/image/352e6a0fbd0345b1.jpg" alt="Sale">
+<div class="grid" id="productGrid">
     </div>
 
-    <h3 style="padding: 10px 16px; margin: 0; background: white;">Recently Viewed Stores</h3>
-    <div class="grid-container" id="productGrid">
-        </div>
-</main>
-
-<div id="pDetailScr" class="full-screen">
-    <div class="detail-header">
-        <span style="font-size:24px;" onclick="closeScreen('pDetailScr')">←</span>
-        <div style="flex:1" id="detailHeaderTitle">Product Details</div>
-        <span>🔍</span>
-        <span>🛒</span>
+<div id="detailScr" class="screen">
+    <div style="padding:15px; border-bottom:1px solid #ddd">
+        <span style="font-size:24px" onclick="closeScreen('detailScr')">← Back</span>
     </div>
-    <div class="p-detail-content" id="pDetailBody">
-        </div>
-    <div class="footer-actions">
-        <button class="btn-cart" onclick="addToCart()">ADD TO CART</button>
-        <button class="btn-buy" onclick="checkoutNow()">BUY NOW</button>
+    <div id="detailBody" style="padding:20px"></div>
+    <div style="position:fixed; bottom:0; width:100%; display:flex">
+        <button style="flex:1; padding:20px; border:none; background:#fff" onclick="addToCart()">ADD TO CART</button>
+        <button style="flex:1; padding:20px; border:none; background:#ff9f00; color:white" onclick="openScreen('checkoutScr')">BUY NOW</button>
     </div>
 </div>
 
-<div id="cartScr" class="full-screen">
-    <div class="detail-header">
-        <span style="font-size:24px;" onclick="closeScreen('cartScr')">←</span>
-        <div style="flex:1">My Cart</div>
+<div id="cartScr" class="screen">
+    <div style="padding:15px; background:var(--p-blue); color:white">
+        <span onclick="closeScreen('cartScr')">← My Cart</span>
     </div>
-    <div class="cart-overlay" id="cartItemsList"></div>
-    <div class="footer-actions" id="cartFooter" style="display:none">
-        <div style="flex:1; padding:15px; font-weight:bold; font-size:18px;" id="totalAmountDisplay">₹0</div>
-        <button class="btn-buy" onclick="openScreen('checkoutScr')">PLACE ORDER</button>
-    </div>
+    <div id="cartItems" style="padding:15px"></div>
+    <button class="btn-buy" id="checkoutBtn" style="position:fixed; bottom:0; display:none" onclick="openScreen('checkoutScr')">PLACE ORDER</button>
 </div>
 
-<div id="checkoutScr" class="full-screen">
-    <div class="detail-header">
-        <span style="font-size:24px;" onclick="closeScreen('checkoutScr')">←</span>
-        <div style="flex:1">Delivery Details</div>
+<div id="checkoutScr" class="screen">
+    <div style="padding:15px">
+        <span onclick="closeScreen('checkoutScr')">← Checkout</span>
+        <h2>Delivery Address</h2>
+        <input type="text" id="name" placeholder="Full Name" style="width:100%; padding:10px; margin:10px 0;">
+        <input type="tel" id="phone" placeholder="Mobile Number" style="width:100%; padding:10px; margin:10px 0;">
+        <button class="btn-buy" onclick="placeOrder()">CONFIRM ORDER</button>
     </div>
-    <div class="p-detail-content">
-        <div class="offer-card">
-            <strong>WOW DEAL!</strong> Apply offers for maximum savings.
-        </div>
-        <h4>Delivery Address</h4>
-        <div class="form-group">
-            <input type="text" class="form-input" placeholder="Full Name (Required)*" id="addrName">
-        </div>
-        <div class="form-group">
-            <input type="tel" class="form-input" placeholder="Phone Number (Required)*" id="addrPhone">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-input" placeholder="Pincode (Required)*" id="addrPin">
-        </div>
-        <div class="form-group">
-            <textarea class="form-input" placeholder="House No., Building Name, Road Name*" id="addrHouse"></textarea>
-        </div>
-        <div class="offer-card" style="background:#e8f5e9; border-color:#388e3c;">
-            ✅ Cash on Delivery Available
-        </div>
-        <button class="btn-buy" style="width:100%; padding:15px; border-radius:4px;" onclick="finalOrderPlacement()">CONFIRM ORDER</button>
-    </div>
-</div>
-
-<div id="ordersScr" class="full-screen">
-    <div class="detail-header">
-        <span style="font-size:24px;" onclick="closeScreen('ordersScr')">←</span>
-        <div style="flex:1">My Orders</div>
-    </div>
-    <div class="p-detail-content" id="orderHistoryList"></div>
-</div>
-
-<div class="bottom-nav">
-    <div class="nav-tab active" onclick="location.reload()"><i>🏠</i>Home</div>
-    <div class="nav-tab"><i>▶️</i>Play</div>
-    <div class="nav-tab" onclick="toggleSidebar()"><i>🗂️</i>Categories</div>
-    <div class="nav-tab" onclick="openScreen('ordersScr')"><i>👤</i>Account</div>
-    <div class="nav-tab" onclick="openScreen('cartScr')"><i>🛒</i>Cart</div>
 </div>
 
 <script>
-    // --- 🔹 CORE DATA (Scalable for Cloud) ---
-    const categories = [
-        { name: "All", img: "https://cdn-icons-png.flaticon.com/512/3659/3659899.png" },
-        { name: "Mobiles", img: "https://cdn-icons-png.flaticon.com/512/644/644458.png" },
-        { name: "Fashion", img: "https://cdn-icons-png.flaticon.com/512/3050/3050239.png" },
-        { name: "Electronics", img: "https://cdn-icons-png.flaticon.com/512/3659/3659905.png" },
-        { name: "Appliances", img: "https://cdn-icons-png.flaticon.com/512/1041/1041888.png" },
-        { name: "Home", img: "https://cdn-icons-png.flaticon.com/512/2633/2633935.png" }
-    ];
-
+    // 1. DATA (Make sure IDs are numbers)
     const products = [
-        { id: 1, name: "REDMI Note 15 SE 5G (Crimson Reserve, 128 GB)", price: 19999, oldPrice: 24999, discount: "20% off", img: "https://m.media-amazon.com/images/I/81395i31jmL._SL1500_.jpg", rating: "4.2 ★", vendor: "Aryan Gadgets", specs: ["6 GB RAM | 128 GB ROM", "Snapdragon 6 Gen 3", "50MP Rear Camera", "5800 mAh Battery"] },
-        { id: 2, name: "Samsung Galaxy S26 Ultra 5G (Black, 256 GB)", price: 130999, oldPrice: 139999, discount: "6% off", img: "https://m.media-amazon.com/images/I/71LRY1u6EHL._SL1500_.jpg", rating: "4.6 ★", vendor: "Samsung Store", specs: ["12 GB RAM | 256 GB ROM", "200MP Quad Camera", "AI Features Enabled"] },
-        { id: 3, name: "Casual Slim Fit Blue Shirt", price: 799, oldPrice: 1499, discount: "46% off", img: "https://m.media-amazon.com/images/I/71yY-N-YQRL._UL1500_.jpg", rating: "4.0 ★", vendor: "Fashion Hub", specs: ["Pure Cotton", "Slim Fit", "Machine Wash"] },
-        { id: 4, name: "Haier 1.5 Ton 3 Star Split AC", price: 32990, oldPrice: 54000, discount: "38% off", img: "https://m.media-amazon.com/images/I/51pM1Z8iFfL._SL1000_.jpg", rating: "4.4 ★", vendor: "Coolers India", specs: ["Inverter Technology", "Self Clean", "Triple Inverter Plus"] }
+        { id: 101, name: "Redmi Note 15 SE", price: 19999, img: "https://via.placeholder.com/150" },
+        { id: 102, name: "Samsung M14 5G", price: 12490, img: "https://via.placeholder.com/150" }
     ];
 
-    let cart = JSON.parse(localStorage.getItem('bm_cart')) || [];
-    let orders = JSON.parse(localStorage.getItem('bm_orders')) || [];
-    let currentProduct = null;
+    let cart = [];
+    let selectedProduct = null;
 
-    // --- 🔹 INITIALIZATION ---
-    window.onload = () => {
-        initCategories();
-        renderProducts(products);
-        updateUI();
-    };
-
-    function initCategories() {
-        const tray = document.getElementById('categoryTray');
-        tray.innerHTML = categories.map(c => `
-            <div class="category-item">
-                <img src="${c.img}" alt="${c.name}">
-                <span>${c.name}</span>
-            </div>
-        `).join('');
-    }
-
-    function renderProducts(list) {
+    // 2. RENDER PRODUCTS
+    function init() {
         const grid = document.getElementById('productGrid');
-        grid.innerHTML = list.map(p => `
-            <div class="product-card" onclick="openProductDetail(${p.id})">
-                <span class="wishlist-btn">♡</span>
-                <img src="${p.img}" class="product-image">
-                <div class="product-title">${p.name}</div>
-                <div class="rating-tag">${p.rating} (726)</div>
-                <div class="price-row">
-                    <span class="current-price">₹${p.price.toLocaleString()}</span>
-                    <span class="discount">${p.discount}</span>
-                </div>
-                <div class="old-price">₹${p.oldPrice.toLocaleString()}</div>
-                <div style="font-size:10px; color:var(--text-gray); margin-top:5px;">Get it by 8th May</div>
+        grid.innerHTML = products.map(p => `
+            <div class="card" onclick="showProduct(${p.id})">
+                <img src="${p.img}" width="100%">
+                <h4>${p.name}</h4>
+                <p>₹${p.price}</p>
             </div>
         `).join('');
     }
 
-    // --- 🔹 NAVIGATION LOGIC ---
-    function toggleSidebar() { document.getElementById('appSidebar').classList.toggle('active'); }
-    
-    function openScreen(id) { 
-        document.getElementById(id).classList.add('fs-active'); 
+    // 3. NAVIGATION (Fixed IDs)
+    function openScreen(id) {
+        console.log("Opening Screen:", id);
+        document.getElementById(id).classList.add('active');
         if(id === 'cartScr') renderCart();
-        if(id === 'ordersScr') renderOrders();
     }
-    
-    function closeScreen(id) { document.getElementById(id).classList.remove('fs-active'); }
 
-    // --- 🔹 PRODUCT DETAIL LOGIC (Screenshot 50599/50600) ---
-    function openProductDetail(id) {
-        currentProduct = products.find(p => p.id === id);
-        document.getElementById('detailHeaderTitle').innerText = currentProduct.name;
-        
-        let specHTML = currentProduct.specs.map(s => `<div style="padding:10px 0; border-bottom:1px solid #eee; display:flex; align-items:center; gap:10px;">• ${s}</div>`).join('');
+    function closeScreen(id) {
+        document.getElementById(id).classList.remove('active');
+    }
 
-        document.getElementById('pDetailBody').innerHTML = `
-            <img src="${currentProduct.img}" class="detail-img-slider">
-            <h2>${currentProduct.name}</h2>
-            <div style="font-size:22px; font-weight:700; color:var(--success-green);">Special Price: ₹${currentProduct.price.toLocaleString()}</div>
-            <div class="old-price">₹${currentProduct.oldPrice.toLocaleString()}</div>
-            <div class="offer-card">
-                <strong>Bank Offers:</strong> ₹2,000 Off on ICICI Bank Credit Cards. <span style="color:var(--primary-blue)">T&C</span>
-            </div>
-            <div class="variant-box">
-                <strong>Selected Variant:</strong> 128 GB + 6 GB RAM
-            </div>
-            <h3>Product Highlights</h3>
-            <div style="background:#f9f9f9; padding:10px; border-radius:8px;">${specHTML}</div>
-            <div style="margin-top:20px; padding:15px; border:1px solid #ddd; border-radius:4px;">
-                <strong>Seller:</strong> ${currentProduct.vendor} (Verified)
-            </div>
+    // 4. PRODUCT DETAIL
+    function showProduct(id) {
+        selectedProduct = products.find(p => p.id === id);
+        document.getElementById('detailBody').innerHTML = `
+            <img src="${selectedProduct.img}" width="100%">
+            <h2>${selectedProduct.name}</h2>
+            <h1 style="color:green">₹${selectedProduct.price}</h1>
+            <p>1 Year Warranty | 7 Days Replacement</p>
         `;
-        openScreen('pDetailScr');
+        openScreen('detailScr');
     }
 
-    // --- 🔹 CART LOGIC ---
+    // 5. CART LOGIC
     function addToCart() {
-        const item = {...currentProduct, qty: 1};
-        cart.push(item);
-        localStorage.setItem('bm_cart', JSON.stringify(cart));
-        updateUI();
-        alert("Product added to Bharat Mall Cart!");
-        closeScreen('pDetailScr');
+        if(selectedProduct) {
+            cart.push(selectedProduct);
+            document.getElementById('cartBadge').innerText = cart.length;
+            alert("Added to cart!");
+            closeScreen('detailScr');
+        }
     }
 
     function renderCart() {
-        const list = document.getElementById('cartItemsList');
-        const footer = document.getElementById('cartFooter');
+        const container = document.getElementById('cartItems');
+        const btn = document.getElementById('checkoutBtn');
         if(cart.length === 0) {
-            list.innerHTML = `<div style="text-align:center; padding:50px;">🛒 Cart is empty<br><button onclick="closeScreen('cartScr')" style="margin-top:20px; padding:10px; background:var(--primary-blue); color:white; border:none; border-radius:4px;">Shop Now</button></div>`;
-            footer.style.display = 'none';
-            return;
-        }
-        footer.style.display = 'flex';
-        let total = 0;
-        list.innerHTML = cart.map((item, index) => {
-            total += item.price;
-            return `
-                <div class="cart-item">
-                    <img src="${item.img}" width="80" height="80" style="object-fit:contain">
-                    <div style="flex:1">
-                        <div style="font-weight:500; font-size:14px;">${item.name}</div>
-                        <div style="font-weight:700; margin:5px 0;">₹${item.price.toLocaleString()}</div>
-                        <div style="color:red; font-size:12px;" onclick="removeFromCart(${index})">Remove Item</div>
-                    </div>
+            container.innerHTML = "Your cart is empty!";
+            btn.style.display = 'none';
+        } else {
+            container.innerHTML = cart.map(i => `
+                <div style="display:flex; gap:10px; border-bottom:1px solid #eee; padding:10px">
+                    <img src="${i.img}" width="50">
+                    <div><b>${i.name}</b><br>₹${i.price}</div>
                 </div>
-            `;
-        }).join('');
-        document.getElementById('totalAmountDisplay').innerText = "Total: ₹" + total.toLocaleString();
+            `).join('');
+            btn.style.display = 'block';
+        }
     }
 
-    function removeFromCart(idx) {
-        cart.splice(idx, 1);
-        localStorag
+    function placeOrder() {
+        const n = document.getElementById('name').value;
+        if(!n) return alert("Pata bhariye!");
+        alert("Order Placed for " + n);
+        cart = [];
+        document.getElementById('cartBadge').innerText = "0";
+        location.reload(); // Refresh to home
+    }
+
+    init();
+</script>
+</body>
+</html>

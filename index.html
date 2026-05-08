@@ -2,144 +2,310 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Mall | Fixed Version</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Bharat Mall | Local Market Revolution</title>
     <style>
-        /* Pehle wala CSS yahan rahega (Shortening for focus) */
-        :root { --p-blue: #2874f0; --orange: #fb641b; --bg: #f1f3f6; }
-        body { margin: 0; font-family: sans-serif; background: var(--bg); pb: 60px; }
-        header { background: var(--p-blue); color: white; padding: 15px; position: sticky; top:0; z-index: 100; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
-        .card { background: white; padding: 10px; border-radius: 5px; cursor: pointer; }
-        .screen { position: fixed; inset: 0; background: white; z-index: 1000; display: none; overflow-y: auto; }
-        .active { display: block !important; }
-        .btn-buy { background: var(--orange); color: white; border: none; width: 100%; padding: 15px; font-weight: bold; cursor: pointer; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px; border-top: 1px solid #ddd; }
+        :root {
+            --primary: #2874f0; --accent: #fb641b; --yellow: #ff9f00;
+            --white: #ffffff; --bg: #f1f3f6; --text: #212121;
+            --success: #388e3c; --border: #dbdbdb;
+        }
+
+        * { box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        /* --- 1. NAVIGATION & SEARCH --- */
+        header { background: var(--primary); padding: 10px 15px; position: sticky; top: 0; z-index: 1000; color: white; }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .logo { font-size: 22px; font-weight: 800; font-style: italic; letter-spacing: 1px; }
+        .search-row { background: white; border-radius: 4px; display: flex; padding: 4px 10px; }
+        .search-row input { border: none; width: 100%; padding: 8px; outline: none; font-size: 14px; }
+
+        /* --- 2. DYNAMIC CATEGORY TRAY --- */
+        .cat-tray { background: white; display: flex; overflow-x: auto; padding: 15px 10px; gap: 20px; border-bottom: 1px solid var(--border); }
+        .cat-item { text-align: center; min-width: 70px; cursor: pointer; flex-shrink: 0; }
+        .cat-item img { width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px; }
+        .cat-item div { font-size: 11px; font-weight: 600; }
+
+        /* --- 3. PRODUCT GRID & SHOP TAGS --- */
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px; }
+        .p-card { background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: relative; display: flex; flex-direction: column; }
+        .p-img { width: 100%; height: 160px; object-fit: contain; padding: 10px; background: #fff; }
+        .shop-tag { position: absolute; top: 5px; left: 5px; background: rgba(0,0,0,0.6); color: white; padding: 2px 6px; font-size: 10px; border-radius: 2px; }
+        .p-details { padding: 10px; flex-grow: 1; }
+        .p-name { font-size: 13px; font-weight: 500; height: 32px; overflow: hidden; margin-bottom: 5px; }
+        .p-price { font-size: 16px; font-weight: bold; }
+        .p-stock { font-size: 11px; color: var(--success); font-weight: bold; margin-top: 5px; }
+
+        /* --- 4. FULL PAGE OVERLAYS (SCALABLE) --- */
+        .screen { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 5000; overflow-y: auto; }
+        .screen-active { display: block !important; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .scr-head { background: var(--primary); color: white; padding: 15px; display: flex; align-items: center; gap: 15px; font-weight: bold; position: sticky; top: 0; z-index: 100; }
+        .scr-content { padding-bottom: 80px; }
+
+        /* --- 5. CART INTERFACE --- */
+        .cart-item { background: white; padding: 15px; display: flex; gap: 15px; border-bottom: 1px solid #eee; }
+        .cart-qty { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+        .qty-btn { background: #eee; border: 1px solid #ccc; padding: 5px 10px; border-radius: 4px; font-weight: bold; }
+
+        /* --- 6. FOOTER ACTION BAR --- */
+        .footer-action { position: fixed; bottom: 0; width: 100%; height: 60px; display: flex; z-index: 6000; background: white; border-top: 1px solid #ddd; }
+        .btn-half { flex: 1; border: none; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .btn-orange { background: var(--accent); color: white; }
+        .btn-yellow { background: var(--yellow); color: white; }
+
+        /* Form Controls */
+        .form-group { padding: 20px; background: white; margin-top: 10px; }
+        .form-input { width: 100%; padding: 15px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 15px; }
+
+        /* Badge */
+        .badge { background: #ff0000; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -8px; right: -8px; }
     </style>
 </head>
 <body>
 
 <header>
-    <div style="display:flex; justify-content:space-between">
-        <b onclick="alert('Menu Open')">☰ Bharat Mall</b>
-        <span onclick="openScreen('cartScr')">🛒 <span id="cartBadge">0</span></span>
+    <div class="top-nav">
+        <div class="logo">Bharat Mall</div>
+        <div style="display:flex; gap:20px;">
+            <div style="cursor:pointer" onclick="openScreen('ordersScr')">📦</div>
+            <div style="position:relative; cursor:pointer" onclick="openScreen('cartScr')">
+                🛒<span id="cartCount" class="badge">0</span>
+            </div>
+        </div>
+    </div>
+    <div class="search-row">
+        <input type="text" placeholder="Search Products or Shops..." oninput="appSearch(this.value)">
     </div>
 </header>
 
-<div class="grid" id="productGrid">
-    </div>
+<div class="cat-tray" id="catTray"></div>
+<div class="product-grid" id="mainGrid"></div>
 
-<div id="detailScr" class="screen">
-    <div style="padding:15px; border-bottom:1px solid #ddd">
-        <span style="font-size:24px" onclick="closeScreen('detailScr')">← Back</span>
-    </div>
-    <div id="detailBody" style="padding:20px"></div>
-    <div style="position:fixed; bottom:0; width:100%; display:flex">
-        <button style="flex:1; padding:20px; border:none; background:#fff" onclick="addToCart()">ADD TO CART</button>
-        <button style="flex:1; padding:20px; border:none; background:#ff9f00; color:white" onclick="openScreen('checkoutScr')">BUY NOW</button>
+<div id="pDetailScr" class="screen">
+    <div class="scr-head"><span onclick="closeScreen('pDetailScr')">←</span> Product Details</div>
+    <div id="pDetailContent" class="scr-content"></div>
+    <div class="footer-action">
+        <button class="btn-half" onclick="handleAddToCart()">ADD TO CART</button>
+        <button class="btn-half btn-orange" onclick="openScreen('checkoutScr')">BUY NOW</button>
     </div>
 </div>
 
 <div id="cartScr" class="screen">
-    <div style="padding:15px; background:var(--p-blue); color:white">
-        <span onclick="closeScreen('cartScr')">← My Cart</span>
+    <div class="scr-head"><span onclick="closeScreen('cartScr')">←</span> My Cart</div>
+    <div id="cartList" class="scr-content"></div>
+    <div class="footer-action">
+        <div style="flex:1; display:flex; align-items:center; padding-left:15px; font-weight:bold; font-size:18px;" id="cartTotal">Total: ₹0</div>
+        <button class="btn-half btn-orange" style="max-width:150px" onclick="openScreen('checkoutScr')">CHECKOUT</button>
     </div>
-    <div id="cartItems" style="padding:15px"></div>
-    <button class="btn-buy" id="checkoutBtn" style="position:fixed; bottom:0; display:none" onclick="openScreen('checkoutScr')">PLACE ORDER</button>
 </div>
 
 <div id="checkoutScr" class="screen">
-    <div style="padding:15px">
-        <span onclick="closeScreen('checkoutScr')">← Checkout</span>
-        <h2>Delivery Address</h2>
-        <input type="text" id="name" placeholder="Full Name" style="width:100%; padding:10px; margin:10px 0;">
-        <input type="tel" id="phone" placeholder="Mobile Number" style="width:100%; padding:10px; margin:10px 0;">
-        <button class="btn-buy" onclick="placeOrder()">CONFIRM ORDER</button>
+    <div class="scr-head"><span onclick="closeScreen('checkoutScr')">←</span> Delivery Address</div>
+    <div class="form-group">
+        <input type="text" id="custName" class="form-input" placeholder="Full Name">
+        <input type="tel" id="custMob" class="form-input" placeholder="Mobile Number">
+        <input type="text" id="custAddr" class="form-input" placeholder="House/Street/Flat No.">
+        <input type="text" id="custArea" class="form-input" placeholder="Area / Locality">
+        <input type="text" id="custCity" class="form-input" placeholder="City">
+        <input type="text" id="custPin" class="form-input" placeholder="Pincode">
+        <h3 style="margin-top:20px;">Payment Method</h3>
+        <label style="display:block; padding:15px; border:1px solid var(--primary); border-radius:4px;">
+            <input type="radio" checked> Cash on Delivery (COD)
+        </label>
+        <button class="btn-pro btn-orange" style="width:100%; margin-top:30px; padding:15px; border:none; border-radius:4px; font-weight:bold;" onclick="processFinalOrder()">PLACE ORDER</button>
     </div>
 </div>
 
+<div id="ordersScr" class="screen">
+    <div class="scr-head"><span onclick="closeScreen('ordersScr')">←</span> My Orders</div>
+    <div id="orderHistory" class="scr-content"></div>
+</div>
+
 <script>
-    // 1. DATA (Make sure IDs are numbers)
-    const products = [
-        { id: 101, name: "Redmi Note 15 SE", price: 19999, img: "https://via.placeholder.com/150" },
-        { id: 102, name: "Samsung M14 5G", price: 12490, img: "https://via.placeholder.com/150" }
+    // --- 🔹 2. DYNAMIC DATA STRUCTURE (Scalable) ---
+    const categories = [
+        { id: 'c1', name: 'Electronics', img: 'https://cdn-icons-png.flaticon.com/512/3659/3659899.png' },
+        { id: 'c2', name: 'Kitchen', img: 'https://cdn-icons-png.flaticon.com/512/1041/1041888.png' },
+        { id: 'c3', name: 'Mobiles', img: 'https://cdn-icons-png.flaticon.com/512/644/644458.png' },
+        { id: 'c4', name: 'Home', img: 'https://cdn-icons-png.flaticon.com/512/2633/2633935.png' }
     ];
 
-    let cart = [];
-    let selectedProduct = null;
+    const shops = [
+        { id: 's1', name: 'Sri Ganpati Plastic' },
+        { id: 's2', name: 'Aryan Gadget Point' }
+    ];
 
-    // 2. RENDER PRODUCTS
-    function init() {
-        const grid = document.getElementById('productGrid');
-        grid.innerHTML = products.map(p => `
-            <div class="card" onclick="showProduct(${p.id})">
-                <img src="${p.img}" width="100%">
-                <h4>${p.name}</h4>
-                <p>₹${p.price}</p>
+    const products = [
+        { id: 101, shopId: 's1', catId: 'c4', name: "High Pressure Water Gun", price: 139, img: "https://m.media-amazon.com/images/I/61r59n9Yf+L._SL1100_.jpg", stock: "In Stock" },
+        { id: 102, shopId: 's2', catId: 'c3', name: "Realme Narzo N55", price: 10999, img: "https://m.media-amazon.com/images/I/41Sc4S9j-rL._SX300_SY300_QL70_FMwebp_.jpg", stock: "In Stock" },
+        { id: 103, shopId: 's2', catId: 'c1', name: "Wireless Headphones", price: 1499, img: "https://m.media-amazon.com/images/I/510uTHyDqGL._SL1500_.jpg", stock: "Few Left" }
+    ];
+
+    // --- 🔹 4. CART & STATE MANAGEMENT ---
+    let cart = JSON.parse(localStorage.getItem('bm_cart')) || [];
+    let orders = JSON.parse(localStorage.getItem('bm_orders')) || [];
+    let selectedP = null;
+
+    // Initialization
+    window.onload = () => {
+        renderCategories();
+        renderProducts(products);
+        updateCartBadge();
+    };
+
+    function renderCategories() {
+        document.getElementById('catTray').innerHTML = categories.map(c => `
+            <div class="cat-item" onclick="filterByCat('${c.id}')">
+                <img src="${c.img}"><div>${c.name}</div>
             </div>
         `).join('');
     }
 
-    // 3. NAVIGATION (Fixed IDs)
-    function openScreen(id) {
-        console.log("Opening Screen:", id);
-        document.getElementById(id).classList.add('active');
-        if(id === 'cartScr') renderCart();
+    function renderProducts(list) {
+        document.getElementById('mainGrid').innerHTML = list.map(p => {
+            const shop = shops.find(s => s.id === p.shopId);
+            return `
+                <div class="p-card" onclick="viewProduct(${p.id})">
+                    <span class="shop-tag">${shop.name}</span>
+                    <img src="${p.img}" class="p-img">
+                    <div class="p-details">
+                        <div class="p-name">${p.name}</div>
+                        <div class="p-price">₹${p.price.toLocaleString()}</div>
+                        <div class="p-stock">${p.stock}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
     }
 
-    function closeScreen(id) {
-        document.getElementById(id).classList.remove('active');
-    }
-
-    // 4. PRODUCT DETAIL
-    function showProduct(id) {
-        selectedProduct = products.find(p => p.id === id);
-        document.getElementById('detailBody').innerHTML = `
-            <img src="${selectedProduct.img}" width="100%">
-            <h2>${selectedProduct.name}</h2>
-            <h1 style="color:green">₹${selectedProduct.price}</h1>
-            <p>1 Year Warranty | 7 Days Replacement</p>
+    function viewProduct(id) {
+        selectedP = products.find(p => p.id === id);
+        const shop = shops.find(s => s.id === selectedP.shopId);
+        document.getElementById('pDetailContent').innerHTML = `
+            <img src="${selectedP.img}" style="width:100%; background:white; padding:20px;">
+            <div style="padding:20px; background:white;">
+                <div style="color:var(--primary); font-weight:bold; margin-bottom:5px;">Sold by: ${shop.name}</div>
+                <h2 style="margin:0">${selectedP.name}</h2>
+                <div style="font-size:24px; font-weight:bold; color:var(--text); margin:10px 0;">₹${selectedP.price}</div>
+                <hr style="border:0; border-top:1px solid #eee;">
+                <h3>Product Specifications</h3>
+                <p style="color:#666; line-height:1.6;">A high-quality product from ${shop.name}. Verified for local market standards. Supports fast delivery within 24 hours.</p>
+            </div>
         `;
-        openScreen('detailScr');
+        openScreen('pDetailScr');
     }
 
-    // 5. CART LOGIC
-    function addToCart() {
-        if(selectedProduct) {
-            cart.push(selectedProduct);
-            document.getElementById('cartBadge').innerText = cart.length;
-            alert("Added to cart!");
-            closeScreen('detailScr');
-        }
+    function handleAddToCart() {
+        const existing = cart.find(i => i.id === selectedP.id);
+        if(existing) { existing.qty++; } 
+        else { cart.push({...selectedP, qty: 1}); }
+        saveCart();
+        alert("Added to Cart!");
+    }
+
+    function saveCart() {
+        localStorage.setItem('bm_cart', JSON.stringify(cart));
+        updateCartBadge();
+        renderCart();
+    }
+
+    function updateCartBadge() {
+        document.getElementById('cartCount').innerText = cart.reduce((s, i) => s + i.qty, 0);
     }
 
     function renderCart() {
-        const container = document.getElementById('cartItems');
-        const btn = document.getElementById('checkoutBtn');
+        const list = document.getElementById('cartList');
         if(cart.length === 0) {
-            container.innerHTML = "Your cart is empty!";
-            btn.style.display = 'none';
-        } else {
-            container.innerHTML = cart.map(i => `
-                <div style="display:flex; gap:10px; border-bottom:1px solid #eee; padding:10px">
-                    <img src="${i.img}" width="50">
-                    <div><b>${i.name}</b><br>₹${i.price}</div>
-                </div>
-            `).join('');
-            btn.style.display = 'block';
+            list.innerHTML = "<div style='padding:50px; text-align:center;'>Your cart is empty</div>";
+            document.getElementById('cartTotal').innerText = "Total: ₹0";
+            return;
         }
+        let total = 0;
+        list.innerHTML = cart.map((item, index) => {
+            total += (item.price * item.qty);
+            return `
+                <div class="cart-item">
+                    <img src="${item.img}" width="70">
+                    <div style="flex:1">
+                        <div style="font-weight:bold">${item.name}</div>
+                        <div>₹${item.price}</div>
+                        <div class="cart-qty">
+                            <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
+                            <span>${item.qty}</span>
+                            <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                            <span style="margin-left:auto; color:red;" onclick="removeItem(${index})">🗑️</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        document.getElementById('cartTotal').innerText = "Total: ₹" + total.toLocaleString();
     }
 
-    function placeOrder() {
-        const n = document.getElementById('name').value;
-        if(!n) return alert("Pata bhariye!");
-        alert("Order Placed for " + n);
+    function updateQty(idx, change) {
+        cart[idx].qty += change;
+        if(cart[idx].qty < 1) cart[idx].qty = 1;
+        saveCart();
+    }
+
+    function removeItem(idx) {
+        cart.splice(idx, 1);
+        saveCart();
+    }
+
+    // --- 🔹 7. ORDER MANAGEMENT ---
+    function processFinalOrder() {
+        const name = document.getElementById('custName').value;
+        const phone = document.getElementById('custMob').value;
+        if(!name || !phone || cart.length === 0) return alert("Details bhariye!");
+
+        const orderId = "BM-" + Math.floor(Math.random() * 1000000);
+        const newOrder = {
+            id: orderId,
+            date: new Date().toLocaleDateString(),
+            items: [...cart],
+            status: "Placed",
+            total: cart.reduce((s, i) => s + (i.price * i.qty), 0),
+            address: `${name}, ${phone}, ${document.getElementById('custAddr').value}, ${document.getElementById('custCity').value}`
+        };
+
+        orders.unshift(newOrder);
+        localStorage.setItem('bm_orders', JSON.stringify(orders));
+        
+        // Clear Cart
         cart = [];
-        document.getElementById('cartBadge').innerText = "0";
-        location.reload(); // Refresh to home
+        saveCart();
+
+        alert("Order Placed Successfully! Order ID: " + orderId);
+        openScreen('ordersScr');
+        renderOrders();
     }
 
-    init();
+    function renderOrders() {
+        document.getElementById('orderHistory').innerHTML = orders.map(o => `
+            <div style="background:white; margin-top:10px; padding:15px; border-bottom:1px solid #ddd;">
+                <div style="display:flex; justify-content:space-between; font-weight:bold;">
+                    <span>Order #${o.id}</span>
+                    <span style="color:var(--primary)">${o.status}</span>
+                </div>
+                <div style="font-size:12px; color:#666; margin:5px 0;">Date: ${o.date}</div>
+                <div style="font-size:14px;">Items: ${o.items.length} | Total: ₹${o.total}</div>
+            </div>
+        `).join('');
+    }
+
+    // Navigation Helpers
+    function openScreen(id) { 
+        document.getElementById(id).classList.add('screen-active'); 
+        if(id === 'cartScr') renderCart();
+        if(id === 'ordersScr') renderOrders();
+    }
+    function closeScreen(id) { document.getElementById(id).classList.remove('screen-active'); }
+    function filterByCat(cId) { renderProducts(products.filter(p => p.catId === cId)); }
+    function appSearch(v) { renderProducts(products.filter(p => p.name.toLowerCase().includes(v.toLowerCase()))); }
 </script>
 </body>
 </html>
